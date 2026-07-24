@@ -12,7 +12,6 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Logo } from "@/components/brand/logo";
 
 export function isActiveRoute(pathname: string, href: string) {
   return href === "/" ? pathname === href : pathname.startsWith(href);
@@ -54,12 +53,21 @@ export function Header() {
         size="wide"
         className="relative z-10 flex min-h-[var(--header-height)] items-center justify-between gap-3"
       >
-        <Logo
-          size={60}
-          priority
-          className="shadow-[0_7px_14px_rgb(2_12_28_/_22%),inset_0_1px_0_rgb(255_255_255_/_70%)]"
-          imageClassName="h-[60px] w-[60px]"
-        />
+        <Link
+          href="/"
+          aria-label="InnovGen IT Software Solutions"
+          className="inline-flex h-[68px] w-[194px] shrink-0 items-center justify-center overflow-hidden   p-4 shadow-[0_7px_14px_rgb(2_12_28_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)] sm:w-[132px] lg:mr-5 lg:h-20 lg:w-[220px] lg:p-5"
+        >
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-hidden="true"
+            className="h-44 w-[max-width] max-w-none object-cover lg:h-52 lg:w-52"
+            src="/original_logo.mp4"
+          />
+        </Link>
         <nav aria-label="Primary navigation" className="hidden lg:block">
           <ul className="flex items-center gap-0.5">
             {mainNavigation.map((item) => (
