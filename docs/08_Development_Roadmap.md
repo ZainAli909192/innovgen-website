@@ -51,7 +51,6 @@
 | Workstream | Scope |
 |---|---|
 | Personalization | Industry or campaign landing pages |
-| Localization | English/Arabic |
 | Client portal | Secure project/client area |
 | Advanced search | Cross-site search |
 | Automation | CRM workflows and lead scoring |
