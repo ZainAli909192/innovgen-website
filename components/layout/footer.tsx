@@ -48,7 +48,7 @@ function FooterLinkList({
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-[var(--color-navy-900)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+    <footer className="footer-neomorph border-t border-border bg-[var(--color-navy-900)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0">
       <Container size="wide" className="py-12 md:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[1.25fr_1fr_1fr_1fr_1.15fr]">
           <section aria-labelledby="footer-brand-heading" className="sm:col-span-2 lg:col-span-1">

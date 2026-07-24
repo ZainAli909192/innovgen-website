@@ -4,6 +4,12 @@ import { useCallback, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { useMotionValueEvent } from "motion/react";
 import { SceneSpatialItem } from "@/components/motion/scene-spatial-item";
+import {
+  CylindricalItem,
+  CylindricalStage,
+  GoldenDepthShapes,
+  useContinuousCylinder,
+} from "@/components/motion/cylindrical-stage";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { ServiceCard } from "@/components/home/service-card";
 import { GlobalCanvas } from "@/components/three/global-canvas";
@@ -50,6 +56,46 @@ function ServicesScrollCoordinator({
   return null;
 }
 
+function ServicesCylinder({
+  activeServiceId,
+  onActiveChange,
+}: {
+  activeServiceId: string | null;
+  onActiveChange: (serviceId: string | null) => void;
+}) {
+  const { isSceneVisible, progress } = useSceneActivation();
+  const cursor = useContinuousCylinder(
+    progress,
+    homeServices.length,
+    isSceneVisible,
+    4800,
+  );
+
+  return (
+    <CylindricalStage
+      className="mt-12"
+      label="InnovGen service capabilities"
+    >
+      {homeServices.map((service, index) => (
+        <CylindricalItem
+          key={service.id}
+          count={homeServices.length}
+          cursor={cursor}
+          index={index}
+          progress={progress}
+          spacing={96}
+        >
+          <ServiceCard
+            active={activeServiceId === service.id}
+            onActiveChange={onActiveChange}
+            service={service}
+          />
+        </CylindricalItem>
+      ))}
+    </CylindricalStage>
+  );
+}
+
 export function ServicesPreviewSection() {
   const [hoveredServiceId, setHoveredServiceId] = useState<string | null>(null);
   const [storyServiceId, setStoryServiceId] = useState<string | null>(null);
@@ -57,16 +103,11 @@ export function ServicesPreviewSection() {
   const handleStoryServiceChange = useCallback((serviceId: string | null) => {
     setStoryServiceId(serviceId);
   }, []);
-  const featuredService =
-    homeServices.find((service) => service.featured) ?? homeServices[0];
-  const supportingServices = homeServices.filter(
-    (service) => service.id !== featuredService.id,
-  );
 
   return (
     <SceneSection
       aria-labelledby="services-preview-heading"
-      className="relative isolate overflow-hidden bg-[var(--color-navy-950)] py-24 pb-28 md:py-32"
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-900),var(--color-navy-950))] py-24 pb-28 md:py-32"
       interactionId={activeServiceId}
       sceneId="services-ecosystem"
       scrollOffset={["start end", "end start"]}
@@ -90,6 +131,11 @@ export function ServicesPreviewSection() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-[radial-gradient(circle_at_18%_0%,rgb(47_130_245_/_10%),transparent_48rem)]"
       />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_48%,rgb(228_196_119_/_5%),transparent_34rem),radial-gradient(circle_at_18%_72%,rgb(47_130_245_/_7%),transparent_30rem)]"
+      />
+      <GoldenDepthShapes className="opacity-80" />
       <Container size="wide" className="relative">
         <SceneSpatialItem>
           <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
@@ -114,26 +160,12 @@ export function ServicesPreviewSection() {
           </div>
         </SceneSpatialItem>
 
-        <div className="mt-12 grid gap-4 [perspective:1200px] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-5">
-          <SceneSpatialItem className="h-full" index={1}>
-            <ServiceCard
-              active={activeServiceId === featuredService.id}
-              onActiveChange={setHoveredServiceId}
-              service={featuredService}
-            />
-          </SceneSpatialItem>
-          <div className="grid gap-4 sm:grid-cols-2 lg:gap-5">
-            {supportingServices.map((service, index) => (
-              <SceneSpatialItem key={service.id} index={index + 2}>
-                <ServiceCard
-                  active={activeServiceId === service.id}
-                  onActiveChange={setHoveredServiceId}
-                  service={service}
-                />
-              </SceneSpatialItem>
-            ))}
-          </div>
-        </div>
+        <SceneSpatialItem index={1}>
+          <ServicesCylinder
+            activeServiceId={activeServiceId}
+            onActiveChange={setHoveredServiceId}
+          />
+        </SceneSpatialItem>
       </Container>
     </SceneSection>
   );

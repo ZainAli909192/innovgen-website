@@ -7,18 +7,20 @@ import {
   SpatialItem,
   SpatialSection,
 } from "@/components/motion/spatial-section";
+import { GoldenDepthShapes } from "@/components/motion/cylindrical-stage";
 
 export function TrustedBySection() {
   return (
     <SpatialSection
       aria-labelledby="trusted-by-heading"
       spacing="compact"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))]"
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-900),rgb(10_27_49),var(--color-navy-900))]"
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 -top-28 h-56 bg-[radial-gradient(ellipse_at_center,rgb(47_130_245_/_12%),transparent_68%)]"
       />
+      <GoldenDepthShapes />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden [perspective:1000px]"

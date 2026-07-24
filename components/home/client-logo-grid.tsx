@@ -4,59 +4,27 @@ import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import {
   motion,
-  useTransform,
-  type MotionValue,
 } from "framer-motion";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
+import {
+  CylindricalItem,
+  CylindricalStage,
+  useContinuousCylinder,
+} from "@/components/motion/cylindrical-stage";
 import { clientMarks, type ClientMark } from "@/config/clients";
 import { useSectionProgress } from "@/hooks/use-section-progress";
+import { useSceneVisibility } from "@/hooks/use-scene-visibility";
 
 function IndustryCard({
   client,
-  index,
-  progress,
 }: {
   client: ClientMark;
-  index: number;
-  progress: MotionValue<number>;
 }) {
   const reduced = usePrefersReducedMotion();
-  const delay = index * 0.022;
-  const opacity = useTransform(
-    progress,
-    [0.06 + delay, 0.22 + delay, 0.76, 0.94],
-    [0, 1, 1, 0],
-  );
-  const y = useTransform(
-    progress,
-    [0.06 + delay, 0.25 + delay, 0.74, 0.96],
-    [54, 0, 0, -46],
-  );
-  const z = useTransform(
-    progress,
-    [0.06 + delay, 0.27 + delay, 0.72, 0.96],
-    [-180, 0, 0, -150],
-  );
-  const rotateX = useTransform(
-    progress,
-    [0.06 + delay, 0.27 + delay, 0.72, 0.96],
-    [28, 0, 0, -24],
-  );
-  const desktopArc = [13, 8, 3, -3, -8, -13][index] ?? 0;
-  const rotateY = useTransform(
-    progress,
-    [0.08 + delay, 0.28 + delay, 0.74, 0.95],
-    [desktopArc * 1.8, desktopArc, desktopArc, desktopArc * 1.6],
-  );
 
   return (
-    <motion.li
-      className="group relative min-h-56 overflow-hidden border-b border-r border-border bg-[var(--color-navy-950)] [transform-style:preserve-3d] sm:min-h-64 lg:min-h-72"
-      style={
-        reduced
-          ? undefined
-          : { opacity, y, z, rotateX, rotateY, transformPerspective: 1200 }
-      }
+    <motion.div
+      className="group relative h-full min-h-64 overflow-hidden rounded-[1.6rem] border border-accent/20 bg-[var(--color-navy-950)] p-2 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_3%),inset_-10px_-10px_28px_rgb(0_0_0_/_24%),0_28px_80px_rgb(0_0_0_/_28%),0_0_42px_rgb(201_154_50_/_5%)] [transform-style:preserve-3d] lg:min-h-[27rem]"
       whileHover={reduced ? undefined : { z: 24, scale: 1.025 }}
       whileFocus={reduced ? undefined : { z: 24, scale: 1.025 }}
       transition={{ type: "spring", stiffness: 180, damping: 22 }}
@@ -66,7 +34,7 @@ function IndustryCard({
         target="_blank"
         rel="noreferrer"
         aria-label={`${client.name} visual reference on Unsplash`}
-        className="relative flex h-full min-h-56 flex-col justify-end overflow-hidden p-5 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent sm:min-h-64 lg:min-h-72"
+        className="relative flex h-full min-h-60 flex-col justify-end overflow-hidden rounded-[1.2rem] p-5 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent lg:min-h-[25.9rem]"
       >
         <Image
           src={client.imageUrl}
@@ -92,7 +60,7 @@ function IndustryCard({
           />
         </span>
       </a>
-    </motion.li>
+    </motion.div>
   );
 }
 
@@ -101,22 +69,27 @@ export function ClientLogoGrid() {
     (left, right) => left.displayPriority - right.displayPriority,
   );
   const { ref, progress } = useSectionProgress<HTMLDivElement>();
+  const { ref: visibilityRef, isVisible } =
+    useSceneVisibility<HTMLDivElement>();
+  const cursor = useContinuousCylinder(progress, clients.length, isVisible);
 
   return (
-    <div ref={ref} className="relative [perspective:1400px]">
-      <ul
-        aria-label="Industries served by InnovGen; imagery links to its online source"
-        className="grid grid-cols-1 border-l border-t border-border [transform-style:preserve-3d] sm:grid-cols-2 lg:grid-cols-6"
-      >
-        {clients.map((client, index) => (
-          <IndustryCard
-            key={client.id}
-            client={client}
-            index={index}
-            progress={progress}
-          />
-        ))}
-      </ul>
+    <div ref={visibilityRef}>
+      <div ref={ref} className="relative [perspective:1400px]">
+        <CylindricalStage label="Industries served by InnovGen; imagery links to its online source">
+          {clients.map((client, index) => (
+            <CylindricalItem
+              key={client.id}
+              count={clients.length}
+              cursor={cursor}
+              index={index}
+              progress={progress}
+            >
+              <IndustryCard client={client} />
+            </CylindricalItem>
+          ))}
+        </CylindricalStage>
+      </div>
     </div>
   );
 }
