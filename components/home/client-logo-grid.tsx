@@ -6,6 +6,7 @@ import {
   motion,
 } from "framer-motion";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
+import { MobileStackCarousel } from "@/components/motion/mobile-stack-carousel";
 import {
   CylindricalItem,
   CylindricalStage,
@@ -24,7 +25,7 @@ function IndustryCard({
 
   return (
     <motion.div
-      className="group relative h-full min-h-64 overflow-hidden rounded-[1.6rem] border border-accent/20 bg-[var(--color-navy-950)] p-2 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_3%),inset_-10px_-10px_28px_rgb(0_0_0_/_24%),0_28px_80px_rgb(0_0_0_/_28%),0_0_42px_rgb(201_154_50_/_5%)] [transform-style:preserve-3d] lg:min-h-[27rem]"
+      className="industry-card group relative h-full min-h-64 overflow-hidden rounded-[1.6rem] border border-accent/20 bg-[var(--color-navy-950)] p-2 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_3%),inset_-10px_-10px_28px_rgb(0_0_0_/_24%),0_28px_80px_rgb(0_0_0_/_28%),0_0_42px_rgb(201_154_50_/_5%)] [transform-style:preserve-3d] lg:min-h-[27rem]"
       whileHover={reduced ? undefined : { z: 24, scale: 1.025 }}
       whileFocus={reduced ? undefined : { z: 24, scale: 1.025 }}
       transition={{ type: "spring", stiffness: 180, damping: 22 }}
@@ -34,7 +35,7 @@ function IndustryCard({
         target="_blank"
         rel="noreferrer"
         aria-label={`${client.name} visual reference on Unsplash`}
-        className="relative flex h-full min-h-60 flex-col justify-end overflow-hidden rounded-[1.2rem] p-5 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent lg:min-h-[25.9rem]"
+        className="industry-card-link relative flex h-full min-h-60 flex-col justify-end overflow-hidden rounded-[1.2rem] p-5 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent lg:min-h-[25.9rem]"
       >
         <Image
           src={client.imageUrl}
@@ -64,6 +65,16 @@ function IndustryCard({
   );
 }
 
+function MobileClientStack({ clients }: { clients: ClientMark[] }) {
+  return (
+    <MobileStackCarousel
+      items={clients}
+      label="Industries served by InnovGen"
+      renderCard={(client) => <IndustryCard client={client} />}
+    />
+  );
+}
+
 export function ClientLogoGrid() {
   const clients = [...clientMarks].sort(
     (left, right) => left.displayPriority - right.displayPriority,
@@ -75,8 +86,12 @@ export function ClientLogoGrid() {
 
   return (
     <div ref={visibilityRef}>
+      <MobileClientStack clients={clients} />
       <div ref={ref} className="relative [perspective:1400px]">
-        <CylindricalStage label="Industries served by InnovGen; imagery links to its online source">
+        <CylindricalStage
+          className="hidden md:block"
+          label="Industries served by InnovGen; imagery links to its online source"
+        >
           {clients.map((client, index) => (
             <CylindricalItem
               key={client.id}

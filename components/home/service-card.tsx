@@ -46,14 +46,14 @@ export function ServiceCard({
       onMouseEnter={() => onActiveChange?.(service.id)}
       onMouseLeave={() => onActiveChange?.(null)}
       className={cn(
-        "group relative flex h-full min-h-72 flex-col overflow-hidden rounded-[1.6rem] border border-blue-300/20 bg-[linear-gradient(145deg,rgb(22_54_89),rgb(10_31_56))] p-6 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_5%),inset_-12px_-12px_30px_rgb(0_0_0_/_18%),0_28px_80px_rgb(0_0_0_/_22%),0_0_40px_rgb(201_154_50_/_5%)] transition-[transform,border-color,background-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/40 hover:bg-surface-elevated hover:shadow-[inset_8px_8px_24px_rgb(255_255_255_/_7%),inset_-12px_-12px_30px_rgb(0_0_0_/_20%),0_32px_90px_rgb(0_0_0_/_26%),0_0_52px_rgb(201_154_50_/_11%)] motion-reduce:transform-none md:p-7",
+        "mobile-service-card group relative flex h-full min-h-72 flex-col overflow-hidden rounded-[1.6rem] border border-blue-300/20 bg-[linear-gradient(145deg,rgb(22_54_89),rgb(10_31_56))] p-6 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_5%),inset_-12px_-12px_30px_rgb(0_0_0_/_18%),0_28px_80px_rgb(0_0_0_/_22%),0_0_40px_rgb(201_154_50_/_5%)] transition-[transform,border-color,background-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/40 hover:bg-surface-elevated hover:shadow-[inset_8px_8px_24px_rgb(255_255_255_/_7%),inset_-12px_-12px_30px_rgb(0_0_0_/_20%),0_32px_90px_rgb(0_0_0_/_26%),0_0_52px_rgb(201_154_50_/_11%)] motion-reduce:transform-none md:p-7",
         service.featured &&
           "min-h-72 lg:min-h-full lg:p-9",
         active &&
           "border-accent/45 bg-surface-elevated shadow-[inset_8px_8px_24px_rgb(255_255_255_/_4%),inset_-12px_-12px_30px_rgb(0_0_0_/_24%),0_32px_90px_rgb(0_0_0_/_30%),0_0_52px_rgb(201_154_50_/_11%)]",
       )}
     >
-      <div className="relative -mx-3 -mt-3 h-40 overflow-hidden rounded-[1.15rem] border border-white/[0.1] md:h-44">
+      <div className="service-card-media relative -mx-3 -mt-3 h-40 overflow-hidden rounded-[1.15rem] border border-white/[0.1] md:h-44">
         <Image
           src={service.imageUrl}
           alt={service.imageAlt}
@@ -67,7 +67,7 @@ export function ServiceCard({
         />
         <div
           className={cn(
-            "absolute bottom-3 left-3 flex size-11 items-center justify-center rounded-xl border border-blue-300/20 bg-[rgb(8_20_38_/_82%)] text-blue-300 shadow-[inset_3px_3px_9px_rgb(255_255_255_/_4%),0_12px_30px_rgb(0_0_0_/_28%)] backdrop-blur-sm",
+            "service-card-icon absolute bottom-3 left-3 flex size-11 items-center justify-center rounded-xl border border-blue-300/20 bg-[rgb(8_20_38_/_82%)] text-blue-300 shadow-[inset_3px_3px_9px_rgb(255_255_255_/_4%),0_12px_30px_rgb(0_0_0_/_28%)] backdrop-blur-sm",
             service.accent === "gold" &&
               "border-gold-300/30 bg-[rgb(38_29_10_/_78%)] text-accent",
           )}
@@ -76,7 +76,7 @@ export function ServiceCard({
         </div>
       </div>
 
-      <div className="pt-5">
+      <div className="service-card-copy pt-5">
         {service.featured ? (
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
             Featured capability

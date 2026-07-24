@@ -9,8 +9,16 @@ export type ContactItem = {
 
 export type SocialItem = {
   label: string;
-  network: "linkedin" | "instagram" | "facebook";
-  href: `https://${string}` | null;
+  network: "whatsapp" | "instagram" | "facebook";
+  href: `https://${string}`;
+  approval: ApprovalState;
+};
+
+export type ConnectItem = {
+  label: string;
+  kind: "whatsapp" | "instagram" | "call" | "email" | "facebook";
+  href: string;
+  external?: boolean;
   approval: ApprovalState;
 };
 
@@ -24,50 +32,80 @@ export const siteConfig = {
 export const contactItems = [
   {
     label: "Phone",
-    value: "Phone pending client approval",
-    href: null,
-    approval: "client-approval-required",
+    value: "+971 56 333 7727",
+    href: "tel:+971563337727",
+    approval: "approved",
   },
   {
     label: "Email",
-    value: "Email pending client approval",
-    href: null,
-    approval: "client-approval-required",
+    value: "nayef@innovgen.com",
+    href: "mailto:nayef@innovgen.com",
+    approval: "approved",
   },
   {
     label: "Office",
-    value: "Office location pending client approval",
+    value: "R364-AL Wasl Building, Al Karama, Dubai, PO Box 87566",
     href: null,
-    approval: "client-approval-required",
-  },
-  {
-    label: "Business hours",
-    value: "Business hours pending client approval",
-    href: null,
-    approval: "client-approval-required",
+    approval: "approved",
   },
 ] as const satisfies readonly ContactItem[];
 
 export const socialItems = [
   {
-    label: "LinkedIn",
-    network: "linkedin",
-    href: null,
-    approval: "client-approval-required",
+    label: "WhatsApp",
+    network: "whatsapp",
+    href: "https://wa.me/971563337727",
+    approval: "approved",
   },
   {
     label: "Instagram",
     network: "instagram",
-    href: null,
-    approval: "client-approval-required",
+    href: "https://www.instagram.com/innovgen/",
+    approval: "approved",
   },
   {
     label: "Facebook",
     network: "facebook",
-    href: null,
-    approval: "client-approval-required",
+    href: "https://www.facebook.com/innovgen/",
+    approval: "approved",
   },
 ] as const satisfies readonly SocialItem[];
+
+export const connectItems: readonly ConnectItem[] = [
+  {
+    label: "WhatsApp",
+    kind: "whatsapp",
+    href: "https://wa.me/971563337727",
+    external: true,
+    approval: "approved",
+  },
+  {
+    label: "Instagram",
+    kind: "instagram",
+    href: "https://www.instagram.com/innovgen/",
+    external: true,
+    approval: "approved",
+  },
+  {
+    label: "Call InnovGen",
+    kind: "call",
+    href: "tel:+971563337727",
+    approval: "approved",
+  },
+  {
+    label: "Email InnovGen",
+    kind: "email",
+    href: "mailto:nayef@innovgen.com",
+    approval: "approved",
+  },
+  {
+    label: "Facebook",
+    kind: "facebook",
+    href: "https://www.facebook.com/innovgen/",
+    external: true,
+    approval: "approved",
+  },
+];
 
 export const trustItems: readonly {
   label: string;

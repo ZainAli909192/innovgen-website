@@ -11,16 +11,18 @@ import {
 } from "framer-motion";
 import { GoldenDepthShapes } from "@/components/motion/cylindrical-stage";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
-import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 import { IconButton } from "@/components/ui/icon-button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { leadershipProfiles } from "@/config/leadership";
 import { useSectionProgress } from "@/hooks/use-section-progress";
+import { useMobileLayout } from "@/hooks/use-mobile-layout";
 
 export function LeadershipSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const reduced = usePrefersReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const mobile = useMobileLayout();
+  const reduced = prefersReducedMotion || mobile;
   const { ref, progress } = useSectionProgress<HTMLElement>();
   const smoothProgress = useSpring(progress, {
     stiffness: 82,
@@ -143,9 +145,6 @@ export function LeadershipSection() {
             description="Experienced leaders bringing strategy, technology, and delivery together."
             align="center"
           />
-          <Badge variant="gold" className="mt-5">
-            Placeholder profiles and imagery · Client approval required
-          </Badge>
         </motion.div>
 
         <div className="mt-12 grid items-center gap-10 [perspective:1500px] md:mt-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20">

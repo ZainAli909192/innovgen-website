@@ -88,9 +88,15 @@ export function MobileNavigation() {
 
   return (
     <>
-      <nav
+      <motion.nav
         aria-label="Primary mobile navigation"
-        className="fixed inset-x-0 bottom-0 z-[70] border-t border-border bg-[rgb(5_11_24_/_96%)] pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_40px_rgb(0_0_0_/_30%)] backdrop-blur-xl lg:hidden"
+        initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{
+          duration: reduceMotion ? 0 : 0.28,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[70] overflow-hidden rounded-[1.35rem] border border-white/55 bg-[var(--color-blue-300)] p-1 shadow-[0_16px_32px_rgb(2_20_45_/_38%),0_4px_8px_rgb(2_20_45_/_22%),inset_0_1px_0_rgb(255_255_255_/_72%),inset_0_-6px_14px_rgb(24_85_160_/_28%)] [transform:translateZ(0)] lg:hidden"
       >
         <ul className="mx-auto grid max-w-xl grid-cols-5 px-1">
           {mobilePrimaryNavigation.map((item) => {
@@ -102,8 +108,8 @@ export function MobileNavigation() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative flex min-h-16 flex-col items-center justify-center gap-1 px-1 text-[0.6875rem] font-semibold text-muted transition-colors",
-                    active && "text-blue-300",
+                    "relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.6875rem] font-semibold text-[var(--color-navy-900)] transition-[color,background-color,box-shadow]",
+                    active && "mobile-nav-active bg-white/14 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)] [text-shadow:0_1px_0_rgb(5_11_24_/_32%)]",
                   )}
                 >
                   {active ? (
@@ -114,7 +120,7 @@ export function MobileNavigation() {
                         duration: reduceMotion ? 0 : 0.18,
                         ease: [0.22, 1, 0.36, 1],
                       }}
-                      className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-blue-300"
+                      className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-accent"
                     />
                   ) : null}
                   <Icon aria-hidden="true" className="size-5" strokeWidth={1.8} />
@@ -132,14 +138,14 @@ export function MobileNavigation() {
               aria-controls="mobile-more-sheet"
               onClick={() => setIsOpen(true)}
               className={cn(
-                "relative flex min-h-16 w-full cursor-pointer flex-col items-center justify-center gap-1 px-1 text-[0.6875rem] font-semibold text-muted transition-colors",
-                (moreIsActive || isOpen) && "text-blue-300",
+                "relative flex min-h-16 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.6875rem] font-semibold text-[var(--color-navy-900)] transition-[color,background-color,box-shadow]",
+                (moreIsActive || isOpen) && "mobile-nav-active bg-white/14 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)] [text-shadow:0_1px_0_rgb(5_11_24_/_32%)]",
               )}
             >
               {moreIsActive || isOpen ? (
                 <span
                   aria-hidden="true"
-                  className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-blue-300"
+                  className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-accent"
                 />
               ) : null}
               <Ellipsis aria-hidden="true" className="size-5" strokeWidth={1.8} />
@@ -147,7 +153,7 @@ export function MobileNavigation() {
             </button>
           </li>
         </ul>
-      </nav>
+      </motion.nav>
 
       <AnimatePresence>
         {isOpen ? (
@@ -202,7 +208,7 @@ export function MobileNavigation() {
                         className={cn(
                           "flex min-h-12 items-center rounded-lg border border-border bg-background/40 px-4 font-semibold text-muted",
                           isActiveRoute(pathname, item.href) &&
-                            "border-blue-300/40 text-blue-300",
+                            "mobile-nav-active border-[rgb(228_196_119_/_40%)]",
                         )}
                       >
                         {item.label}

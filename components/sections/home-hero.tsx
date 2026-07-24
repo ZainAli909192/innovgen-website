@@ -2,7 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
-import { HomeHeroCanvas } from "@/components/three/home-hero-canvas";
+import { HeroLogoVideo } from "@/components/home/hero-logo-video";
 import { SceneSection } from "@/components/three/scene-section";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -50,7 +50,7 @@ export function HomeHero({
         className="relative grid items-center gap-8 py-14 md:gap-10 md:py-16 lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)] lg:gap-12 lg:py-20 xl:gap-16"
       >
         <motion.div
-          className="relative z-10 max-w-[40rem] lg:py-10"
+          className="relative z-10 order-2 max-w-[40rem] lg:order-1 lg:py-10"
         >
           <motion.p
             initial={false}
@@ -91,12 +91,12 @@ export function HomeHero({
           <motion.div
             initial={false}
             style={{ animationDelay: "260ms" }}
-            className={`${styles.rise} mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center`}
+            className={`${styles.rise} mt-8 flex flex-row items-stretch gap-2 sm:gap-3`}
           >
             <Button
               href={primaryAction.href}
               size="lg"
-              className="group border border-blue-300/20 bg-[linear-gradient(110deg,var(--color-blue-600),var(--color-blue-500))] shadow-[0_14px_34px_rgb(23_105_224_/_28%),inset_0_1px_0_rgb(228_196_119_/_25%)] transition-transform hover:-translate-y-0.5 hover:bg-[linear-gradient(110deg,var(--color-blue-500),#5c9cf7)]"
+              className="group flex-1 px-3 text-center text-xs leading-tight sm:flex-none sm:px-7 sm:text-lg border border-blue-300/20 bg-[linear-gradient(110deg,var(--color-blue-600),var(--color-blue-500))] shadow-[0_14px_34px_rgb(23_105_224_/_28%),inset_0_1px_0_rgb(228_196_119_/_25%)] transition-transform hover:-translate-y-0.5 hover:bg-[linear-gradient(110deg,var(--color-blue-500),#5c9cf7)]"
             >
               {primaryAction.label}
               <ArrowRight
@@ -109,7 +109,7 @@ export function HomeHero({
                 href={secondaryAction.href}
                 variant="secondary"
                 size="lg"
-                className="border-white/15 bg-white/[0.035] shadow-none transition-transform hover:-translate-y-0.5 hover:border-blue-300/35 hover:bg-white/[0.07]"
+                className="flex-1 px-3 text-center text-xs leading-tight sm:flex-none sm:px-7 sm:text-lg border-white/15 bg-white/[0.035] shadow-none transition-transform hover:-translate-y-0.5 hover:border-blue-300/35 hover:bg-white/[0.07]"
               >
                 {secondaryAction.label}
               </Button>
@@ -127,14 +127,14 @@ export function HomeHero({
         </motion.div>
 
         <motion.div
-          className={`${styles.scene} relative z-0 h-[18rem] w-full overflow-hidden sm:h-[22rem] md:h-[27rem] lg:ml-auto lg:h-[34rem] lg:max-w-[50rem] xl:h-[36rem]`}
+          className={`${styles.scene} relative z-0 order-1 h-[18rem] w-full overflow-hidden sm:h-[22rem] md:h-[27rem] lg:order-2 lg:ml-auto lg:h-[34rem] lg:max-w-[50rem] xl:h-[36rem]`}
           initial={false}
         >
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgb(47_130_245_/_13%),transparent_67%)] blur-2xl"
           />
-          <HomeHeroCanvas />
+          <HeroLogoVideo />
         </motion.div>
       </Container>
     </SceneSection>

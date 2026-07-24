@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { useMotionValueEvent } from "motion/react";
 import { SceneSpatialItem } from "@/components/motion/scene-spatial-item";
+import { MobileStackCarousel } from "@/components/motion/mobile-stack-carousel";
 import {
   CylindricalItem,
   CylindricalStage,
@@ -73,7 +74,7 @@ function ServicesCylinder({
 
   return (
     <CylindricalStage
-      className="mt-12"
+      className="mt-12 hidden md:block"
       label="InnovGen service capabilities"
     >
       {homeServices.map((service, index) => (
@@ -93,6 +94,28 @@ function ServicesCylinder({
         </CylindricalItem>
       ))}
     </CylindricalStage>
+  );
+}
+
+function MobileServicesStack({
+  activeServiceId,
+  onActiveChange,
+}: {
+  activeServiceId: string | null;
+  onActiveChange: (serviceId: string | null) => void;
+}) {
+  return (
+    <MobileStackCarousel
+      items={homeServices}
+      label="InnovGen service capabilities"
+      renderCard={(service) => (
+        <ServiceCard
+            active={activeServiceId === service.id}
+            onActiveChange={onActiveChange}
+            service={service}
+        />
+      )}
+    />
   );
 }
 
@@ -161,6 +184,10 @@ export function ServicesPreviewSection() {
         </SceneSpatialItem>
 
         <SceneSpatialItem index={1}>
+          <MobileServicesStack
+            activeServiceId={activeServiceId}
+            onActiveChange={setHoveredServiceId}
+          />
           <ServicesCylinder
             activeServiceId={activeServiceId}
             onActiveChange={setHoveredServiceId}

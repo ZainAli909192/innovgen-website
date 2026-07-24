@@ -7,6 +7,7 @@ import { MotionProvider } from "@/components/providers/motion-provider";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { PageTransition } from "@/components/motion/page-transition";
 import { ScrollProgressIndicator } from "@/components/motion/scroll-progress";
+import { ConnectMenu } from "@/components/layout/connect-menu";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -61,6 +62,7 @@ export default function RootLayout({
               <PageTransition>{children}</PageTransition>
             </main>
             <Footer />
+            <ConnectMenu />
             <MobileNavigation />
           </SmoothScrollProvider>
         </MotionProvider>

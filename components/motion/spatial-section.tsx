@@ -16,6 +16,7 @@ import {
 } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { useSectionProgress } from "@/hooks/use-section-progress";
+import { useMobileLayout } from "@/hooks/use-mobile-layout";
 import { cn } from "@/lib/utils";
 
 type SpatialContextValue = {
@@ -41,7 +42,9 @@ export function SpatialSection({
   spacing?: "compact" | "default" | "spacious";
 } & Omit<HTMLMotionProps<"section">, "children">) {
   const { ref, progress } = useSectionProgress<HTMLElement>();
-  const reduced = usePrefersReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const mobile = useMobileLayout();
+  const reduced = prefersReducedMotion || mobile;
   const [active, setActive] = useState(false);
   const opacity = useTransform(
     progress,

@@ -38,20 +38,28 @@ export function Header() {
       initial={false}
       animate={{
         backgroundColor: isScrolled
-          ? "rgba(5, 11, 24, 0.98)"
+          ? "rgba(25, 27, 23, 0.98)"
           : "rgba(5, 11, 24, 0.78)",
         borderColor: isScrolled
-          ? "rgba(151, 179, 214, 0.24)"
+          ? "rgba(228, 196, 119, 0.28)"
           : "rgba(151, 179, 214, 0.12)",
       }}
-      transition={{ duration: reduceMotion ? 0 : 0.2 }}
-      className="sticky top-0 z-50 border-b backdrop-blur-xl"
+      transition={{
+        duration: reduceMotion ? 0 : 0.32,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="header-surface sticky top-2 z-50 mx-3 overflow-hidden rounded-2xl border-b border-transparent backdrop-blur-xl lg:top-0 lg:mx-0 lg:rounded-none"
     >
       <Container
         size="wide"
-        className="flex min-h-[var(--header-height)] items-center justify-between gap-4"
+        className="relative z-10 flex min-h-[var(--header-height)] items-center justify-between gap-3"
       >
-        <Logo size={60} priority imageClassName="h-[60px] w-[60px]" />
+        <Logo
+          size={60}
+          priority
+          className="shadow-[0_7px_14px_rgb(2_12_28_/_22%),inset_0_1px_0_rgb(255_255_255_/_70%)]"
+          imageClassName="h-[60px] w-[60px]"
+        />
         <nav aria-label="Primary navigation" className="hidden lg:block">
           <ul className="flex items-center gap-0.5">
             {mainNavigation.map((item) => (
@@ -64,7 +72,7 @@ export function Header() {
                   className={cn(
                     "inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-muted transition-colors hover:bg-white/5 hover:text-foreground",
                     isActiveRoute(pathname, item.href) &&
-                      "bg-white/8 text-foreground shadow-[inset_0_0_0_1px_rgb(131_185_255_/_16%)]",
+                      "bg-[rgb(228_196_119_/_12%)] text-accent shadow-[inset_0_0_0_1px_rgb(228_196_119_/_28%)]",
                   )}
                 >
                   {item.label}
@@ -73,8 +81,12 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <div className="hidden lg:block">
-          <Button href={consultationNavigation.href} size="sm">
+        <div>
+          <Button
+            href={consultationNavigation.href}
+            size="sm"
+            className="max-sm:px-3 max-sm:text-xs max-sm:shadow-[0_6px_14px_rgb(3_18_43_/_26%),inset_0_1px_0_rgb(255_255_255_/_24%)]"
+          >
             {consultationNavigation.label}
           </Button>
         </div>
