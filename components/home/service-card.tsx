@@ -59,11 +59,11 @@ export function ServiceCard({
           alt={service.imageAlt}
           fill
           sizes="(max-width: 767px) 100vw, 30vw"
-          className="object-cover opacity-72 saturate-[0.82] transition duration-500 group-hover:scale-105 group-hover:opacity-88 group-focus-visible:scale-105 group-focus-visible:opacity-88 motion-reduce:transform-none"
+          className="object-cover opacity-72 saturate-[0.82] transition duration-500 group-hover:scale-105 group-hover:opacity-88 group-focus-visible:scale-105 group-focus-visible:opacity-88 motion-reduce:transform-none max-md:opacity-100 max-md:saturate-100"
         />
         <span
           aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(180deg,transparent_18%,rgb(5_11_24_/_10%)_55%,rgb(5_11_24_/_60%)_100%)]"
+          className="absolute inset-0 bg-[linear-gradient(180deg,transparent_18%,rgb(5_11_24_/_10%)_55%,rgb(5_11_24_/_60%)_100%)] max-md:bg-[linear-gradient(180deg,transparent_30%,rgb(5_11_24_/_38%)_100%)]"
         />
         <div
           className={cn(

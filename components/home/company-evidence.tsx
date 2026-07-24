@@ -3,6 +3,7 @@
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { companyEvidence, type CompanyEvidenceItem } from "@/config/company-evidence";
+import { useMobileLayout } from "@/hooks/use-mobile-layout";
 import { useSectionProgress } from "@/hooks/use-section-progress";
 
 function EvidenceItem({
@@ -15,6 +16,7 @@ function EvidenceItem({
   progress: MotionValue<number>;
 }) {
   const reduced = usePrefersReducedMotion();
+  const mobile = useMobileLayout();
   const start = 0.06 + index * 0.075;
   const settle = start + 0.17;
   const exitStart = 0.78 + index * 0.025;
@@ -43,6 +45,15 @@ function EvidenceItem({
     [start, settle, exitStart, 1],
     [0.84, 1, 1, 0.94],
   );
+  const mobileOpacity = useTransform(
+    progress,
+    [start, settle, exitStart, 1],
+    [0.82, 1, 1, 0.9],
+  );
+  const mobileX = useTransform(progress, [start, settle, exitStart, 1], [30, 0, 0, -12]);
+  const mobileZ = useTransform(progress, [start, settle, exitStart, 1], [-56, 0, 0, -34]);
+  const mobileRotateY = useTransform(progress, [start, settle, exitStart, 1], [5, 0, 0, -3]);
+  const mobileScale = useTransform(progress, [start, settle, exitStart, 1], [0.97, 1, 1, 0.985]);
 
   return (
     <motion.li
@@ -51,10 +62,12 @@ function EvidenceItem({
       style={
         reduced
           ? undefined
-          : { opacity, x, z, rotateY, scale, transformOrigin: "100% 50%" }
+          : mobile
+            ? { opacity: mobileOpacity, x: mobileX, z: mobileZ, rotateY: mobileRotateY, scale: mobileScale, transformOrigin: "100% 50%" }
+            : { opacity, x, z, rotateY, scale, transformOrigin: "100% 50%" }
       }
-      whileHover={reduced ? undefined : { z: 16, x: -4 }}
-      whileFocus={reduced ? undefined : { z: 16, x: -4 }}
+      whileHover={reduced || mobile ? undefined : { z: 16, x: -4 }}
+      whileFocus={reduced || mobile ? undefined : { z: 16, x: -4 }}
       transition={{ type: "spring", stiffness: 170, damping: 22 }}
     >
       <span

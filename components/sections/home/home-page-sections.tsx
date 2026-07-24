@@ -2,6 +2,7 @@ import { CompanyOverviewSection } from "./company-overview-section";
 import { ServicesPreviewSection } from "./services-preview-section";
 import { TrustedBySection } from "./trusted-by-section";
 import { LeadershipSection } from "./leadership-section";
+import { FinalCtaSection } from "./final-cta-section";
 
 export function HomePageSections() {
   return (
@@ -10,6 +11,7 @@ export function HomePageSections() {
       <TrustedBySection />
       <CompanyOverviewSection />
       <ServicesPreviewSection />
+      <FinalCtaSection />
     </>
   );
 }
