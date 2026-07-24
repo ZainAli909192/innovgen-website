@@ -1,25 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
+import { pages } from "@/content/site-content";
+import { MarketingPage } from "@/components/templates/marketing-page";
+import { JsonLd } from "@/components/seo/json-ld";
+import { createMetadata, organizationSchema } from "@/lib/seo";
 
-export default function Home() {
+export const metadata = createMetadata(pages.home.seo, "/");
+
+export default function HomePage() {
   return (
-    <Section>
-      <Container className="py-16 md:py-24">
-        <p className="mb-4 font-semibold uppercase tracking-[0.18em] text-accent">
-          InnovGen
-        </p>
-        <h1 className="max-w-4xl text-[length:var(--text-h1)]">
-          Enterprise technology, built for what comes next.
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted">
-          The shared frontend foundation is ready. Page-specific experiences
-          will be built in the next phase.
-        </p>
-        <Button href="/design-system" variant="secondary" className="mt-8">
-          View design system
-        </Button>
-      </Container>
-    </Section>
+    <>
+      <JsonLd data={organizationSchema()} />
+      <MarketingPage page={pages.home} />
+    </>
   );
 }

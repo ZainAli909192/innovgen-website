@@ -14,7 +14,7 @@ export function buttonStyles({
   className,
 }: ButtonStyleProps = {}) {
   return cn(
-    "inline-flex min-h-11 items-center justify-center gap-2 rounded-full font-semibold transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-out)] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-45",
+    "inline-flex min-h-11 items-center justify-center gap-2 rounded-full font-semibold transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-fast)] ease-[var(--ease-out)] disabled:pointer-events-none disabled:opacity-45",
     variant === "primary" &&
       "bg-primary text-white shadow-[0_10px_28px_rgb(47_130_245_/_22%)] hover:bg-[var(--primary-hover)]",
     variant === "secondary" &&
