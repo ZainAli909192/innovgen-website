@@ -105,3 +105,29 @@ Before implementing a major feature:
 
 Do not rewrite unrelated files.
 Do not mark work complete while linting, type checks or tests fail.
+
+## 21st.dev MCP Rules
+
+21st.dev may be used for component discovery, references, templates, and
+approved component installation.
+
+Before using a 21st.dev component:
+
+1. Search for multiple relevant options.
+2. Compare the options against the InnovGen design system.
+3. Select the simplest accessible implementation.
+4. Inspect all installed code and dependencies.
+5. Remove unrelated styles, dependencies, demos, and placeholder content.
+6. Convert colors, typography, spacing, radius, and motion to InnovGen tokens.
+7. Preserve strict TypeScript and existing component conventions.
+8. Confirm the component supports responsive layouts and keyboard navigation.
+9. Avoid installing overlapping component libraries.
+10. Run lint, type-check, tests, and production build after installation.
+
+Do not allow 21st.dev components to redefine global styles, Tailwind tokens,
+fonts, navigation structure, or motion conventions.
+
+Do not copy or install a component only because it looks visually impressive.
+It must solve a defined UX requirement.
+
+Do not use 21st.dev for React Three Fiber scenes or global scroll orchestration.

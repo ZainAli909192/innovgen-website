@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={organizationSchema()} />
-      <MarketingPage page={pages.home} />
+      <MarketingPage heroSceneId="home-hero" page={pages.home} />
     </>
   );
 }

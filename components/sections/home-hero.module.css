@@ -1,0 +1,58 @@
+@keyframes heroFade {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0.72;
+    transform: translate3d(0, 1rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes heroWord {
+  from {
+    opacity: 0.72;
+    transform: translate3d(0, 0.55em, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes heroScene {
+  from {
+    opacity: 0.72;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fade {
+  animation: heroFade 280ms var(--ease-out) both;
+}
+
+.rise {
+  animation: heroRise 280ms var(--ease-out) both;
+}
+
+.word {
+  animation: heroWord 380ms var(--ease-out) both;
+}
+
+.scene {
+  animation: heroScene 600ms var(--ease-out) both;
+  transform-origin: 58% 50%;
+}

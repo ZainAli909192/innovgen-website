@@ -148,3 +148,31 @@ a {
     animation-iteration-count: 1 !important;
   }
 }
+@keyframes industry-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, -20px) rotateX(8deg);
+  }
+  50% {
+    transform: translate3d(-18px, 16px, 32px) rotateX(-5deg);
+  }
+}
+
+@keyframes industry-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-8deg);
+  }
+  50% {
+    transform: translate3d(24px, -18px, 40px) rotate(5deg);
+  }
+}
+
+@keyframes industry-spin {
+  from {
+    transform: rotate3d(1, 1, 0, 0deg);
+  }
+  to {
+    transform: rotate3d(1, 1, 0, 360deg);
+  }
+}

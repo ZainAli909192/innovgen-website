@@ -1,0 +1,47 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Production-ready temporary fallback; replace only after the final InnovGen monogram geometry is approved. -->
+  <defs>
+    <radialGradient id="environment" cx="0" cy="0" r="1" gradientTransform="translate(900 550) rotate(90) scale(570 700)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#173D70" stop-opacity=".7"/>
+      <stop offset=".52" stop-color="#081A32" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#050B18" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="595" y1="340" x2="1005" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F2D98C"/>
+      <stop offset=".45" stop-color="#D9B75F"/>
+      <stop offset="1" stop-color="#9E7120"/>
+    </linearGradient>
+    <linearGradient id="orbit" x1="390" y1="410" x2="1230" y2="770" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#173D70"/>
+      <stop offset=".48" stop-color="#5A9DF8"/>
+      <stop offset="1" stop-color="#12335F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1200" fill="#050B18"/>
+  <rect width="1600" height="1200" fill="url(#environment)"/>
+  <g stroke="#83B9FF" stroke-opacity=".07">
+    <path d="M0 240H1600M0 480H1600M0 720H1600M0 960H1600"/>
+    <path d="M320 0V1200M640 0V1200M960 0V1200M1280 0V1200"/>
+  </g>
+  <ellipse cx="820" cy="600" rx="492" ry="270" stroke="url(#orbit)" stroke-width="5" transform="rotate(-12 820 600)"/>
+  <ellipse cx="820" cy="600" rx="384" ry="478" stroke="#173D70" stroke-width="4" transform="rotate(31 820 600)"/>
+  <ellipse cx="820" cy="600" rx="444" ry="350" stroke="#2F82F5" stroke-opacity=".48" stroke-width="4" transform="rotate(18 820 600)"/>
+  <g stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M700 412V788" stroke-width="54"/>
+    <path d="M1005 468C951 394 829 378 749 426C661 479 636 598 680 688C724 779 843 822 935 777C980 755 1012 715 1027 670" stroke-width="70"/>
+    <path d="M1020 640H875" stroke-width="62"/>
+  </g>
+  <g fill="#9DCAFF">
+    <circle cx="403" cy="526" r="7"/><circle cx="510" cy="816" r="6"/><circle cx="638" cy="274" r="5"/>
+    <circle cx="1105" cy="330" r="6"/><circle cx="1256" cy="598" r="7"/><circle cx="1122" cy="870" r="5"/>
+    <circle cx="835" cy="1020" r="6"/><circle cx="1320" cy="790" r="4"/>
+  </g>
+  <g stroke="#2F82F5" stroke-opacity=".25" stroke-width="2">
+    <path d="M403 526L638 274L1105 330L1256 598"/>
+    <path d="M403 526L510 816L835 1020L1122 870L1320 790"/>
+    <path d="M1105 330L1122 870M510 816L1256 598"/>
+  </g>
+  <g fill="#83B9FF">
+    <circle cx="418" cy="456" r="4"/><circle cx="1185" cy="524" r="4"/><circle cx="958" cy="917" r="4"/>
+  </g>
+</svg>

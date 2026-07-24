@@ -1,0 +1,9 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" fill="#071426"/>
+  <circle cx="800" cy="430" r="240" stroke="#2F82F5" stroke-opacity=".45" stroke-width="3"/>
+  <circle cx="800" cy="430" r="155" stroke="#E6C779" stroke-opacity=".7" stroke-width="2"/>
+  <path d="M400 610C610 470 990 470 1200 610" stroke="#2F82F5" stroke-opacity=".35" stroke-width="3"/>
+  <circle cx="800" cy="430" r="64" fill="#102B50" stroke="#E6C779" stroke-width="3"/>
+  <text x="800" y="760" text-anchor="middle" fill="#EDF5FF" font-family="Arial, sans-serif" font-size="32">Temporary 3D system poster</text>
+  <text x="800" y="808" text-anchor="middle" fill="#9EB6D3" font-family="Arial, sans-serif" font-size="20">Final artwork requires client approval</text>
+</svg>

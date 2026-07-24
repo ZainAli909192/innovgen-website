@@ -7,6 +7,7 @@ type SectionHeadingProps = {
   align?: "start" | "center";
   className?: string;
   as?: "h1" | "h2" | "h3";
+  id?: string;
 };
 
 export function SectionHeading({
@@ -16,6 +17,7 @@ export function SectionHeading({
   align = "start",
   className,
   as: Heading = "h2",
+  id,
 }: SectionHeadingProps) {
   return (
     <div
@@ -30,7 +32,9 @@ export function SectionHeading({
           {eyebrow}
         </p>
       ) : null}
-      <Heading className="text-[length:var(--text-h2)]">{title}</Heading>
+      <Heading id={id} className="text-[length:var(--text-h2)]">
+        {title}
+      </Heading>
       {description ? (
         <p className="mt-5 max-w-[65ch] text-lg text-muted">{description}</p>
       ) : null}
