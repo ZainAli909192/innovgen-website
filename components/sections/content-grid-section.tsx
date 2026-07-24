@@ -62,9 +62,7 @@ export function ContentGridSection({
         ) : (
           <Card className="mt-10 text-center">
             <h3 className="text-xl">Nothing published yet</h3>
-            <p className="mt-2 text-muted">
-              Approved content will appear here when it is available.
-            </p>
+           
           </Card>
         )}
       </Container>

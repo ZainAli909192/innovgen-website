@@ -47,7 +47,7 @@ export function HomeHero({
 
       <Container
         size="wide"
-        className="relative grid min-h-[calc(100svh-var(--header-height))] items-center gap-8 pb-28 pt-14 md:gap-10 md:pb-20 md:pt-20 lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)] lg:gap-12 lg:py-16 xl:gap-16"
+        className="relative grid items-center gap-8 py-14 md:gap-10 md:py-16 lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)] lg:gap-12 lg:py-20 xl:gap-16"
       >
         <motion.div
           className="relative z-10 max-w-[40rem] lg:py-10"
@@ -127,7 +127,7 @@ export function HomeHero({
         </motion.div>
 
         <motion.div
-          className={`${styles.scene} relative z-0 h-[18rem] w-full overflow-hidden sm:h-[22rem] md:h-[27rem] lg:ml-auto lg:h-[min(40rem,calc(100svh-var(--header-height)-5rem))] lg:min-h-[30rem] lg:max-w-[50rem]`}
+          className={`${styles.scene} relative z-0 h-[18rem] w-full overflow-hidden sm:h-[22rem] md:h-[27rem] lg:ml-auto lg:h-[34rem] lg:max-w-[50rem] xl:h-[36rem]`}
           initial={false}
         >
           <div
