@@ -47,11 +47,11 @@ export function Header() {
         duration: reduceMotion ? 0 : 0.32,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="header-surface sticky top-2 z-50 mx-3 overflow-hidden rounded-2xl border-b border-transparent backdrop-blur-xl lg:top-0 lg:mx-0 lg:rounded-none"
+      className="header-surface sticky top-2 z-50 mx-3 hidden overflow-hidden rounded-2xl border-b border-transparent backdrop-blur-xl lg:top-0 lg:mx-0 lg:block lg:rounded-none"
     >
       <Container
         size="wide"
-        className="relative z-10 flex min-h-[var(--header-height)] items-center justify-between gap-3"
+        className="relative z-10 flex min-h-[var(--header-height)] items-center justify-center gap-3 lg:justify-between"
       >
         <Link
           href="/"
@@ -89,7 +89,7 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <div>
+        <div className="hidden lg:block">
           <Button
             href={consultationNavigation.href}
             size="sm"

@@ -241,22 +241,12 @@ a {
 
 @media (max-width: 1023px) {
   .header-surface {
-    box-shadow:
-      0 14px 30px rgb(1 10 25 / 30%),
-      0 3px 8px rgb(1 10 25 / 20%),
-      inset 0 1px 0 rgb(255 255 255 / 11%),
-      inset 0 -7px 16px rgb(2 9 21 / 18%);
+    background: transparent !important;
+    box-shadow: none;
   }
 
   .header-surface::before {
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    pointer-events: none;
-    content: "";
-    background:
-      radial-gradient(ellipse at 85% 0%, color-mix(in srgb, var(--color-gold-300) 14%, transparent), transparent 62%),
-      linear-gradient(180deg, rgb(255 255 255 / 5%), transparent 58%);
+    display: none;
   }
 }
 

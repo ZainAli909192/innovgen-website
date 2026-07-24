@@ -134,7 +134,9 @@ export function HomeHero({
             aria-hidden="true"
             className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgb(47_130_245_/_13%),transparent_67%)] blur-2xl"
           />
-          <HeroLogoVideo />
+          <div className={styles.logoVideoFrame}>
+            <HeroLogoVideo />
+          </div>
         </motion.div>
       </Container>
     </SceneSection>

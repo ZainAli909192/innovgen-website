@@ -20,9 +20,10 @@ import { useMobileLayout } from "@/hooks/use-mobile-layout";
 
 export function LeadershipSection() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hasMounted, setHasMounted] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const mobile = useMobileLayout();
-  const reduced = prefersReducedMotion || mobile;
+  const reduced = prefersReducedMotion || !hasMounted || mobile;
   const { ref, progress } = useSectionProgress<HTMLElement>();
   const smoothProgress = useSpring(progress, {
     stiffness: 82,
@@ -87,6 +88,11 @@ export function LeadershipSection() {
     [14, 0, 0, -11],
   );
 
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setHasMounted(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   const showPrevious = () => {
     setActiveIndex(
       (current) =>
@@ -98,14 +104,14 @@ export function LeadershipSection() {
   };
 
   useEffect(() => {
-    if (reduced) return;
+    if (prefersReducedMotion) return;
     const intervalId = window.setInterval(() => {
       setActiveIndex(
         (current) => (current + 1) % leadershipProfiles.length,
       );
     }, 2000);
     return () => window.clearInterval(intervalId);
-  }, [reduced]);
+  }, [prefersReducedMotion]);
 
   return (
     <motion.section
@@ -129,6 +135,12 @@ export function LeadershipSection() {
       />
       <GoldenDepthShapes className="opacity-60" />
 
+      <motion.div
+        initial={prefersReducedMotion ? false : { opacity: 0, y: 34, scale: 0.985 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ amount: 0.16, once: false }}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.56, ease: [0.22, 1, 0.36, 1] }}
+      >
       <Container size="wide" className="relative">
         <motion.div
           className="flex flex-col items-center [transform-style:preserve-3d]"
@@ -164,15 +176,15 @@ export function LeadershipSection() {
               aria-hidden="true"
               className="absolute -bottom-6 -left-5 size-16 rounded-2xl border border-accent/30 bg-[linear-gradient(145deg,rgb(228_196_119_/_14%),rgb(201_154_50_/_2%))] shadow-[inset_7px_7px_16px_rgb(255_255_255_/_6%),inset_-8px_-8px_18px_rgb(73_44_2_/_26%),0_18px_44px_rgb(201_154_50_/_10%)] md:-bottom-9 md:-left-8 md:size-24"
             />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-accent/25 bg-surface-elevated p-2 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_4%),inset_-12px_-12px_28px_rgb(0_0_0_/_25%),0_36px_100px_rgb(0_0_0_/_32%),0_0_46px_rgb(201_154_50_/_8%)]">
+            <div className="relative aspect-square overflow-hidden rounded-[1.75rem] border border-accent/25 bg-surface-elevated p-2 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_4%),inset_-12px_-12px_28px_rgb(0_0_0_/_25%),0_36px_100px_rgb(0_0_0_/_32%),0_0_46px_rgb(201_154_50_/_8%)] md:aspect-[4/5]">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={profile.id}
                   className="relative h-full overflow-hidden rounded-[1.3rem]"
-                  initial={reduced ? false : { opacity: 0, scale: 0.9, rotateY: -9 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.94, rotateY: -7 }}
                   animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  exit={reduced ? undefined : { opacity: 0, scale: 0.94, rotateY: 7 }}
-                  transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                  exit={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.97, rotateY: 6 }}
+                  transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Image
                     src={profile.imageUrl}
@@ -202,10 +214,10 @@ export function LeadershipSection() {
               <motion.div
                 key={profile.id}
                 aria-live="polite"
-                initial={reduced ? false : { opacity: 0, x: 26, z: -60 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, x: 22, z: -40 }}
                 animate={{ opacity: 1, x: 0, z: 0 }}
-                exit={reduced ? undefined : { opacity: 0, x: -18, z: -40 }}
-                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                exit={prefersReducedMotion ? undefined : { opacity: 0, x: -16, z: -30 }}
+                transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
               >
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
                   Leadership profile {String(activeIndex + 1).padStart(2, "0")}
@@ -244,6 +256,7 @@ export function LeadershipSection() {
           </motion.div>
         </div>
       </Container>
+      </motion.div>
     </motion.section>
   );
 }

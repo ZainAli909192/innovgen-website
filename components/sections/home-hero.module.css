@@ -57,3 +57,63 @@
   animation: heroScene 680ms var(--ease-out) 100ms both;
   transform-origin: 58% 50%;
 }
+
+@keyframes logoBorderOrbit {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.logoVideoFrame {
+  position: absolute;
+  inset: 3%;
+  overflow: hidden;
+  border-radius: 2rem;
+  isolation: isolate;
+}
+
+.logoVideoFrame::before {
+  position: absolute;
+  z-index: 0;
+  inset: -75%;
+  content: "";
+  background: conic-gradient(
+    transparent 0deg 300deg,
+    rgb(201 154 50 / 0.22) 310deg,
+    var(--color-gold-300) 318deg,
+    rgb(255 239 184 / 0.96) 326deg,
+    var(--color-gold-500) 340deg,
+    transparent 360deg
+  );
+  animation: logoBorderOrbit 3.4s linear infinite;
+  will-change: transform;
+}
+
+.logoVideoFrame > video {
+  z-index: 1;
+  inset: 2px !important;
+  width: calc(100% - 4px) !important;
+  height: calc(100% - 4px) !important;
+  border-radius: calc(2rem - 2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logoVideoFrame::before {
+    animation: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .logoVideoFrame {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: min(84%, 17rem);
+    aspect-ratio: 1;
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  .logoVideoFrame::before {
+    animation-duration: 4s;
+  }
+}
