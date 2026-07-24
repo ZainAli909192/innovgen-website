@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
+import { Reveal } from "@/components/motion/reveal";
 import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";

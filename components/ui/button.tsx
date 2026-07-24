@@ -37,6 +37,7 @@ type ButtonProps = ButtonStyleProps & {
   rel?: string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
+  "aria-pressed"?: React.AriaAttributes["aria-pressed"];
 };
 
 export function Button({
@@ -52,6 +53,7 @@ export function Button({
   rel,
   disabled,
   type = "button",
+  "aria-pressed": ariaPressed,
 }: ButtonProps) {
   const styles = buttonStyles({ variant, size, className });
   const content = loading ? (
@@ -83,6 +85,7 @@ export function Button({
       type={type}
       disabled={loading || disabled}
       aria-busy={loading || undefined}
+      aria-pressed={ariaPressed}
       onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
     >
       {content}

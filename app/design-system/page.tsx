@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/container";
 import { IconButton } from "@/components/ui/icon-button";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { MotionShowcase } from "@/components/motion/motion-showcase";
 
 export const metadata: Metadata = {
   title: "Design System",
@@ -124,6 +125,8 @@ export default function DesignSystemPage() {
           />
         </Container>
       </Section>
+
+      <MotionShowcase />
     </>
   );
 }

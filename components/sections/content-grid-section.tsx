@@ -4,7 +4,7 @@ import type { ContentItem } from "@/content/types";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
+import { Reveal } from "@/components/motion/reveal";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 
