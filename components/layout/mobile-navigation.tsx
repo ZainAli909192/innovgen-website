@@ -120,10 +120,14 @@ export function MobileNavigation() {
                         duration: reduceMotion ? 0 : 0.18,
                         ease: [0.22, 1, 0.36, 1],
                       }}
-                      className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-accent"
+                      className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-[var(--color-gold-500)]"
                     />
                   ) : null}
-                  <Icon aria-hidden="true" className="size-5" strokeWidth={1.8} />
+                  <Icon
+                    aria-hidden="true"
+                    className="size-5 fill-current"
+                    strokeWidth={1.8}
+                  />
                   <span>{item.label}</span>
                 </Link>
               </li>
@@ -145,7 +149,7 @@ export function MobileNavigation() {
               {moreIsActive || isOpen ? (
                 <span
                   aria-hidden="true"
-                  className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-accent"
+                  className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-[var(--color-gold-500)]"
                 />
               ) : null}
               <Ellipsis aria-hidden="true" className="size-5" strokeWidth={1.8} />
