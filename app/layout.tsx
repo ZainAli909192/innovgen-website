@@ -4,8 +4,10 @@ import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { MobileNavigation } from "@/components/layout/mobile-navigation";
 import { MotionProvider } from "@/components/providers/motion-provider";
+import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { PageTransition } from "@/components/motion/page-transition";
 import { ScrollProgressIndicator } from "@/components/motion/scroll-progress";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -46,19 +48,21 @@ export default function RootLayout({
     >
       <body className="flex min-h-dvh flex-col">
         <MotionProvider>
-          <ScrollProgressIndicator />
-          <a
-            href="#main-content"
-            className="fixed start-4 top-4 z-[100] -translate-y-24 rounded-md bg-primary px-4 py-3 font-semibold text-white transition-transform focus:translate-y-0"
-          >
-            Skip to main content
-          </a>
-          <Header />
-          <main id="main-content" className="flex-1">
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
-          <MobileNavigation />
+          <SmoothScrollProvider>
+            <ScrollProgressIndicator />
+            <a
+              href="#main-content"
+              className="fixed start-4 top-4 z-[100] -translate-y-24 rounded-md bg-primary px-4 py-3 font-semibold text-white transition-transform focus:translate-y-0"
+            >
+              Skip to main content
+            </a>
+            <Header />
+            <main id="main-content" className="flex-1">
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <Footer />
+            <MobileNavigation />
+          </SmoothScrollProvider>
         </MotionProvider>
       </body>
     </html>
