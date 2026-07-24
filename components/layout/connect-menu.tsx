@@ -123,22 +123,24 @@ export function ConnectMenu() {
         ) : null}
       </AnimatePresence>
 
-      <motion.button
-        ref={triggerRef}
-        type="button"
-        aria-expanded={open}
-        aria-controls="connect-actions"
-        onClick={() => setOpen((current) => !current)}
-        whileTap={reducedMotion ? undefined : { scale: 0.97 }}
-        className="inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border border-accent/50 bg-[var(--color-gold-500)] px-5 font-semibold text-[var(--color-navy-950)] shadow-[0_14px_36px_rgb(0_0_0_/_35%),0_0_26px_rgb(201_154_50_/_18%)] transition-colors hover:bg-[var(--color-gold-300)]"
-      >
-        {open ? (
-          <X aria-hidden="true" className="size-5" />
-        ) : (
-          <Share2 aria-hidden="true" className="size-5" />
-        )}
-        {open ? "Close" : "Connect"}
-      </motion.button>
+      <div className="connect-orbit-frame">
+        <motion.button
+          ref={triggerRef}
+          type="button"
+          aria-expanded={open}
+          aria-controls="connect-actions"
+          onClick={() => setOpen((current) => !current)}
+          whileTap={reducedMotion ? undefined : { scale: 0.97 }}
+          className="connect-orbit-trigger inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border border-accent/50 bg-[var(--color-navy-800)] px-5 font-semibold text-accent shadow-[0_14px_36px_rgb(0_0_0_/_35%),0_0_26px_rgb(201_154_50_/_18%)] transition-colors hover:bg-[rgb(18_45_76)]"
+        >
+          {open ? (
+            <X aria-hidden="true" className="size-5" />
+          ) : (
+            <Share2 aria-hidden="true" className="size-5" />
+          )}
+          {open ? "Close" : "Connect"}
+        </motion.button>
+      </div>
     </div>
   );
 }

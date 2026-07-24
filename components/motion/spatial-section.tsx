@@ -21,12 +21,14 @@ import { cn } from "@/lib/utils";
 
 type SpatialContextValue = {
   active: boolean;
+  mobile: boolean;
   progress: MotionValue<number>;
   reduced: boolean;
 };
 
 const SpatialContext = createContext<SpatialContextValue>({
   active: false,
+  mobile: false,
   progress: motionValue(0.5),
   reduced: false,
 });
@@ -44,7 +46,7 @@ export function SpatialSection({
   const { ref, progress } = useSectionProgress<HTMLElement>();
   const prefersReducedMotion = usePrefersReducedMotion();
   const mobile = useMobileLayout();
-  const reduced = prefersReducedMotion || mobile;
+  const reduced = prefersReducedMotion;
   const [active, setActive] = useState(false);
   const opacity = useTransform(
     progress,
@@ -62,6 +64,10 @@ export function SpatialSection({
     [0, 0.2, 0.78, 1],
     [2, 0, 0, -1.25],
   );
+  const mobileOpacity = useTransform(progress, [0, 0.16, 0.78, 1], [0.86, 1, 1, 0.92]);
+  const mobileY = useTransform(progress, [0, 0.2, 0.78, 1], [18, 0, 0, -12]);
+  const mobileScale = useTransform(progress, [0, 0.2, 0.78, 1], [0.985, 1, 1, 0.99]);
+  const mobileRotateX = useTransform(progress, [0, 0.2, 0.78, 1], [1.2, 0, 0, -0.7]);
 
   useEffect(() => {
     const element = ref.current;
@@ -85,7 +91,7 @@ export function SpatialSection({
   }, [ref]);
 
   return (
-    <SpatialContext.Provider value={{ active, progress, reduced }}>
+    <SpatialContext.Provider value={{ active, mobile, progress, reduced }}>
       <motion.section
         ref={ref}
         className={cn(
@@ -98,10 +104,10 @@ export function SpatialSection({
           reduced
             ? undefined
             : {
-                opacity,
-                y,
-                scale,
-                rotateX,
+                opacity: mobile ? mobileOpacity : opacity,
+                y: mobile ? mobileY : y,
+                scale: mobile ? mobileScale : scale,
+                rotateX: mobile ? mobileRotateX : rotateX,
                 transformPerspective: 1400,
                 transformOrigin: "50% 50%",
               }
@@ -123,13 +129,14 @@ export function SpatialItem({
   className?: string;
   index?: number;
 }) {
-  const { progress, reduced } = useContext(SpatialContext);
+  const { mobile, progress, reduced } = useContext(SpatialContext);
   return (
     <SpatialProgressItem
       className={className}
       index={index}
       progress={progress}
       reduced={reduced}
+      mobile={mobile}
     >
       {children}
     </SpatialProgressItem>
@@ -142,12 +149,14 @@ export function SpatialProgressItem({
   index = 0,
   progress,
   reduced,
+  mobile = false,
 }: {
   children: ReactNode;
   className?: string;
   index?: number;
   progress: MotionValue<number>;
   reduced: boolean;
+  mobile?: boolean;
 }) {
   const entranceStart = Math.min(0.12 + index * 0.022, 0.26);
   const entranceEnd = Math.min(entranceStart + 0.14, 0.4);
@@ -172,11 +181,37 @@ export function SpatialProgressItem({
     [0, entranceStart, entranceEnd, exitStart, 1],
     [0.96, 0.975, 1, 1, 0.975],
   );
+  const mobileOpacity = useTransform(
+    progress,
+    [0, entranceStart, entranceEnd, exitStart, 1],
+    [0.82, 0.94, 1, 1, 0.9],
+  );
+  const mobileY = useTransform(
+    progress,
+    [0, entranceStart, entranceEnd, exitStart, 1],
+    [14, 8, 0, 0, -8],
+  );
+  const mobileZ = useTransform(
+    progress,
+    [0, entranceStart, entranceEnd, exitStart, 1],
+    [-30, -16, 0, 0, -22],
+  );
+  const mobileScale = useTransform(
+    progress,
+    [0, entranceStart, entranceEnd, exitStart, 1],
+    [0.98, 0.99, 1, 1, 0.99],
+  );
 
   return (
     <motion.div
       className={className}
-      style={reduced ? undefined : { opacity, y, z, scale }}
+      style={
+        reduced
+          ? undefined
+          : mobile
+            ? { opacity: mobileOpacity, y: mobileY, z: mobileZ, scale: mobileScale }
+            : { opacity, y, z, scale }
+      }
     >
       {children}
     </motion.div>

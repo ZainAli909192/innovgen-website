@@ -24,7 +24,8 @@ export function SceneSpatialItem({
       className={className}
       index={index}
       progress={progress}
-      reduced={reduced || mobile}
+      reduced={reduced}
+      mobile={mobile}
     >
       {children}
     </SpatialProgressItem>

@@ -20,7 +20,7 @@ export function TrustedBySection() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 -top-28 h-56 bg-[radial-gradient(ellipse_at_center,rgb(47_130_245_/_12%),transparent_68%)]"
       />
-      <GoldenDepthShapes />
+      <GoldenDepthShapes className="opacity-30 md:opacity-100" />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden [perspective:1000px]"
@@ -38,9 +38,12 @@ export function TrustedBySection() {
               eyebrow="Trusted by ambitious organizations"
               title="Technology partnerships built on trust."
               description="InnovGen works with organizations that need secure, scalable, and future-ready digital systems."
-              className="max-w-3xl"
+              className="max-w-3xl max-md:rounded-[1.5rem] max-md:border max-md:border-blue-300/20 max-md:bg-[linear-gradient(135deg,rgb(21_57_96_/_72%),rgb(8_20_38_/_86%))] max-md:p-5 max-md:shadow-[inset_0_1px_0_rgb(255_255_255_/_10%),0_18px_40px_rgb(0_0_0_/_18%)]"
             />
-            <Badge variant="gold" className="shrink-0">
+            <Badge
+              variant="gold"
+              className="shrink-0 max-md:border-accent/45 max-md:bg-accent/10 max-md:px-4 max-md:py-1.5 max-md:text-[0.6875rem]"
+            >
               These are official partners of InnovGen.
             </Badge>
           </div>

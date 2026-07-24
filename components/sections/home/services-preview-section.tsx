@@ -140,7 +140,7 @@ export function ServicesPreviewSection() {
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-45"
+        className="pointer-events-none absolute inset-0 opacity-45 max-md:opacity-15"
       >
         <GlobalCanvas
           className="!absolute !inset-0 !h-full !rounded-none !border-0 !bg-transparent !shadow-none [&_figcaption]:hidden"
@@ -158,7 +158,7 @@ export function ServicesPreviewSection() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_48%,rgb(228_196_119_/_5%),transparent_34rem),radial-gradient(circle_at_18%_72%,rgb(47_130_245_/_7%),transparent_30rem)]"
       />
-      <GoldenDepthShapes className="opacity-80" />
+      <GoldenDepthShapes className="opacity-30 md:opacity-80" />
       <Container size="wide" className="relative">
         <SceneSpatialItem>
           <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
@@ -167,7 +167,7 @@ export function ServicesPreviewSection() {
               eyebrow="What we do"
               title="End-to-end capabilities for digital transformation."
               description="From strategy and software to cloud, data, security, and infrastructure, InnovGen brings together the capabilities required to build and evolve modern digital platforms."
-              className="max-w-3xl"
+              className="max-w-3xl max-md:rounded-[1.5rem] max-md:border max-md:border-blue-300/25 max-md:bg-[linear-gradient(135deg,rgb(21_57_96_/_78%),rgb(8_20_38_/_90%))] max-md:p-5 max-md:shadow-[inset_0_1px_0_rgb(255_255_255_/_11%),0_18px_40px_rgb(0_0_0_/_16%)]"
             />
             <Button
               href="/services"

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "motion/react";
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -15,6 +18,7 @@ import {
   trustItems,
 } from "@/config/site";
 import { formatCopyrightYear } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
 function FooterLinkList({
   items,
@@ -55,8 +59,20 @@ function SocialIcon({ network }: { network: "whatsapp" | "instagram" | "facebook
 }
 
 export function Footer() {
+  const reducedMotion = usePrefersReducedMotion();
+
   return (
-    <footer className="footer-neomorph border-t border-border bg-[var(--color-navy-900)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+    <motion.footer
+      initial={reducedMotion ? false : { opacity: 0, y: 42, rotateX: 7, scale: 0 }}
+      whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{
+        duration: reducedMotion ? 0 : 0.72,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      style={{ transformPerspective: 1200, transformOrigin: "50% 60%" }}
+      className="footer-neomorph border-t border-border bg-[var(--color-navy-900)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0"
+    >
       <Container size="wide" className="py-6 md:py-16">
         <div className="hidden gap-10 sm:grid-cols-2 md:grid lg:grid-cols-3 xl:grid-cols-[1.25fr_1fr_1fr_1fr_1.15fr]">
           <section aria-labelledby="footer-brand-heading" className="sm:col-span-2 lg:col-span-1">
@@ -138,6 +154,6 @@ export function Footer() {
           </nav>
         </div>
       </Container>
-    </footer>
+    </motion.footer>
   );
 }
