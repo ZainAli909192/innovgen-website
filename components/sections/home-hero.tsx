@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { HeroLogoVideo } from "@/components/home/hero-logo-video";
+import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -26,6 +27,7 @@ export function HomeHero({
   title,
 }: HomeHeroProps) {
   const words = title.split(" ");
+  const reducedMotion = usePrefersReducedMotion();
 
   return (
     <SceneSection
@@ -44,6 +46,34 @@ export function HomeHero({
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_48%,rgb(5_11_24_/_72%)_100%)]"
       />
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-12 top-[15%] size-32 rounded-[42%] border border-accent/30 bg-accent/[0.07] shadow-[inset_10px_10px_28px_rgb(255_255_255_/_10%),inset_-12px_-12px_32px_rgb(83_50_4_/_28%),0_0_48px_rgb(201_154_50_/_16%)] md:-left-6 md:size-44"
+        animate={reducedMotion ? undefined : { x: [0, 26, 0], y: [0, 18, 0], rotate: [0, 14, 0] }}
+        transition={{ duration: 8.5, ease: "easeInOut", repeat: Infinity }}
+      />
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-[7%] top-[10%] size-20 rounded-full border border-accent/35 bg-[radial-gradient(circle_at_32%_28%,rgb(255_239_184_/_22%),rgb(201_154_50_/_6%)_48%,transparent_72%)] md:size-28"
+        animate={reducedMotion ? undefined : { x: [0, -16, 0], y: [0, 24, 0], scale: [1, 1.12, 1] }}
+        transition={{ duration: 7.5, ease: "easeInOut", repeat: Infinity }}
+      />
+      <motion.svg
+        aria-hidden="true"
+        viewBox="0 0 1200 360"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-44 text-accent/35 md:h-56"
+      >
+        <motion.path
+          d="M0 262C164 262 208 138 388 162s268 145 442 38 238-48 370-92"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          initial={reducedMotion ? false : { pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: reducedMotion ? 0 : 1.4, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </motion.svg>
 
       <Container
         size="wide"
@@ -133,6 +163,12 @@ export function HomeHero({
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgb(47_130_245_/_13%),transparent_67%)] blur-2xl"
+          />
+          <motion.span
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-[8%] left-[5%] size-14 rounded-2xl border border-accent/35 bg-accent/[0.08] shadow-[inset_7px_7px_16px_rgb(255_255_255_/_9%),inset_-8px_-8px_18px_rgb(83_50_4_/_28%)] md:size-20"
+            animate={reducedMotion ? undefined : { y: [0, -16, 0], rotate: [0, -12, 0] }}
+            transition={{ duration: 6.6, ease: "easeInOut", repeat: Infinity }}
           />
           <div className={styles.logoVideoFrame}>
             <HeroLogoVideo />

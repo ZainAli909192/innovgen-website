@@ -48,12 +48,12 @@ export function FinalCtaSection() {
 
       <Container size="wide" className="relative">
         <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 38, rotateX: 4, scale: 0.975 }}
+          initial={reducedMotion ? false : { opacity: 0, y: 42, rotateX: 7, scale: 0 }}
           whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-          viewport={{ once: false, amount: 0.25 }}
-          transition={{ duration: reducedMotion ? 0 : 0.65, ease }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: reducedMotion ? 0 : 0.72, ease }}
           className="relative overflow-hidden rounded-[2rem] border border-accent/25 bg-[linear-gradient(135deg,rgb(18_49_83_/_96%),rgb(7_20_38_/_98%)_55%,rgb(20_38_55_/_96%))] px-6 py-10 shadow-[inset_0_1px_0_rgb(255_255_255_/_12%),inset_-16px_-18px_42px_rgb(0_0_0_/_20%),0_34px_90px_rgb(0_0_0_/_28%),0_0_60px_rgb(201_154_50_/_8%)] sm:px-10 md:px-14 md:py-14"
-          style={{ transformPerspective: 1200 }}
+          style={{ transformPerspective: 1200, transformOrigin: "50% 60%" }}
         >
           <div aria-hidden="true" className="absolute right-[18%] top-0 h-px w-24 bg-[linear-gradient(90deg,transparent,var(--color-gold-300),transparent)]" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-14">
