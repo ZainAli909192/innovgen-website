@@ -26,7 +26,6 @@ function FooterLinkList({
   items: readonly {
     label: string;
     href: string;
-    approval?: "approved" | "client-approval-required";
   }[];
 }) {
   return (

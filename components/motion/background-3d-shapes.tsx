@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Boxes,
+  Braces,
   Cloud,
   Code2,
   Cpu,
@@ -16,6 +17,7 @@ import { cn } from "@/lib/utils";
 
 export type Background3DShapesVariant =
   | "technology"
+  | "services-blue"
   | "orbits"
   | "geometry"
   | "network";
@@ -96,6 +98,83 @@ function TechnologyShapes({ active }: { active: boolean }) {
         animate={{ y: [0, 16, 0], rotate: [-5, 6, -5] }}
       >
         <ShieldCheck className="size-10 md:size-14" strokeWidth={1} />
+      </FloatingShape>
+    </>
+  );
+}
+
+function ServicesBlueShapes({ active }: { active: boolean }) {
+  return (
+    <>
+      <FloatingShape
+        active={active}
+        duration={7.5}
+        className="absolute right-[8%] top-[12%] size-20 rounded-full border border-blue-300/35 bg-blue-500/[0.08] shadow-[inset_10px_10px_28px_rgb(255_255_255_/_7%),inset_-12px_-12px_28px_rgb(5_28_68_/_38%),0_18px_55px_rgb(47_130_245_/_15%)] md:size-28"
+        animate={{ y: [0, 18, 0], rotateX: [0, 16, 0], rotateY: [0, -22, 0] }}
+      />
+      <FloatingShape
+        active={active}
+        duration={9}
+        className="absolute bottom-[8%] left-[5%] size-16 rounded-[1.35rem] border border-blue-300/28 bg-[linear-gradient(145deg,rgb(131_185_255_/_14%),rgb(47_130_245_/_3%))] shadow-[inset_8px_8px_20px_rgb(255_255_255_/_6%),inset_-10px_-10px_24px_rgb(3_22_56_/_34%),0_20px_55px_rgb(47_130_245_/_12%)] md:size-24"
+        animate={{ y: [0, -15, 0], rotate: [-10, 7, -10], z: [-20, 28, -20] }}
+      />
+      <FloatingShape
+        active={active}
+        duration={10.5}
+        className="absolute left-[14%] top-[16%] h-10 w-28 rounded-full border border-blue-300/24 bg-[linear-gradient(145deg,rgb(131_185_255_/_12%),rgb(47_130_245_/_2%))] shadow-[inset_6px_6px_16px_rgb(255_255_255_/_5%),inset_-8px_-8px_18px_rgb(3_22_56_/_30%),0_14px_42px_rgb(47_130_245_/_10%)]"
+        animate={{ x: [0, 22, 0], y: [0, -9, 0], rotateZ: [-7, 5, -7] }}
+      />
+      <FloatingShape
+        active={active}
+        duration={8.5}
+        className="absolute bottom-[18%] right-[18%] size-14 rounded-full border-[10px] border-blue-300/15 shadow-[inset_0_0_20px_rgb(131_185_255_/_12%),0_0_32px_rgb(47_130_245_/_12%)] md:size-20 md:border-[14px]"
+        animate={{ y: [0, -18, 0], rotateX: [18, -12, 18], rotateY: [-16, 18, -16] }}
+      />
+      <FloatingShape
+        active={active}
+        duration={4.8}
+        className="absolute left-[45%] top-[34%] size-4 rounded-full bg-blue-300/70 shadow-[0_0_28px_rgb(131_185_255_/_55%)]"
+        animate={{ scale: [0.8, 1.25, 0.8], opacity: [0.3, 0.85, 0.3] }}
+      />
+      <FloatingShape
+        active={active}
+        duration={8.8}
+        className="absolute left-[7%] top-[42%] text-blue-300/25 drop-shadow-[0_0_16px_rgb(131_185_255_/_22%)]"
+        animate={{ y: [0, -18, 0], rotateY: [-12, 20, -12], scale: [0.9, 1.08, 0.9] }}
+      >
+        <Cpu className="size-12 md:size-16" strokeWidth={1.1} />
+      </FloatingShape>
+      <FloatingShape
+        active={active}
+        duration={10.2}
+        className="absolute right-[5%] top-[46%] text-blue-300/20 drop-shadow-[0_0_18px_rgb(131_185_255_/_20%)]"
+        animate={{ x: [0, -16, 0], y: [0, 11, 0], rotateZ: [-5, 7, -5] }}
+      >
+        <Cloud className="size-14 md:size-20" strokeWidth={1} />
+      </FloatingShape>
+      <FloatingShape
+        active={active}
+        duration={7.6}
+        className="absolute bottom-[6%] left-[24%] text-blue-300/20"
+        animate={{ y: [0, -12, 0], rotateX: [0, 18, 0], opacity: [0.35, 0.85, 0.35] }}
+      >
+        <Database className="size-10 md:size-14" strokeWidth={1.1} />
+      </FloatingShape>
+      <FloatingShape
+        active={active}
+        duration={9.4}
+        className="absolute right-[31%] top-[7%] hidden text-blue-300/20 sm:block"
+        animate={{ x: [0, 12, 0], rotateY: [0, -24, 0], opacity: [0.3, 0.8, 0.3] }}
+      >
+        <Network className="size-10 md:size-14" strokeWidth={1.05} />
+      </FloatingShape>
+      <FloatingShape
+        active={active}
+        duration={8.2}
+        className="absolute bottom-[12%] right-[7%] hidden text-blue-300/25 sm:block"
+        animate={{ y: [0, 14, 0], rotateZ: [-8, 5, -8], scale: [0.92, 1.06, 0.92] }}
+      >
+        <Braces className="size-11 md:size-16" strokeWidth={1.1} />
       </FloatingShape>
     </>
   );
@@ -222,6 +301,7 @@ function NetworkShapes({ active }: { active: boolean }) {
 
 const shapeSets = {
   technology: TechnologyShapes,
+  "services-blue": ServicesBlueShapes,
   orbits: OrbitShapes,
   geometry: GeometryShapes,
   network: NetworkShapes,

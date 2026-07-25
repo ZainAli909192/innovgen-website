@@ -56,7 +56,6 @@ export const mainNavigation = [
   routeNavigation.products,
   routeNavigation.projects,
   routeNavigation.partners,
-  routeNavigation.blogs,
   routeNavigation.careers,
 ] as const;
 
@@ -78,7 +77,6 @@ export const mobilePrimaryNavigation = [
 export const mobileMoreNavigation = [
   routeNavigation.about,
   routeNavigation.partners,
-  routeNavigation.blogs,
   routeNavigation.careers,
 ] as const;
 

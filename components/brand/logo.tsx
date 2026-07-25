@@ -24,15 +24,20 @@ export function Logo({
         className,
       )}
     >
-      <Image
-        src="/logo.gif"
-        alt="InnovGen IT Software Solutions"
+      <video
         width={size}
         height={size}
-        priority={priority}
-        unoptimized
-        className={cn("size-auto shrink-0", imageClassName)}
-      />
+        aria-hidden="true"
+        autoPlay
+        disablePictureInPicture
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className={cn("size-auto shrink-0 object-contain", imageClassName)}
+      >
+        <source src="/logo_video.mp4" type="video/mp4" />
+      </video>
     </Link>
   );
 }
