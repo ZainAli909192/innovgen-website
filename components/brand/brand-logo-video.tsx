@@ -62,7 +62,6 @@ export function BrandLogoVideo({ className }: { className?: string }) {
       >
         <source src="/logo_video.mp4" type="video/mp4" />
       </video>
-      <span className="sr-only">InnovGen animated brand mark</span>
     </div>
   );
 }

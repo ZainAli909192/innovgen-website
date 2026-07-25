@@ -37,11 +37,11 @@ export function Header() {
       initial={false}
       animate={{
         backgroundColor: isScrolled
-          ? "rgba(25, 27, 23, 0.98)"
-          : "rgba(5, 11, 24, 0.78)",
+          ? "rgba(19, 43, 79, 0.68)"
+          : "rgba(31, 60, 107, 0.66)",
         borderColor: isScrolled
-          ? "rgba(228, 196, 119, 0.28)"
-          : "rgba(151, 179, 214, 0.12)",
+          ? "rgba(48, 83, 142, 0.34)"
+          : "rgba(131, 185, 255, 0.36)",
       }}
       transition={{
         duration: reduceMotion ? 0 : 0.32,
@@ -80,7 +80,7 @@ export function Header() {
                   className={cn(
                     "inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-muted transition-colors hover:bg-white/5 hover:text-foreground",
                     isActiveRoute(pathname, item.href) &&
-                      "bg-[rgb(228_196_119_/_12%)] text-accent shadow-[inset_0_0_0_1px_rgb(228_196_119_/_28%)]",
+                      "bg-blue-500/15 text-blue-300 shadow-[inset_0_0_0_1px_rgb(131_185_255_/_30%),0_5px_18px_rgb(23_105_224_/_12%)]",
                   )}
                 >
                   {item.label}
