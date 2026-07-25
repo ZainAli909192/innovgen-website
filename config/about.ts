@@ -1,0 +1,99 @@
+import {
+  Blocks,
+  Gauge,
+  Handshake,
+  SearchCheck,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
+
+export type AboutProcessStep = {
+  number: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+};
+
+export type AboutProof = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+};
+
+export const founderContent = {
+  eyebrow: "Meet the founder",
+  name: "Founder name pending client approval",
+  role: "Founder of InnovGen",
+  introduction:
+    "Leading InnovGen with a clear belief: technology should simplify decisions, strengthen operations, and create progress that lasts.",
+  image: "/founder.png",
+  imageAlt:
+    "Portrait supplied for the InnovGen founder profile; identity confirmation pending client approval.",
+} as const;
+
+export const companyStory = {
+  eyebrow: "Who we are",
+  title: "We make complex technology feel clear, useful, and ready to grow.",
+  paragraphs: [
+    "InnovGen is an enterprise technology partner bringing strategy, design, engineering, cloud, data, and security into one practical delivery model.",
+    "We work alongside organizations to understand the business need first, then shape secure digital systems that teams can operate confidently and evolve over time.",
+  ],
+} as const;
+
+export const workingPrinciple = {
+  eyebrow: "Our delivery principle",
+  title: "We keep everything simple.",
+  description:
+    "Clear priorities, visible decisions, and focused delivery keep every engagement moving toward a measurable outcome.",
+} as const;
+
+export const processSteps = [
+  {
+    number: "01",
+    title: "Analyze the business",
+    description:
+      "Understand the challenge, users, constraints, risks, and the outcome that matters.",
+    icon: SearchCheck,
+  },
+  {
+    number: "02",
+    title: "Build clean and scalable",
+    description:
+      "Design and engineer a secure foundation that remains maintainable as needs evolve.",
+    icon: Blocks,
+  },
+  {
+    number: "03",
+    title: "Launch with confidence",
+    description:
+      "Release responsibly, transfer knowledge, and create a practical path for improvement.",
+    icon: Gauge,
+  },
+] as const satisfies readonly AboutProcessStep[];
+
+export const aboutProofs = [
+  {
+    title: "Experienced team",
+    description:
+      "Cross-functional specialists connect business context with disciplined technical delivery.",
+    icon: Blocks,
+  },
+  {
+    title: "Fast, accountable delivery",
+    description:
+      "Short feedback loops and visible ownership keep progress focused without compromising quality.",
+    icon: Gauge,
+  },
+  {
+    title: "Enterprise-level security",
+    description:
+      "Governance, resilience, and risk are considered from the first architecture decision.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Long-term technology partner",
+    description:
+      "Delivery includes knowledge transfer, support, and a clear route for future evolution.",
+    icon: Handshake,
+  },
+] as const satisfies readonly AboutProof[];
