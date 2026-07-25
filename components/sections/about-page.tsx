@@ -25,6 +25,7 @@ import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SplitText } from "@/components/motion/split-text";
+import { Background3DShapes } from "@/components/motion/background-3d-shapes";
 import {
   SpatialItem,
   SpatialSection,
@@ -216,6 +217,11 @@ function CompanyStory() {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_48%,rgb(47_130_245_/_9%),transparent_32rem)]"
+      />   
+      <Background3DShapes
+        variant="services-blue"
+        intensity="strong"
+        className="opacity-55"
       />
       <Container size="standard" className="relative">
         <DirectionalReveal direction="left">
@@ -331,6 +337,11 @@ function ProofSection() {
       spacing="spacious"
       className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),rgb(10_29_52),var(--color-navy-900))]"
     >
+      <Background3DShapes
+        variant="services-blue"
+        intensity="strong"
+        className="opacity-50"
+      />
       <Container size="wide" className="relative">
         <DirectionalReveal
           direction="left"

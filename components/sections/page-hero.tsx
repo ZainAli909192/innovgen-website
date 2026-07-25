@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { BrandLogoVideo } from "@/components/brand/brand-logo-video";
 import { HomeHero } from "@/components/sections/home-hero";
 import { Reveal } from "@/components/motion/reveal";
 import { SceneSection } from "@/components/three/scene-section";
@@ -78,13 +78,8 @@ export function PageHero({
           <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-border bg-surface shadow-[0_30px_100px_rgb(0_0_0_/_35%)]">
             <div className="absolute inset-8 rounded-full border border-blue-300/20" />
             <div className="absolute inset-16 rounded-full border border-gold-300/15" />
-            <Image
-              src="/logo_mark.gif"
-              alt="InnovGen brand mark"
-              fill
-              priority
-              sizes="(max-width: 1023px) 80vw, 36vw"
-              className="object-contain p-16 opacity-90"
+            <BrandLogoVideo
+              className="absolute inset-8 opacity-95 md:inset-12"
             />
           </div>
         </Reveal>
