@@ -4,7 +4,7 @@ import { z } from "zod";
 export const runtime = "nodejs";
 
 const MAX_CV_SIZE = 2 * 1024 * 1024;
-const recipient = "balloonlabuae@gmail.com";
+const recipient = "nayef@innovgen.com";
 
 const applicationSchema = z.object({
   fullName: z.string().trim().min(2).max(120),

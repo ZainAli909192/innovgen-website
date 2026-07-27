@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const runtime = "nodejs";
 
-const recipient = process.env.CONSULTATION_EMAIL_TO ?? "linkplus.ae@gmail.com";
+const recipient = process.env.CONSULTATION_EMAIL_TO ?? "nayef@innovgen.com";
 
 const consultationSchema = z.object({
   name: z.string().trim().min(2).max(120),
