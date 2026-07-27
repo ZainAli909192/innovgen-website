@@ -70,4 +70,22 @@ export const partnerEcosystem: readonly PartnerEcosystemItem[] = [
       "End-user technology that helps people stay productive, protected and connected.",
     areas: ["End-user computing", "Collaboration", "Device management", "Support"],
   },
+  {
+    name: "Infrastructure",
+    shortName: "Infrastructure",
+    icon: "network",
+    focus: "Business-critical infrastructure",
+    description:
+      "Infrastructure capabilities that support dependable performance, continuity and scale.",
+    areas: ["Datacentre", "Compute", "Storage", "Continuity"],
+  },
+  {
+    name: "Business applications",
+    shortName: "Applications",
+    icon: "workplace",
+    focus: "Connected business operations",
+    description:
+      "Business application capabilities that help teams coordinate work and improve service delivery.",
+    areas: ["Business systems", "Integration", "Automation", "Adoption"],
+  },
 ] as const;

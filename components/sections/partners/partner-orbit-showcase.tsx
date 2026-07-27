@@ -17,6 +17,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { useMobileLayout } from "@/hooks/use-mobile-layout";
 import {
   partnerEcosystem,
   type PartnerEcosystemItem,
@@ -89,8 +90,57 @@ function PartnerDetails({ partner }: { partner: PartnerEcosystemItem }) {
   );
 }
 
+const mobileGridPositions = [
+  "col-start-1 row-start-1",
+  "col-start-2 row-start-1",
+  "col-start-3 row-start-1",
+  "col-start-1 row-start-2",
+  "col-start-3 row-start-2",
+  "col-start-1 row-start-3",
+  "col-start-2 row-start-3",
+  "col-start-3 row-start-3",
+] as const;
+
+function MobilePartnerGrid({
+  activeIndex,
+  onSelect,
+}: {
+  activeIndex: number;
+  onSelect: (index: number) => void;
+}) {
+  return (
+    <div className="relative mx-auto grid w-full max-w-[28rem] grid-cols-3 grid-rows-3 gap-3 rounded-[2rem] border border-blue-300/25 bg-[linear-gradient(145deg,var(--color-navy-900),var(--color-navy-950))] p-3 shadow-[inset_0_1px_0_rgb(255_255_255_/_8%),0_20px_48px_rgb(0_0_0_/_26%)] md:hidden">
+      {partnerEcosystem.map((partner, index) => {
+        const isActive = index === activeIndex;
+        return (
+          <motion.button
+            key={partner.name}
+            type="button"
+            onClick={() => onSelect(index)}
+            aria-label={`Show ${partner.name} details`}
+            aria-current={isActive ? "true" : undefined}
+            whileHover={{ y: -5, scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className={`grid aspect-square cursor-pointer place-items-center rounded-2xl border p-2 text-center transition-[border-color,background-color,box-shadow] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${mobileGridPositions[index]} ${isActive ? "border-blue-300 bg-blue-500/15 text-blue-100 shadow-[0_0_20px_rgb(47_130_245_/_30%)]" : "border-blue-300/35 bg-navy-950 text-blue-300 hover:border-blue-300/75 hover:bg-blue-500/10"}`}
+          >
+            <PartnerIcon icon={partner.icon} />
+            <span className="mt-1 text-[0.65rem] font-semibold leading-tight text-foreground">{partner.shortName}</span>
+          </motion.button>
+        );
+      })}
+      <div className="col-start-2 row-start-2 grid aspect-square place-items-center rounded-2xl border border-accent/40 bg-[radial-gradient(circle_at_35%_30%,color-mix(in_srgb,var(--color-blue-500)_25%,transparent),var(--color-navy-950))] p-2 text-center shadow-[0_0_24px_rgb(47_130_245_/_20%),inset_0_0_18px_rgb(228_196_119_/_12%)]">
+        <div>
+          <p aria-live="polite" className="mt-1 text-xs font-semibold leading-tight text-foreground">{partnerEcosystem[activeIndex].name}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function PartnerOrbitShowcase() {
   const reducedMotion = usePrefersReducedMotion();
+  const isMobile = useMobileLayout();
   const orbitRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -124,6 +174,8 @@ export function PartnerOrbitShowcase() {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-55 [background-image:linear-gradient(rgb(131_185_255_/_6%)_1px,transparent_1px),linear-gradient(90deg,rgb(131_185_255_/_6%)_1px,transparent_1px)] [background-size:3rem_3rem] [mask-image:linear-gradient(to_bottom,transparent,black_28%,black_78%,transparent)]" />
       <Container size="wide" className="relative">
         <div className="grid items-center gap-10 xl:grid-cols-[minmax(0,0.82fr)_minmax(34rem,1.65fr)_minmax(19rem,0.86fr)] xl:gap-7">
+          <MobilePartnerGrid activeIndex={activeIndex} onSelect={selectPartner} />
+
           <motion.div
             initial={reducedMotion ? false : { opacity: 0, x: -34 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -143,14 +195,14 @@ export function PartnerOrbitShowcase() {
 
           <motion.div
             ref={orbitRef}
-            initial={reducedMotion ? false : { opacity: 0, y: 34, scale: 0.94, rotateX: 8 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+            initial={reducedMotion ? false : isMobile ? { opacity: 0, x: 100 } : { opacity: 0, y: 34, scale: 0.94, rotateX: 8 }}
+            whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, rotateX: 0 }}
             viewport={{ once: false, amount: 0.25 }}
             transition={{ duration: reducedMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ transformPerspective: 1200 }}
-            className="relative mx-auto w-full max-w-[43rem]"
+            className="relative mx-auto hidden w-full max-w-[43rem] md:block"
           >
-            <div className="relative aspect-square">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-blue-300/30 bg-navy-950/40 p-1 shadow-[inset_0_1px_0_rgb(255_255_255_/_8%),0_20px_48px_rgb(0_0_0_/_26%)] sm:aspect-square sm:overflow-visible sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none">
               <div aria-hidden="true" className="absolute inset-[5%] rounded-full border border-blue-300/30 shadow-[inset_0_0_48px_rgb(47_130_245_/_15%),0_0_40px_rgb(47_130_245_/_10%)]" />
               <div aria-hidden="true" className="absolute inset-[15%] rounded-full border border-blue-500/25" />
               <div aria-hidden="true" className="absolute inset-[28%] rounded-full border border-blue-300/20" />
