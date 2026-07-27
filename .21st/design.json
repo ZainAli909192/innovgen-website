@@ -1,0 +1,321 @@
+{
+  "version": 1,
+  "project": {
+    "name": "innovgen-website",
+    "productType": null,
+    "stack": [
+      "nextjs",
+      "react",
+      "tailwind-v4"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "app/globals.css"
+    ],
+    "components": [
+      "components/ui"
+    ],
+    "assets": [],
+    "instructions": [
+      "AGENTS.md",
+      "CLAUDE.md"
+    ]
+  },
+  "design": {
+    "colorMode": "light",
+    "colors": {
+      "--color-navy-950": {
+        "value": "#050b18",
+        "source": "app/globals.css"
+      },
+      "--color-navy-900": {
+        "value": "#081426",
+        "source": "app/globals.css"
+      },
+      "--color-navy-800": {
+        "value": "#0d203a",
+        "source": "app/globals.css"
+      },
+      "--color-blue-600": {
+        "value": "#1769e0",
+        "source": "app/globals.css"
+      },
+      "--color-blue-500": {
+        "value": "#2f82f5",
+        "source": "app/globals.css"
+      },
+      "--color-blue-300": {
+        "value": "#83b9ff",
+        "source": "app/globals.css"
+      },
+      "--color-gold-500": {
+        "value": "#1769e0",
+        "source": "app/globals.css"
+      },
+      "--color-gold-300": {
+        "value": "#2f82f5",
+        "source": "app/globals.css"
+      },
+      "--background": {
+        "value": "var(--color-navy-950)",
+        "source": "app/globals.css"
+      },
+      "--foreground": {
+        "value": "#f5f8fc",
+        "source": "app/globals.css"
+      },
+      "--foreground-muted": {
+        "value": "#aebdd0",
+        "source": "app/globals.css"
+      },
+      "--primary": {
+        "value": "var(--color-blue-500)",
+        "source": "app/globals.css"
+      },
+      "--primary-hover": {
+        "value": "#5c9cf7",
+        "source": "app/globals.css"
+      },
+      "--accent": {
+        "value": "var(--color-gold-300)",
+        "source": "app/globals.css"
+      },
+      "--border": {
+        "value": "rgb(151 179 214 / 20%)",
+        "source": "app/globals.css"
+      },
+      "--color-background": {
+        "value": "var(--background)",
+        "source": "app/globals.css"
+      },
+      "--color-surface": {
+        "value": "var(--surface)",
+        "source": "app/globals.css"
+      },
+      "--color-surface-elevated": {
+        "value": "var(--surface-elevated)",
+        "source": "app/globals.css"
+      },
+      "--color-foreground": {
+        "value": "var(--foreground)",
+        "source": "app/globals.css"
+      },
+      "--color-muted": {
+        "value": "var(--foreground-muted)",
+        "source": "app/globals.css"
+      },
+      "--color-primary": {
+        "value": "var(--primary)",
+        "source": "app/globals.css"
+      },
+      "--color-accent": {
+        "value": "var(--accent)",
+        "source": "app/globals.css"
+      },
+      "--color-border": {
+        "value": "var(--border)",
+        "source": "app/globals.css"
+      }
+    },
+    "typography": {
+      "--text-display": {
+        "value": "clamp(2.5rem, 7vw, 5.5rem)",
+        "source": "app/globals.css"
+      },
+      "--text-h1": {
+        "value": "clamp(2.25rem, 5vw, 4.25rem)",
+        "source": "app/globals.css"
+      },
+      "--text-h2": {
+        "value": "clamp(1.875rem, 3.5vw, 3rem)",
+        "source": "app/globals.css"
+      },
+      "--text-h3": {
+        "value": "clamp(1.375rem, 2vw, 1.75rem)",
+        "source": "app/globals.css"
+      },
+      "--text-body-lg": {
+        "value": "1.125rem",
+        "source": "app/globals.css"
+      },
+      "--font-sans": {
+        "value": "var(--font-geist-sans)",
+        "source": "app/globals.css"
+      },
+      "--font-display": {
+        "value": "var(--font-outfit)",
+        "source": "app/globals.css"
+      }
+    },
+    "spacing": {
+      "--space-1": {
+        "value": "0.25rem",
+        "source": "app/globals.css"
+      },
+      "--space-2": {
+        "value": "0.5rem",
+        "source": "app/globals.css"
+      },
+      "--space-3": {
+        "value": "0.75rem",
+        "source": "app/globals.css"
+      },
+      "--space-4": {
+        "value": "1rem",
+        "source": "app/globals.css"
+      },
+      "--space-5": {
+        "value": "1.25rem",
+        "source": "app/globals.css"
+      },
+      "--space-6": {
+        "value": "1.5rem",
+        "source": "app/globals.css"
+      },
+      "--space-8": {
+        "value": "2rem",
+        "source": "app/globals.css"
+      },
+      "--space-10": {
+        "value": "2.5rem",
+        "source": "app/globals.css"
+      },
+      "--space-12": {
+        "value": "3rem",
+        "source": "app/globals.css"
+      },
+      "--space-16": {
+        "value": "4rem",
+        "source": "app/globals.css"
+      },
+      "--space-20": {
+        "value": "5rem",
+        "source": "app/globals.css"
+      },
+      "--space-24": {
+        "value": "6rem",
+        "source": "app/globals.css"
+      },
+      "--space-32": {
+        "value": "8rem",
+        "source": "app/globals.css"
+      },
+      "--container-standard": {
+        "value": "75rem",
+        "source": "app/globals.css"
+      },
+      "--container-wide": {
+        "value": "90rem",
+        "source": "app/globals.css"
+      },
+      "--page-gutter": {
+        "value": "clamp(1rem, 4vw, 2.5rem)",
+        "source": "app/globals.css"
+      }
+    },
+    "radius": {
+      "--radius-sm": {
+        "value": "var(--radius-sm)",
+        "source": "app/globals.css"
+      },
+      "--radius-md": {
+        "value": "var(--radius-md)",
+        "source": "app/globals.css"
+      },
+      "--radius-lg": {
+        "value": "var(--radius-lg)",
+        "source": "app/globals.css"
+      },
+      "--radius-xl": {
+        "value": "var(--radius-xl)",
+        "source": "app/globals.css"
+      },
+      "--radius-full": {
+        "value": "9999px",
+        "source": "app/globals.css"
+      }
+    },
+    "shadows": {},
+    "motion": {
+      "--duration-fast": {
+        "value": "160ms",
+        "source": "app/globals.css"
+      },
+      "--duration-standard": {
+        "value": "280ms",
+        "source": "app/globals.css"
+      },
+      "--duration-emphasis": {
+        "value": "600ms",
+        "source": "app/globals.css"
+      },
+      "--ease-out": {
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "source": "app/globals.css"
+      }
+    },
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [
+      "badge",
+      "breadcrumbs",
+      "button",
+      "card",
+      "container",
+      "icon-button",
+      "section",
+      "section-heading",
+      "status-state"
+    ],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [
+    {
+      "scope": "services-page",
+      "choice": "Use a category-by-category staggered image-card field with one lead service card and individual consultation actions on every service.",
+      "reason": "Matches the selected floating-card reference while using full-bleed imagery, readable overlays, and InnovGen's dark enterprise visual system."
+    }
+  ],
+  "evidence": [
+    {
+      "fact": "components.installed",
+      "source": "components/ui"
+    },
+    {
+      "fact": "design.colorMode:light",
+      "source": "app/globals.css"
+    },
+    {
+      "fact": "design.tokens",
+      "source": "app/globals.css"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "AGENTS.md"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "CLAUDE.md"
+    },
+    {
+      "fact": "project.stack:nextjs",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:tailwind-v4",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-07-27T06:27:42.403Z"
+}
