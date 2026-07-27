@@ -14,7 +14,6 @@ import {
   Laptop,
   Network,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
@@ -36,7 +35,7 @@ const icons: Record<ServiceIconKey, LucideIcon> = {
   healthcare: Hospital,
   hospitality: Building2,
   industry: Factory,
-  microsoft: Sparkles,
+  microsoft: Building2,
   network: Network,
   security: ShieldCheck,
   solutions: Building2,
@@ -58,6 +57,17 @@ const cardPlacement = [
 ] as const;
 
 function ServiceIcon({ icon }: { icon: ServiceIconKey }) {
+  if (icon === "microsoft") {
+    return (
+      <span aria-hidden="true" className="grid size-5 grid-cols-2 gap-[2px]">
+        <span className="bg-[#f25022]" />
+        <span className="bg-[#7fba00]" />
+        <span className="bg-[#00a4ef]" />
+        <span className="bg-[#ffb900]" />
+      </span>
+    );
+  }
+
   const Icon = icons[icon];
   return <Icon aria-hidden="true" className="size-5" strokeWidth={1.7} />;
 }
@@ -90,7 +100,7 @@ function ServiceCard({
       className={cardPlacement[index % cardPlacement.length]}
     >
       <article
-        className={`group relative flex h-full min-h-[20rem] overflow-hidden rounded-[1.65rem] border border-blue-300/30 bg-surface p-5 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[22rem] sm:p-6 ${featured ? "lg:p-8" : ""}`}
+        className={`group relative flex h-full min-h-[25rem] flex-col overflow-hidden rounded-[1.65rem] border border-blue-300/30 bg-surface p-5 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[27rem] sm:p-6 ${featured ? "lg:min-h-[33rem] lg:p-8" : ""}`}
       >
         <Image
           src={serviceImageByIcon[service.icon]}
@@ -99,15 +109,15 @@ function ServiceCard({
           sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 18vw"
           className="object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-95"
         />
-        <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-navy-950)_10%,transparent)_0%,color-mix(in_srgb,var(--color-navy-950)_32%,transparent)_35%,color-mix(in_srgb,var(--color-navy-950)_94%,transparent)_100%)]" />
+        <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-navy-950)_16%,transparent)_0%,color-mix(in_srgb,var(--color-navy-950)_42%,transparent)_36%,var(--color-navy-950)_100%)]" />
         <span className="relative grid size-11 place-items-center rounded-2xl border border-accent/40 bg-[color-mix(in_srgb,var(--color-navy-950)_76%,transparent)] text-accent shadow-lg">
           <ServiceIcon icon={service.icon} />
         </span>
-        <div className="relative mt-auto pt-12">
-          <h3 className={featured ? "text-2xl leading-tight sm:text-3xl" : "text-lg leading-tight sm:text-xl"}>
+        <div className="relative mt-auto rounded-2xl p-3 backdrop-blur-[2px]">
+          <h3 className={featured ? "text-2xl font-semibold leading-[1.08] sm:text-3xl" : "text-xl font-semibold leading-[1.1] sm:text-2xl"}>
             {service.title}
           </h3>
-          <p className="mt-3 text-sm leading-relaxed text-blue-100/90">
+          <p className="mt-3 text-sm font-medium leading-6 text-blue-100 sm:text-base">
             {service.description}
           </p>
         </div>
@@ -135,7 +145,7 @@ function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
     <section
       id={category.id}
       aria-labelledby={`${category.id}-heading`}
-      className="relative isolate overflow-hidden border-t border-blue-300/15 py-16 first:border-t-0 sm:py-24"
+      className="relative isolate overflow-hidden border-t border-blue-300/15 py-10 first:border-t-0 sm:py-24"
     >
       <div
         aria-hidden="true"
@@ -168,7 +178,7 @@ function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
         </p>
       </motion.div>
 
-      <ul className="relative mt-10 grid grid-cols-2 items-start gap-x-3 gap-y-10 sm:mt-14 sm:grid-cols-3 sm:gap-x-5 sm:gap-y-8 lg:grid-cols-6 lg:gap-x-5 lg:gap-y-8">
+      <ul className="relative -mx-2 mt-10 grid grid-cols-2 items-start gap-x-2 gap-y-10 sm:mx-0 sm:mt-14 sm:grid-cols-3 sm:gap-x-5 sm:gap-y-8 lg:grid-cols-6 lg:gap-x-5 lg:gap-y-8">
         {category.services.map((service, index) => (
           <ServiceCard key={service.title} index={index} service={service} />
         ))}
@@ -178,8 +188,6 @@ function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
 }
 
 export function ServicesShowcase() {
-  const reducedMotion = usePrefersReducedMotion();
-
   return (
     <section
       aria-labelledby="services-heading"
