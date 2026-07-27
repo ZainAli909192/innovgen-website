@@ -131,7 +131,7 @@ export function ConnectMenu() {
           aria-controls="connect-actions"
           onClick={() => setOpen((current) => !current)}
           whileTap={reducedMotion ? undefined : { scale: 0.97 }}
-          className="connect-orbit-trigger inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border border-accent/50 bg-[var(--color-navy-800)] px-5 font-semibold text-accent shadow-[0_14px_36px_rgb(0_0_0_/_35%),0_0_26px_rgb(201_154_50_/_18%)] transition-colors hover:bg-[rgb(18_45_76)]"
+          className="connect-orbit-trigger inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border border-blue-300/70 bg-blue-600 px-5 font-semibold text-white shadow-[0_14px_36px_rgb(0_0_0_/_35%),0_0_26px_rgb(47_130_245_/_28%)] transition-colors hover:bg-blue-500"
         >
           {open ? (
             <X aria-hidden="true" className="size-5" />

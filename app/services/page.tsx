@@ -1,9 +1,17 @@
+import { CtaSection } from "@/components/sections/cta-section";
+import { FinalCtaSection } from "@/components/sections/home/final-cta-section";
+import { ServicesShowcase } from "@/components/sections/services/services-showcase";
 import { pages } from "@/content/site-content";
-import { MarketingPage } from "@/components/templates/marketing-page";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata(pages.services.seo, "/services");
 
 export default function ServicesPage() {
-  return <MarketingPage page={pages.services} />;
+  return (
+    <>
+      <ServicesShowcase />
+            <FinalCtaSection /> 
+      
+    </>
+  );
 }
