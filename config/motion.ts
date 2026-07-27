@@ -17,7 +17,7 @@ export const motionTransitionEmphasis: Transition = {
   ease: motionEase,
 };
 
-export type RevealPreset = "fade" | "up" | "down" | "scale";
+export type RevealPreset = "fade" | "up" | "down" | "scale" | "spatial";
 
 export const revealVariants = {
   fade: {
@@ -35,6 +35,17 @@ export const revealVariants = {
   scale: {
     hidden: { opacity: 0, scale: 0.97 },
     visible: { opacity: 1, scale: 1, transition: motionTransition },
+  },
+  spatial: {
+    hidden: { opacity: 0, scale: 0, y: 40, rotateX: 18, rotateY: -8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      rotateX: 0,
+      rotateY: 0,
+      transition: motionTransitionEmphasis,
+    },
   },
 } satisfies Record<RevealPreset, Variants>;
 

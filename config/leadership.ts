@@ -10,36 +10,33 @@ export type LeadershipProfile = {
 
 export const leadershipProfiles: readonly LeadershipProfile[] = [
   {
-    id: "executive-profile-01",
-    name: "Maya Rahman",
-    title: "Chief Executive Officer",
+    id: "as-pillai",
+    name: "A.S. Pillai",
+    title: "Founder & Chief Executive Officer",
     description:
-      "Maya aligns InnovGen's strategy, partnerships, and delivery culture around practical transformation and long-term client value.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=84",
-    imageAlt: "Placeholder portrait for InnovGen chief executive profile",
-    status: "placeholder",
+      "A.S. Pillai leads InnovGen's strategic direction, building trusted technology partnerships and sustainable growth for clients.",
+    imageUrl: "/heads/AS_Pillai_Founder_CEO.png",
+    imageAlt: "A.S. Pillai, InnovGen Founder and Chief Executive Officer",
+    status: "approved",
   },
   {
-    id: "executive-profile-02",
-    name: "Daniel Okafor",
-    title: "Chief Technology Officer",
+    id: "nayef-bin-bouta-al-harsoosi",
+    name: "Nayef bin Bouta Al Harsoosi",
+    title: "Founder & Chief Operating Officer",
     description:
-      "Daniel guides platform architecture, engineering quality, cloud strategy, and responsible adoption of emerging technologies.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=84",
-    imageAlt: "Placeholder portrait for InnovGen chief technology profile",
-    status: "placeholder",
+      "Nayef aligns operations, delivery discipline, and client experience to turn InnovGen's strategy into dependable outcomes.",
+    imageUrl: "/heads/Nayef_bin_Bouta_Al_Harsoosi_founder_COO.png",
+    imageAlt: "Nayef bin Bouta Al Harsoosi, InnovGen Founder and Chief Operating Officer",
+    status: "approved",
   },
   {
-    id: "executive-profile-03",
-    name: "Layla Hassan",
-    title: "Chief Operating Officer",
+    id: "nagaraj-sheshadri",
+    name: "Nagaraj Sheshadri",
+    title: "Business Head",
     description:
-      "Layla shapes the operating systems, multidisciplinary teams, and delivery practices that turn strategy into dependable outcomes.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1200&q=84",
-    imageAlt: "Placeholder portrait for InnovGen chief operating profile",
-    status: "placeholder",
+      "Nagaraj guides business development and client relationships, connecting enterprise needs with practical technology solutions.",
+    imageUrl: "/heads/Nagaraj_sheshadri_business_head.png",
+    imageAlt: "Nagaraj Sheshadri, InnovGen Business Head",
+    status: "approved",
   },
 ];

@@ -21,8 +21,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Projects", path: "/projects" }, { name: item.title, path: item.href ?? "/" }])} />
-      <DetailPage item={item} parent="Projects" parentHref="/projects" actionLabel="Discuss a similar project" />
+      <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Clients", path: "/projects" }, { name: item.title, path: item.href ?? "/" }])} />
+      <DetailPage item={item} parent="Clients" parentHref="/projects" actionLabel="Discuss a similar engagement" />
     </>
   );
 }

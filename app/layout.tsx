@@ -8,7 +8,6 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 import { PageTransition } from "@/components/motion/page-transition";
 import { ScrollProgressIndicator } from "@/components/motion/scroll-progress";
 import { ConnectMenu } from "@/components/layout/connect-menu";
-import { PageLoader } from "@/components/layout/page-loader";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -46,13 +45,11 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      data-page-loading="true"
       className={`${outfit.variable} ${geistSans.variable} ${geistMono.variable}`}
     >
       <body className="flex min-h-dvh flex-col">
         <MotionProvider>
           <SmoothScrollProvider>
-            <PageLoader />
             <ScrollProgressIndicator />
             <a
               href="#main-content"

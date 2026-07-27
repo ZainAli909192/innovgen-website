@@ -22,13 +22,12 @@ export type AboutProof = {
 
 export const founderContent = {
   eyebrow: "Meet the founder",
-  name: "Founder name pending client approval",
-  role: "Founder of InnovGen",
+  name: "A.S. Pillai",
+  role: "Founder & Chief Executive Officer",
   introduction:
     "Leading InnovGen with a clear belief: technology should simplify decisions, strengthen operations, and create progress that lasts.",
-  image: "/founder.png",
-  imageAlt:
-    "Portrait supplied for the InnovGen founder profile; identity confirmation pending client approval.",
+  image: "/heads/AS_Pillai_Founder_CEO.png",
+  imageAlt: "A.S. Pillai, InnovGen Founder and Chief Executive Officer.",
 } as const;
 
 export const companyStory = {

@@ -17,6 +17,7 @@ import {
   processSteps,
   workingPrinciple,
 } from "@/config/about";
+import { leadershipProfiles } from "@/config/leadership";
 import { motionEase } from "@/config/motion";
 import { useSectionProgress } from "@/hooks/use-section-progress";
 import { useMobileLayout } from "@/hooks/use-mobile-layout";
@@ -249,6 +250,65 @@ function CompanyStory() {
   );
 }
 
+function LeadershipProfiles() {
+  const profiles = leadershipProfiles.slice(1);
+
+  return (
+    <section
+      aria-labelledby="leadership-profiles-heading"
+      className="relative isolate overflow-hidden bg-[linear-gradient(145deg,var(--color-navy-900),rgb(10_30_54),var(--color-navy-950))] py-16 sm:py-24"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_24%,rgb(47_130_245_/_16%),transparent_24rem),radial-gradient(circle_at_88%_74%,rgb(228_196_119_/_12%),transparent_26rem)]"
+      />
+      <Background3DShapes
+        variant="services-blue"
+        intensity="strong"
+        className="opacity-35"
+      />
+      <Container size="wide" className="relative">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">Leadership team</p>
+          <h2 id="leadership-profiles-heading" className="mt-4 text-[var(--text-h1)]">The people who turn vision into progress.</h2>
+        </div>
+
+        <div className="mx-auto mt-12 grid max-w-5xl gap-7 md:grid-cols-2 md:gap-10">
+          {profiles.map((profile, index) => (
+            <DirectionalReveal
+              key={profile.id}
+              direction={index === 0 ? "left" : "right"}
+              className="[perspective:1200px]"
+            >
+              <motion.article
+                whileHover={{ y: -7, rotateX: 1.5, rotateY: index === 0 ? 1.5 : -1.5 }}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                className="group relative min-h-[32rem] overflow-hidden rounded-[2rem] border border-blue-300/30 bg-navy-950 shadow-[0_24px_62px_rgb(0_0_0_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)] sm:min-h-[36rem]"
+              >
+                <Image
+                  src={profile.imageUrl}
+                  alt={profile.imageAlt}
+                  fill
+                  sizes="(max-width: 767px) 92vw, 40vw"
+                  className="object-cover object-top transition-opacity duration-500 group-hover:opacity-95"
+                />
+                <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(5_11_24_/_8%)_18%,rgb(5_11_24_/_20%)_42%,rgb(5_11_24_/_96%)_100%)]" />
+                <span aria-hidden="true" className="absolute left-6 top-7 h-px w-14 bg-accent" />
+                <p className="absolute left-6 top-10 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Leadership profile</p>
+                <div className="relative mt-auto flex min-h-[32rem] flex-col justify-end px-6 pb-7 pt-28 sm:min-h-[36rem] sm:px-8 sm:pb-8">
+                  <h3 className="text-2xl font-semibold text-foreground sm:text-3xl">{profile.name}</h3>
+                  <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-blue-300">{profile.title}</p>
+                  <p className="mt-5 text-base leading-7 text-muted">{profile.description}</p>
+                </div>
+              </motion.article>
+            </DirectionalReveal>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 function ProcessSection() {
   return (
     <SpatialSection
@@ -468,6 +528,7 @@ export function AboutPage() {
   return (
     <>
       <FounderHero />
+      <LeadershipProfiles />
       <CompanyStory />
       <ProcessSection />
       <ProofSection />
