@@ -161,7 +161,7 @@ export function PartnerOrbitShowcase() {
     if (reducedMotion || !visible) return;
     const timer = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % partnerEcosystem.length);
-    }, 5000);
+    }, 2000);
     return () => window.clearInterval(timer);
   }, [reducedMotion, visible]);
 
@@ -209,7 +209,7 @@ export function PartnerOrbitShowcase() {
               <div aria-hidden="true" className="absolute inset-[40%] rounded-full border border-accent/35 shadow-[0_0_32px_rgb(228_196_119_/_20%)]" />
               <motion.div
                 animate={{ rotate: reducedMotion ? 0 : -activeIndex * step }}
-                transition={{ duration: reducedMotion ? 0 : 0.68, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: reducedMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0"
               >
                 {partnerEcosystem.map((partner, index) => {
@@ -222,7 +222,7 @@ export function PartnerOrbitShowcase() {
                         aria-label={`Show ${partner.name} details`}
                         aria-current={isActive ? "true" : undefined}
                         animate={{ rotate: activeIndex * step, scale: isActive ? 1.1 : 1 }}
-                        transition={{ duration: reducedMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: reducedMotion ? 0 : 0.38, ease: [0.22, 1, 0.36, 1] }}
                         className={`grid h-24 w-32 cursor-pointer place-items-center rounded-2xl border p-3 text-center shadow-xl backdrop-blur-sm transition-colors sm:h-28 sm:w-40 ${isActive ? "border-accent/80 bg-[color-mix(in_srgb,var(--color-navy-950)_64%,transparent)] text-accent shadow-[0_0_30px_rgb(228_196_119_/_28%)]" : "border-blue-300/40 bg-[color-mix(in_srgb,var(--color-navy-900)_78%,transparent)] text-blue-300 hover:border-blue-300/70"}`}
                       >
                         <PartnerIcon icon={partner.icon} />

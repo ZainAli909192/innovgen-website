@@ -291,6 +291,11 @@
       "scope": "partners-page",
       "choice": "Use a responsive DOM-based capability orbit with an active details panel and capability metrics strip.",
       "reason": "Recreates the selected partner-ecosystem composition in InnovGen tokens while retaining keyboard controls, readable HTML content, and a lightweight mobile fallback."
+    },
+    {
+      "scope": "careers-page",
+      "choice": "Use a control-room-inspired careers hero followed by a white, accessible three-step application form.",
+      "reason": "Matches the selected visual direction while keeping the application flow clear, keyboard accessible, and anchored from the hero CTA."
     }
   ],
   "evidence": [
