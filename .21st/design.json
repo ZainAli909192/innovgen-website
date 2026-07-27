@@ -286,6 +286,11 @@
       "scope": "services-page-mobile",
       "choice": "Replace the mobile card grid with an accessible rotating category wheel that emphasizes one service at a time.",
       "reason": "Preserves all service access while matching the selected radial reference, keeping the active category and service readable and touch-friendly."
+    },
+    {
+      "scope": "partners-page",
+      "choice": "Use a responsive DOM-based capability orbit with an active details panel and capability metrics strip.",
+      "reason": "Recreates the selected partner-ecosystem composition in InnovGen tokens while retaining keyboard controls, readable HTML content, and a lightweight mobile fallback."
     }
   ],
   "evidence": [
