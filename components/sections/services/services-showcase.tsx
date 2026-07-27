@@ -1,11 +1,14 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import {
   Activity,
   ArrowUpRight,
   Building2,
+  ChevronLeft,
+  ChevronRight,
   CloudCog,
   Database,
   Factory,
@@ -138,6 +141,125 @@ function ServiceCard({
   );
 }
 
+function MobileServiceWheel({ category }: { category: ServiceCategory }) {
+  const reducedMotion = usePrefersReducedMotion();
+  const wheelRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const serviceCount = category.services.length;
+  const activeService = category.services[activeIndex];
+  const step = 360 / serviceCount;
+
+  useEffect(() => {
+    const element = wheelRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.3 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion || !isVisible) return;
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % serviceCount);
+    }, 2000);
+
+    return () => window.clearInterval(timer);
+  }, [isVisible, reducedMotion, serviceCount]);
+
+  function selectService(index: number) {
+    setActiveIndex((index + serviceCount) % serviceCount);
+  }
+
+  return (
+    <div ref={wheelRef} className="relative mx-auto mt-10 max-w-[25rem] md:hidden">
+      <div className="relative aspect-square">
+        <div aria-hidden="true" className="absolute inset-[8%] rounded-full border border-blue-300/35 bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-blue-500)_15%,transparent)_0%,transparent_62%)] shadow-[inset_0_0_36px_rgb(47_130_245_/_12%),0_0_36px_rgb(47_130_245_/_10%)]" />
+        <div aria-hidden="true" className="absolute inset-[18%] rounded-full border border-blue-500/25" />
+        <div aria-hidden="true" className="absolute inset-[30%] rounded-full border border-accent/35 bg-[radial-gradient(circle_at_35%_30%,color-mix(in_srgb,var(--color-blue-500)_28%,transparent),var(--color-navy-900)_68%)] shadow-[0_0_28px_rgb(47_130_245_/_30%),inset_0_0_24px_rgb(228_196_119_/_14%)]" />
+
+        <motion.ol
+          aria-label={`${category.label} services`}
+          animate={{ rotate: reducedMotion ? 0 : -activeIndex * step }}
+          transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 m-0 list-none p-0"
+        >
+          {category.services.map((service, index) => {
+            const isActive = index === activeIndex;
+            return (
+              <li
+                key={service.title}
+                className="absolute left-1/2 top-1/2"
+                style={{ transform: `translate(-50%, -50%) rotate(${index * step}deg) translateY(-9rem)` }}
+              >
+                <motion.button
+                  type="button"
+                  aria-label={`Show ${service.title}`}
+                  aria-current={isActive ? "true" : undefined}
+                  onClick={() => selectService(index)}
+                  animate={reducedMotion ? undefined : { rotate: activeIndex * step }}
+                  transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
+                  className={`grid size-12 cursor-pointer place-items-center rounded-2xl border shadow-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent ${isActive ? "border-blue-300 bg-blue-500/20 text-blue-100 shadow-[0_0_20px_rgb(47_130_245_/_34%)]" : "border-blue-300/40 bg-[color-mix(in_srgb,var(--color-navy-900)_90%,transparent)] text-blue-300"}`}
+                >
+                  <ServiceIcon icon={service.icon} />
+                </motion.button>
+              </li>
+            );
+          })}
+        </motion.ol>
+
+        <div className="absolute inset-[31%] z-10 grid place-items-center rounded-full px-3 text-center pointer-events-none">
+          <div>
+            <p aria-live="polite" className="mt-2 text-xs leading-snug text-blue-100">{activeService.title}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-2 flex items-center justify-between gap-3 px-2">
+        <button
+          type="button"
+          onClick={() => selectService(activeIndex - 1)}
+          className="grid size-11 cursor-pointer place-items-center rounded-full border border-blue-300/35 bg-navy-900 text-blue-100 transition-colors hover:border-accent/60 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          aria-label="Previous service"
+        >
+          <ChevronLeft aria-hidden="true" className="size-5" />
+        </button>
+        <p className="text-center text-xs font-medium text-muted">
+          Rotates every 2 seconds — tap an icon to explore
+        </p>
+        <button
+          type="button"
+          onClick={() => selectService(activeIndex + 1)}
+          className="grid size-11 cursor-pointer place-items-center rounded-full border border-blue-300/35 bg-navy-900 text-blue-100 transition-colors hover:border-accent/60 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          aria-label="Next service"
+        >
+          <ChevronRight aria-hidden="true" className="size-5" />
+        </button>
+      </div>
+
+      <motion.div
+        key={activeService.title}
+        initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: reducedMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-5 rounded-2xl border border-blue-300/25 bg-[color-mix(in_srgb,var(--color-navy-900)_82%,transparent)] p-5 shadow-[0_14px_30px_rgb(0_0_0_/_20%)]"
+      >
+        <h3 className="text-xl font-semibold leading-tight text-foreground">{activeService.title}</h3>
+        <p className="mt-2 text-sm leading-6 text-blue-100">{activeService.description}</p>
+        <Button href="/consultation" variant="secondary" size="sm" className="mt-4 border-blue-300/40 bg-blue-600 text-white hover:bg-blue-500">
+          Let&apos;s discuss
+          <ArrowUpRight aria-hidden="true" className="size-4" />
+        </Button>
+      </motion.div>
+    </div>
+  );
+}
+
 function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
   const reducedMotion = usePrefersReducedMotion();
 
@@ -178,7 +300,9 @@ function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
         </p>
       </motion.div>
 
-      <ul className="relative -mx-2 mt-10 grid grid-cols-2 items-start gap-x-2 gap-y-10 sm:mx-0 sm:mt-14 sm:grid-cols-3 sm:gap-x-5 sm:gap-y-8 lg:grid-cols-6 lg:gap-x-5 lg:gap-y-8">
+      <MobileServiceWheel category={category} />
+
+      <ul className="relative -mx-2 mt-10 hidden grid-cols-2 items-start gap-x-2 gap-y-10 md:mx-0 md:mt-14 md:grid md:grid-cols-3 md:gap-x-5 md:gap-y-8 lg:grid-cols-6">
         {category.services.map((service, index) => (
           <ServiceCard key={service.title} index={index} service={service} />
         ))}
