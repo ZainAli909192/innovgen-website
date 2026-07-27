@@ -100,7 +100,7 @@ function ServiceCard({
       className={cardPlacement[index % cardPlacement.length]}
     >
       <article
-        className={`group relative flex h-full min-h-[25rem] flex-col overflow-hidden rounded-[1.65rem] border border-blue-300/30 bg-surface p-5 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[27rem] sm:p-6 ${featured ? "lg:min-h-[33rem] lg:p-8" : ""}`}
+        className={`group relative flex h-full min-h-[25rem] flex-col overflow-hidden rounded-[1.25rem] border border-blue-300/30 bg-surface p-2 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[27rem] sm:p-6 ${featured ? "lg:min-h-[32rem] lg:p-8" : ""}`}
       >
         <Image
           src={serviceImageByIcon[service.icon]}
