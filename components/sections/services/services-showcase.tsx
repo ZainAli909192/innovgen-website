@@ -18,10 +18,11 @@ import {
   Network,
   ShieldCheck,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { useMobileLayout } from "@/hooks/use-mobile-layout";
 import {
   serviceCategories,
   serviceImageByIcon,
@@ -143,6 +144,7 @@ function ServiceCard({
 
 function MobileServiceWheel({ category }: { category: ServiceCategory }) {
   const reducedMotion = usePrefersReducedMotion();
+  const isMobile = useMobileLayout();
   const wheelRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -177,7 +179,15 @@ function MobileServiceWheel({ category }: { category: ServiceCategory }) {
   }
 
   return (
-    <div ref={wheelRef} className="relative mx-auto mt-10 max-w-[25rem] md:hidden">
+    <motion.div
+      ref={wheelRef}
+      initial={reducedMotion ? false : isMobile ? { opacity: 0, x: 100 } : { opacity: 0, y: 34, rotateX: 12, scale: 0.9 }}
+      whileInView={{ opacity: 1, x: 0, y: 0, rotateX: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.25 }}
+      transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
+      style={{ transformPerspective: 1000 }}
+      className="relative mx-auto mt-10 max-w-[25rem] md:hidden"
+    >
       <div className="relative aspect-square">
         <div aria-hidden="true" className="absolute inset-[8%] rounded-full border border-blue-300/35 bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-blue-500)_15%,transparent)_0%,transparent_62%)] shadow-[inset_0_0_36px_rgb(47_130_245_/_12%),0_0_36px_rgb(47_130_245_/_10%)]" />
         <div aria-hidden="true" className="absolute inset-[18%] rounded-full border border-blue-500/25" />
@@ -242,32 +252,37 @@ function MobileServiceWheel({ category }: { category: ServiceCategory }) {
         </button>
       </div>
 
-      <motion.div
-        key={activeService.title}
-        initial={reducedMotion ? false : { opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reducedMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-5 rounded-2xl border border-blue-300/25 bg-[color-mix(in_srgb,var(--color-navy-900)_82%,transparent)] p-5 shadow-[0_14px_30px_rgb(0_0_0_/_20%)]"
-      >
-        <h3 className="text-xl font-semibold leading-tight text-foreground">{activeService.title}</h3>
-        <p className="mt-2 text-sm leading-6 text-blue-100">{activeService.description}</p>
-        <Button href="/consultation" variant="secondary" size="sm" className="mt-4 border-blue-300/40 bg-blue-600 text-white hover:bg-blue-500">
-          Let&apos;s discuss
-          <ArrowUpRight aria-hidden="true" className="size-4" />
-        </Button>
-      </motion.div>
-    </div>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={activeService.title}
+          initial={reducedMotion ? false : isMobile ? { opacity: 0, x: 100 } : { opacity: 0, y: 12, rotateX: -6, scale: 0.97 }}
+          animate={{ opacity: 1, x: 0, y: 0, rotateX: 0, scale: 1 }}
+          exit={reducedMotion ? { opacity: 0 } : isMobile ? { opacity: 0, x: -40 } : { opacity: 0, y: -8, rotateX: 5, scale: 0.98 }}
+          transition={{ duration: reducedMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+          style={{ transformPerspective: 800 }}
+          className="mt-5 rounded-2xl border border-blue-300/25 bg-[color-mix(in_srgb,var(--color-navy-900)_82%,transparent)] p-5 shadow-[0_14px_30px_rgb(0_0_0_/_20%)]"
+        >
+          <h3 className="text-xl font-semibold leading-tight text-foreground">{activeService.title}</h3>
+          <p className="mt-2 text-sm leading-6 text-blue-100">{activeService.description}</p>
+          <Button href="/consultation" variant="secondary" size="sm" className="mt-4 border-blue-300/40 bg-blue-600 text-white hover:bg-blue-500">
+            Let&apos;s discuss
+            <ArrowUpRight aria-hidden="true" className="size-4" />
+          </Button>
+        </motion.div>
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
   const reducedMotion = usePrefersReducedMotion();
+  const isMobile = useMobileLayout();
 
   return (
     <section
       id={category.id}
       aria-labelledby={`${category.id}-heading`}
-      className="relative isolate overflow-hidden border-t border-blue-300/15 py-10 first:border-t-0 sm:py-24"
+      className="relative isolate overflow-hidden border-t border-blue-300/15 py-10 first:border-t-0 first:pt-6 sm:py-24 sm:first:pt-16"
     >
       <div
         aria-hidden="true"
@@ -280,10 +295,11 @@ function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
         transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
       />
       <motion.div
-        initial={reducedMotion ? false : { opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={reducedMotion ? false : isMobile ? { opacity: 0, x: 100 } : { opacity: 0, y: 28, rotateX: 8, scale: 0.96 }}
+        whileInView={{ opacity: 1, x: 0, y: 0, rotateX: 0, scale: 1 }}
         viewport={{ once: false, amount: 0.35 }}
         transition={{ duration: reducedMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
+        style={{ transformPerspective: 900 }}
         className="relative mx-auto max-w-3xl text-center"
       >
         <span className="mx-auto grid size-12 place-items-center rounded-2xl border border-accent/30 bg-accent/10 text-accent">
@@ -324,7 +340,7 @@ export function ServicesShowcase() {
       <Container size="wide" className="relative">
  
 
-        <div className="mt-12 sm:mt-16">
+        <div>
           {serviceCategories.map((category) => (
             <ServiceCategoryCloud key={category.id} category={category} />
           ))}
