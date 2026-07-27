@@ -283,21 +283,19 @@ function LeadershipProfiles() {
               <motion.article
                 whileHover={{ y: -7, rotateX: 1.5, rotateY: index === 0 ? 1.5 : -1.5 }}
                 transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative h-full overflow-hidden rounded-[2rem] border border-blue-300/30 bg-[linear-gradient(155deg,rgb(20_56_96_/_88%),var(--color-navy-950))] p-3 shadow-[0_24px_62px_rgb(0_0_0_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)]"
+                className="group relative min-h-[32rem] overflow-hidden rounded-[2rem] border border-blue-300/30 bg-navy-950 shadow-[0_24px_62px_rgb(0_0_0_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)] sm:min-h-[36rem]"
               >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.45rem] border border-blue-300/20 bg-navy-950">
-                  <Image
-                    src={profile.imageUrl}
-                    alt={profile.imageAlt}
-                    fill
-                    sizes="(max-width: 767px) 92vw, 40vw"
-                    className="object-cover object-top transition duration-500 group-hover:scale-[1.035]"
-                  />
-                  <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_42%,rgb(5_11_24_/_84%))]" />
-                  <span aria-hidden="true" className="absolute left-5 top-5 h-px w-14 bg-accent" />
-                  <p className="absolute bottom-5 left-5 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Leadership profile</p>
-                </div>
-                <div className="px-4 pb-5 pt-6 sm:px-5 sm:pb-6">
+                <Image
+                  src={profile.imageUrl}
+                  alt={profile.imageAlt}
+                  fill
+                  sizes="(max-width: 767px) 92vw, 40vw"
+                  className="object-cover object-top transition-opacity duration-500 group-hover:opacity-95"
+                />
+                <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(5_11_24_/_8%)_18%,rgb(5_11_24_/_20%)_42%,rgb(5_11_24_/_96%)_100%)]" />
+                <span aria-hidden="true" className="absolute left-6 top-7 h-px w-14 bg-accent" />
+                <p className="absolute left-6 top-10 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Leadership profile</p>
+                <div className="relative mt-auto flex min-h-[32rem] flex-col justify-end px-6 pb-7 pt-28 sm:min-h-[36rem] sm:px-8 sm:pb-8">
                   <h3 className="text-2xl font-semibold text-foreground sm:text-3xl">{profile.name}</h3>
                   <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-blue-300">{profile.title}</p>
                   <p className="mt-5 text-base leading-7 text-muted">{profile.description}</p>

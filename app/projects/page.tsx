@@ -1,9 +1,14 @@
-import { pages } from "@/content/site-content";
-import { MarketingPage } from "@/components/templates/marketing-page";
+import { ClientsPage } from "@/components/sections/clients/clients-page";
 import { createMetadata } from "@/lib/seo";
 
-export const metadata = createMetadata(pages.projects.seo, "/projects");
+export const metadata = createMetadata(
+  {
+    title: "Clients",
+    description: "Explore the sectors and environments InnovGen supports.",
+  },
+  "/projects",
+);
 
-export default function ProjectsPage() {
-  return <MarketingPage page={pages.projects} />;
+export default function ClientsRoutePage() {
+  return <ClientsPage />;
 }

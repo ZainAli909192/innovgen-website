@@ -9,6 +9,7 @@ import { z } from "zod";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { Button, buttonStyles } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { SuccessPopup } from "@/components/ui/success-popup";
 import { cn } from "@/lib/utils";
 
 const departments = [
@@ -86,6 +87,12 @@ function CareersApplicationForm() {
 
   return (
     <section id="application" className="scroll-mt-24 bg-[linear-gradient(180deg,#f7faff_0%,#ffffff_42%)] py-16 text-slate-950 sm:py-24">
+      <SuccessPopup
+        open={submitted}
+        title="Your application has been sent."
+        description={`Thank you, ${form.getValues("fullName") || "we have received your details"}. Our team will review your application.`}
+        onClose={() => setSubmitted(false)}
+      />
       <Container size="standard">
         <div className="mx-auto max-w-3xl">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-700">Start your application</p>

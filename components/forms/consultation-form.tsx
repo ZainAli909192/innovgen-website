@@ -1,100 +1,102 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { SuccessPopup } from "@/components/ui/success-popup";
 
-type FormState = "idle" | "submitting" | "success";
+const consultationSchema = z.object({
+  name: z.string().trim().min(2, "Enter your full name.").max(120),
+  email: z.string().trim().email("Enter a valid email address.").max(254),
+  phone: z.string().trim().regex(/^[+()\d\s-]{7,24}$/, "Enter a valid phone number.").max(24),
+  subject: z.string().trim().min(3, "Enter a subject.").max(160),
+  message: z.string().trim().min(10, "Please add a little more detail.").max(4000),
+});
+
+type ConsultationValues = z.infer<typeof consultationSchema>;
+type SubmitState = "idle" | "submitting" | "success" | "error";
 
 const fieldClass =
-  "mt-2 min-h-12 w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted/70 focus:border-blue-300";
+  "mt-2 min-h-12 w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted/70 transition-colors focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300/20";
 
 export function ConsultationForm() {
-  const [state, setState] = useState<FormState>("idle");
+  const [submitState, setSubmitState] = useState<SubmitState>("idle");
+  const [submitMessage, setSubmitMessage] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ConsultationValues>({
+    resolver: zodResolver(consultationSchema),
+    defaultValues: { name: "", email: "", phone: "", subject: "", message: "" },
+  });
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setState("submitting");
-    window.setTimeout(() => setState("success"), 650);
-  }
+  async function onSubmit(values: ConsultationValues) {
+    setSubmitState("submitting");
+    setSubmitMessage("");
 
-  if (state === "success") {
-    return (
-      <Card role="status" className="py-12 text-center">
-        <CheckCircle2 aria-hidden="true" className="mx-auto size-10 text-blue-300" />
-        <h2 className="mt-5 text-2xl">Your enquiry was captured locally</h2>
-        <p className="mx-auto mt-3 max-w-lg text-muted">
-          This is a static frontend demonstration. No information was sent.
-          Submission handling and response details require client approval.
-        </p>
-        <Button className="mt-6" variant="secondary" onClick={() => setState("idle")}>
-          Start another enquiry
-        </Button>
-      </Card>
-    );
+    try {
+      const response = await fetch("/api/consultation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const payload = (await response.json()) as { message?: string; success?: boolean };
+
+      if (!response.ok || !payload.success) {
+        throw new Error(payload.message ?? "We could not send your enquiry. Please try again.");
+      }
+
+      reset();
+      setSubmitState("success");
+    } catch (error) {
+      setSubmitState("error");
+      setSubmitMessage(error instanceof Error ? error.message : "We could not send your enquiry. Please try again.");
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} aria-describedby="form-notice">
-      <p id="form-notice" className="mb-6 rounded-lg border border-gold-300/25 bg-gold-500/10 p-4 text-sm text-accent">
-        Static prototype: no data is transmitted. Contact details and backend
-        workflow require client approval.
-      </p>
+    <>
+      <SuccessPopup
+        open={submitState === "success"}
+        title="Your enquiry has been sent."
+        description="Thank you for reaching out. Our team will review your message and get back to you soon."
+        onClose={() => setSubmitState("idle")}
+      />
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label className="font-semibold" htmlFor="name">Full name <span aria-hidden="true">*</span></label>
-          <input className={fieldClass} id="name" name="name" autoComplete="name" required />
+          <input {...register("name")} className={fieldClass} id="name" autoComplete="name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} />
+          {errors.name ? <p id="name-error" className="mt-2 text-sm text-red-300">{errors.name.message}</p> : null}
         </div>
         <div>
-          <label className="font-semibold" htmlFor="email">Work email <span aria-hidden="true">*</span></label>
-          <input className={fieldClass} id="email" name="email" type="email" autoComplete="email" required />
+          <label className="font-semibold" htmlFor="email">Email <span aria-hidden="true">*</span></label>
+          <input {...register("email")} className={fieldClass} id="email" type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
+          {errors.email ? <p id="email-error" className="mt-2 text-sm text-red-300">{errors.email.message}</p> : null}
         </div>
         <div>
-          <label className="font-semibold" htmlFor="company">Company</label>
-          <input className={fieldClass} id="company" name="company" autoComplete="organization" />
+          <label className="font-semibold" htmlFor="phone">Phone number <span aria-hidden="true">*</span></label>
+          <input {...register("phone")} className={fieldClass} id="phone" type="tel" autoComplete="tel" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "phone-error" : undefined} />
+          {errors.phone ? <p id="phone-error" className="mt-2 text-sm text-red-300">{errors.phone.message}</p> : null}
         </div>
         <div>
-          <label className="font-semibold" htmlFor="service">Area of interest <span aria-hidden="true">*</span></label>
-          <select className={fieldClass} id="service" name="service" required defaultValue="">
-            <option value="" disabled>Select an area</option>
-            <option>Software development</option>
-            <option>AI and automation</option>
-            <option>Cloud and cybersecurity</option>
-            <option>Digital product</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div>
-          <label className="font-semibold" htmlFor="timeline">Indicative timeline</label>
-          <select className={fieldClass} id="timeline" name="timeline" defaultValue="">
-            <option value="">Not decided</option>
-            <option>Within 3 months</option>
-            <option>3–6 months</option>
-            <option>6–12 months</option>
-            <option>Exploring options</option>
-          </select>
-        </div>
-        <div>
-          <label className="font-semibold" htmlFor="budget">Indicative budget</label>
-          <select className={fieldClass} id="budget" name="budget" defaultValue="">
-            <option value="">Prefer to discuss</option>
-            <option>Range pending client approval</option>
-          </select>
+          <label className="font-semibold" htmlFor="subject">Subject <span aria-hidden="true">*</span></label>
+          <input {...register("subject")} className={fieldClass} id="subject" autoComplete="off" aria-invalid={Boolean(errors.subject)} aria-describedby={errors.subject ? "subject-error" : undefined} />
+          {errors.subject ? <p id="subject-error" className="mt-2 text-sm text-red-300">{errors.subject.message}</p> : null}
         </div>
         <div className="sm:col-span-2">
-          <label className="font-semibold" htmlFor="message">What outcome are you working toward? <span aria-hidden="true">*</span></label>
-          <textarea className={`${fieldClass} min-h-36`} id="message" name="message" required rows={5} />
-          <p className="mt-2 text-sm text-muted">Please do not include confidential or sensitive information.</p>
+          <label className="font-semibold" htmlFor="message">Message <span aria-hidden="true">*</span></label>
+          <textarea {...register("message")} className={`${fieldClass} min-h-36 resize-y`} id="message" rows={5} aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "message-error" : undefined} />
+          {errors.message ? <p id="message-error" className="mt-2 text-sm text-red-300">{errors.message.message}</p> : null}
         </div>
       </div>
-      <label className="mt-6 flex items-start gap-3 text-sm text-muted">
-        <input className="mt-1 size-5 accent-[var(--primary)]" type="checkbox" required />
-        <span>I agree to be contacted about this enquiry. Privacy wording requires client approval.</span>
-      </label>
-      <Button type="submit" size="lg" className="mt-7 w-full sm:w-auto" loading={state === "submitting"} loadingLabel="Preparing enquiry">
-        Submit enquiry
-      </Button>
-    </form>
+      {submitState === "error" ? <p role="alert" className="mt-5 rounded-lg border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">{submitMessage}</p> : null}
+      <Button type="submit" size="lg" className="mt-7 w-full sm:w-auto" loading={submitState === "submitting"} loadingLabel="Sending enquiry">Submit enquiry</Button>
+      </form>
+    </>
   );
 }

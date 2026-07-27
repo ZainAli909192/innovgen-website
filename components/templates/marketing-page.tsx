@@ -25,7 +25,7 @@ export function MarketingPage({
             : undefined
         }
         secondaryAction={{
-          label: heroSceneId === "home-hero" ? "Explore our work" : "View projects",
+          label: heroSceneId === "home-hero" ? "Explore our work" : "View clients",
           href: "/projects",
         }}
       />

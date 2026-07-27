@@ -112,10 +112,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-html[data-page-loading="true"] * {
-  animation-play-state: paused !important;
-}
-
 h1,
 h2,
 h3,
@@ -186,10 +182,6 @@ a {
 
 .mobile-nav-active {
   color: var(--color-navy-900);
-}
-
-.loader-logo-video {
-  filter: sepia(1) saturate(1.65) hue-rotate(345deg) brightness(1.18);
 }
 
 @keyframes connect-border-orbit {

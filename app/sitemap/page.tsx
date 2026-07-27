@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { careers, products, projects, services, blogs } from "@/content/site-content";
+import { careers, products, services, blogs } from "@/content/site-content";
 import { mainNavigation, legalNavigation, consultationNavigation } from "@/config/navigation";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -14,7 +14,7 @@ const groups = [
   { title: "Main pages", items: [...mainNavigation, consultationNavigation] },
   { title: "Services", items: services.map(({ title: label, href }) => ({ label, href: href! })) },
   { title: "Products", items: products.map(({ title: label, href }) => ({ label, href: href! })) },
-  { title: "Projects", items: projects.map(({ title: label, href }) => ({ label, href: href! })) },
+  { title: "Clients", items: [{ label: "Client sectors", href: "/projects" }] },
   { title: "Insights", items: blogs.map(({ title: label, href }) => ({ label, href: href! })) },
   { title: "Careers", items: careers.map(({ title: label, href }) => ({ label, href: href! })) },
   { title: "Legal", items: legalNavigation },

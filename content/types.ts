@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 export type ApprovalStatus = "placeholder" | "approved";
 
 export type SeoContent = {
@@ -8,6 +10,7 @@ export type SeoContent = {
 export type ContentItem = {
   title: string;
   description: string;
+  icon?: LucideIcon;
   href?: string;
   meta?: string;
   status?: ApprovalStatus;
