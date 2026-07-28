@@ -223,6 +223,25 @@ a {
 }
 
 @media (max-width: 767px) {
+  .about-mobile-light-surface {
+    --foreground: var(--color-navy-900);
+    --foreground-muted: #53647d;
+    --surface: #f5f9ff;
+    --surface-elevated: #edf4fc;
+    --border: rgb(23 105 224 / 18%);
+    background-color: #fff !important;
+    background-image: none !important;
+  }
+
+  .about-mobile-light-surface .about-mobile-dark-card,
+  .about-mobile-light-surface .mobile-service-card {
+    --foreground: #f5f8fc;
+    --foreground-muted: #aebdd0;
+    --surface: var(--color-navy-900);
+    --surface-elevated: var(--color-navy-800);
+    --border: rgb(151 179 214 / 20%);
+  }
+
   .mobile-service-card {
     min-height: 0;
     padding: 1.5rem;

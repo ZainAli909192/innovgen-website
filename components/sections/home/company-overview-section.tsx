@@ -32,10 +32,10 @@ export function CompanyOverviewSection() {
         className="relative grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20"
       >
         <SpatialItem className="lg:sticky lg:top-32 lg:self-start">
-          <div className="relative rounded-[1.75rem] border border-accent/15 bg-[linear-gradient(145deg,rgb(18_45_76_/_72%),rgb(8_20_38_/_86%))] p-7 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_3%),inset_-11px_-11px_28px_rgb(0_0_0_/_22%),0_30px_80px_rgb(0_0_0_/_20%),0_0_44px_rgb(201_154_50_/_5%)] max-md:border-blue-300/35 max-md:bg-[linear-gradient(145deg,rgb(28_75_123_/_94%),rgb(8_28_52_/_97%))] max-md:shadow-[inset_0_1px_0_rgb(255_255_255_/_13%),0_20px_48px_rgb(0_0_0_/_22%)] md:p-9 [transform-style:preserve-3d]">
+          <div className="relative rounded-[1.75rem] border border-accent/15 bg-[linear-gradient(145deg,rgb(18_45_76_/_72%),rgb(8_20_38_/_86%))] p-7 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_3%),inset_-11px_-11px_28px_rgb(0_0_0_/_22%),0_30px_80px_rgb(0_0_0_/_20%),0_0_44px_rgb(201_154_50_/_5%)] max-md:rounded-[2rem] max-md:border-blue-300/35 max-md:bg-[linear-gradient(145deg,rgb(30_79_129_/_96%),rgb(7_27_50_/_98%))] max-md:p-7 max-md:shadow-[inset_0_1px_0_rgb(255_255_255_/_13%),0_20px_48px_rgb(0_0_0_/_22%)] md:p-9 [transform-style:preserve-3d]">
             <span
               aria-hidden="true"
-              className="absolute -right-5 -top-5 size-16 rounded-2xl border border-accent/30 bg-[linear-gradient(145deg,rgb(228_196_119_/_16%),rgb(201_154_50_/_3%))] shadow-[inset_7px_7px_16px_rgb(255_255_255_/_6%),inset_-8px_-8px_18px_rgb(73_44_2_/_25%),0_18px_44px_rgb(201_154_50_/_10%)]"
+              className="absolute -right-5 -top-5 size-16 rounded-2xl border border-accent/30 bg-[linear-gradient(145deg,rgb(228_196_119_/_16%),rgb(201_154_50_/_3%))] shadow-[inset_7px_7px_16px_rgb(255_255_255_/_6%),inset_-8px_-8px_18px_rgb(73_44_2_/_25%),0_18px_44px_rgb(201_154_50_/_10%)] max-md:right-5 max-md:top-5 max-md:size-11"
             />
             <SectionHeading
               id="company-overview-heading"

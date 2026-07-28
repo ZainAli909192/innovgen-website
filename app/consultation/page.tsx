@@ -29,6 +29,18 @@ export default function ConsultationPage() {
                 Fields are designed to establish need, scope and timing without
                 asking for unnecessary information.
               </p>
+              <div className="relative mt-8 aspect-[16/10] overflow-hidden rounded-[1.5rem] border border-blue-300/25 bg-[var(--color-navy-950)] shadow-[0_22px_54px_rgb(0_0_0_/_22%)]">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  src="/contact_video.mp4"
+                  className="h-full w-full object-cover opacity-85"
+                />
+                <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgb(5_11_24_/_38%),transparent_64%)]" />
+              </div>
             </Reveal>
             <Reveal preset="spatial" once={false} amount={0.24} className="[perspective:1200px]">
               <Card className="[transform-style:preserve-3d]"><ConsultationForm /></Card>

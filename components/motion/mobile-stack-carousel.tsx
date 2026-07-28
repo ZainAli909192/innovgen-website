@@ -12,6 +12,7 @@ type MobileStackCarouselProps<T extends StackItem> = {
   items: readonly T[];
   label: string;
   renderCard: (item: T) => React.ReactNode;
+  compact?: boolean;
 };
 
 function wrappedOffset(index: number, activeIndex: number, count: number) {
@@ -25,6 +26,7 @@ export function MobileStackCarousel<T extends StackItem>({
   items,
   label,
   renderCard,
+  compact = false,
 }: MobileStackCarouselProps<T>) {
   const reducedMotion = usePrefersReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -52,7 +54,12 @@ export function MobileStackCarousel<T extends StackItem>({
   return (
     <section
       aria-label={label}
-      className="mobile-stack-carousel relative mx-auto mt-12 w-[calc(100%-2.5rem)] max-w-[32rem] md:hidden"
+      className={cn(
+        "mobile-stack-carousel relative mx-auto md:hidden",
+        compact
+          ? "mt-8 w-[calc(100%-4rem)] max-w-[22rem]"
+          : "mt-12 w-[calc(100%-2.5rem)] max-w-[32rem]",
+      )}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
       onMouseEnter={() => setPaused(true)}
@@ -76,7 +83,12 @@ export function MobileStackCarousel<T extends StackItem>({
       }}
       tabIndex={0}
     >
-      <div className="relative h-[24rem] touch-pan-y [perspective:1200px] sm:h-[25rem]">
+      <div
+        className={cn(
+          "relative touch-pan-y [perspective:1200px]",
+          compact ? "h-[18rem] sm:h-[19rem]" : "h-[24rem] sm:h-[25rem]",
+        )}
+      >
         {items.map((item, index) => {
           const offset = wrappedOffset(index, activeIndex, count);
           const active = offset === 0;

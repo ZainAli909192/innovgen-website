@@ -158,12 +158,12 @@ export function PartnerOrbitShowcase() {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || !visible) return;
+    if (reducedMotion || (!visible && !isMobile)) return;
     const timer = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % partnerEcosystem.length);
     }, 2000);
     return () => window.clearInterval(timer);
-  }, [reducedMotion, visible]);
+  }, [isMobile, reducedMotion, visible]);
 
   function selectPartner(index: number) {
     setActiveIndex((index + partnerEcosystem.length) % partnerEcosystem.length);
@@ -181,7 +181,7 @@ export function PartnerOrbitShowcase() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.35 }}
             transition={{ duration: reducedMotion ? 0 : 0.56, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-sm"
+            className="hidden max-w-sm md:block"
           >
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Our partners</p>
             <h1 className="mt-5 text-[clamp(2.65rem,4.5vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Stronger together, limitless possibilities.</h1>

@@ -1,106 +1,109 @@
 "use client";
 
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
 import {
   motion,
 } from "framer-motion";
-import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { MobileStackCarousel } from "@/components/motion/mobile-stack-carousel";
 import {
   CylindricalItem,
   CylindricalStage,
   useContinuousCylinder,
 } from "@/components/motion/cylindrical-stage";
-import { clientMarks, type ClientMark } from "@/config/clients";
 import { useSectionProgress } from "@/hooks/use-section-progress";
 import { useSceneVisibility } from "@/hooks/use-scene-visibility";
 
-function IndustryCard({
-  client,
-}: {
-  client: ClientMark;
-}) {
-  const reduced = usePrefersReducedMotion();
+type PartnerBrand = {
+  id: string;
+  name: string;
+  wordmark: string;
+  logoPath?: string;
+  tone: "blue" | "orange" | "red";
+};
 
+const homePartnerBrands: readonly PartnerBrand[] = [
+  { id: "microsoft", name: "Microsoft", wordmark: "Microsoft", logoPath: "/microsoft.png", tone: "blue" },
+  { id: "cisco", name: "Cisco", wordmark: "cisco", logoPath: "/partners/cisco.svg", tone: "blue" },
+  { id: "aws", name: "AWS", wordmark: "aws", tone: "orange" },
+  { id: "vmware", name: "VMware", wordmark: "vmware", logoPath: "/partners/vmware.svg", tone: "blue" },
+  { id: "oracle", name: "Oracle", wordmark: "ORACLE", tone: "red" },
+  { id: "dell", name: "Dell Technologies", wordmark: "DELL", logoPath: "/partners/dell.svg", tone: "blue" },
+] as const;
+
+function PartnerBrandCard({ partner }: { partner: PartnerBrand }) {
   return (
-    <motion.div
-      className="industry-card group relative h-full min-h-64 overflow-hidden rounded-[1.6rem] border border-accent/20 bg-[var(--color-navy-950)] p-2 shadow-[inset_8px_8px_24px_rgb(255_255_255_/_3%),inset_-10px_-10px_28px_rgb(0_0_0_/_24%),0_28px_80px_rgb(0_0_0_/_28%),0_0_42px_rgb(201_154_50_/_5%)] [transform-style:preserve-3d] max-md:border-blue-300/40 max-md:ring-1 max-md:ring-blue-300/10 lg:min-h-[27rem]"
-      whileHover={reduced ? undefined : { z: 24, scale: 1.025 }}
-      whileFocus={reduced ? undefined : { z: 24, scale: 1.025 }}
-      transition={{ type: "spring", stiffness: 180, damping: 22 }}
+    <motion.article
+      className="relative flex h-full overflow-hidden rounded-[1.4rem] border border-blue-200 bg-[linear-gradient(145deg,#ffffff,#e6f1ff)] p-5 shadow-[inset_0_1px_0_rgb(255_255_255_/_95%),0_22px_52px_rgb(8_44_84_/_22%)] [transform-style:preserve-3d]"
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 260, damping: 24 }}
     >
-      <a
-        href={client.imageSourceUrl}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={`${client.name} visual reference on Unsplash`}
-        className="industry-card-link relative flex h-full min-h-60 flex-col justify-end overflow-hidden rounded-[1.2rem] p-5 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent max-md:p-6 lg:min-h-[25.9rem]"
-      >
-        <Image
-          src={client.imageUrl}
-          alt={client.imageAlt}
-          fill
-          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 17vw"
-          className="object-cover opacity-48 saturate-[0.72] transition duration-500 group-hover:scale-105 group-hover:opacity-62 group-focus-within:scale-105 group-focus-within:opacity-62 motion-reduce:transform-none max-md:opacity-100 max-md:saturate-100"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(180deg,transparent_14%,rgb(3_12_28_/_24%)_44%,rgb(3_12_28_/_96%)_100%)] max-md:bg-[linear-gradient(180deg,rgb(5_20_40_/_2%)_8%,rgb(5_20_40_/_10%)_42%,rgb(3_12_28_/_72%)_100%)]"
-        />
-        <span className="relative flex items-end justify-between gap-4">
-          <span>
-            <span className="mb-3 block h-0.5 w-10 bg-accent shadow-[0_0_12px_rgb(228_196_119_/_55%)]" />
-            <span className="block text-base font-semibold uppercase tracking-[0.12em] text-foreground max-md:text-[1.0625rem]">
-              {client.name}
-            </span>
+      <span aria-hidden="true" className="absolute -right-10 -top-10 size-36 rounded-full border border-blue-300/35 bg-blue-500/[0.1]" />
+      <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-20 bg-[linear-gradient(180deg,transparent,rgb(131_185_255_/_18%))]" />
+      <div className="relative flex w-full flex-col items-center justify-center text-center">
+        <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-blue-600)]">Technology partner</p>
+        {partner.logoPath ? (
+          <span className="relative mt-5 block h-10 w-40">
+            <Image src={partner.logoPath} alt={partner.name} fill sizes="10rem" className="object-contain" />
           </span>
-          <ExternalLink
-            aria-hidden="true"
-            className="size-5 shrink-0 text-accent opacity-90 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-focus-within:-translate-y-1 group-focus-within:translate-x-1 motion-reduce:transform-none"
-          />
-        </span>
-      </a>
-    </motion.div>
+        ) : (
+          <span
+            className={`mt-5 font-semibold tracking-[-0.06em] text-[var(--color-navy-900)] ${
+              partner.tone === "orange"
+                ? "text-5xl lowercase"
+                : partner.tone === "red"
+                  ? "text-4xl tracking-[0.04em] text-red-400"
+                  : "text-4xl"
+            }`}
+          >
+            {partner.wordmark}
+          </span>
+        )}
+        <span className="mt-8 h-px w-10 bg-[var(--color-blue-500)]" />
+        <h3 className="mt-4 text-sm font-semibold uppercase tracking-[0.13em] text-[var(--color-navy-900)]">{partner.name}</h3>
+      </div>
+    </motion.article>
   );
 }
 
-function MobileClientStack({ clients }: { clients: ClientMark[] }) {
+function MobileClientStack() {
   return (
     <MobileStackCarousel
-      items={clients}
-      label="Industries served by InnovGen"
-      renderCard={(client) => <IndustryCard client={client} />}
+      compact
+      items={homePartnerBrands}
+      label="InnovGen technology partners"
+      renderCard={(partner) => <PartnerBrandCard partner={partner} />}
     />
   );
 }
 
 export function ClientLogoGrid() {
-  const clients = [...clientMarks].sort(
-    (left, right) => left.displayPriority - right.displayPriority,
-  );
   const { ref, progress } = useSectionProgress<HTMLDivElement>();
   const { ref: visibilityRef, isVisible } =
     useSceneVisibility<HTMLDivElement>();
-  const cursor = useContinuousCylinder(progress, clients.length, isVisible);
+  const cursor = useContinuousCylinder(
+    progress,
+    homePartnerBrands.length,
+    isVisible,
+    5400,
+  );
 
   return (
     <div ref={visibilityRef}>
-      <MobileClientStack clients={clients} />
+      <MobileClientStack />
       <div ref={ref} className="relative [perspective:1400px]">
         <CylindricalStage
-          className="hidden md:block"
-          label="Industries served by InnovGen; imagery links to its online source"
+          className="hidden md:h-[29rem] md:block lg:h-[31rem]"
+          label="InnovGen technology partners"
         >
-          {clients.map((client, index) => (
+          {homePartnerBrands.map((partner, index) => (
             <CylindricalItem
-              key={client.id}
-              count={clients.length}
+              key={partner.id}
+              count={homePartnerBrands.length}
               cursor={cursor}
               index={index}
               progress={progress}
             >
-              <IndustryCard client={client} />
+              <PartnerBrandCard partner={partner} />
             </CylindricalItem>
           ))}
         </CylindricalStage>

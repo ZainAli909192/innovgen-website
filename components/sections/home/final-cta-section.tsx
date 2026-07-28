@@ -3,19 +3,48 @@
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
+import { Background3DShapes } from "@/components/motion/background-3d-shapes";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export function FinalCtaSection() {
+export function FinalCtaSection({
+  lightOnMobile = false,
+}: {
+  lightOnMobile?: boolean;
+}) {
   const reducedMotion = usePrefersReducedMotion();
 
   return (
     <section
       aria-labelledby="final-cta-heading"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] py-16 md:py-24"
+      className={`relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] py-16 md:py-24 ${lightOnMobile ? "about-mobile-light-surface" : ""}`}
     >
+      <video
+        aria-hidden="true"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        src="/contact_video.mp4"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-80 saturate-[1.08]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgb(5_11_24_/_84%),rgb(7_27_54_/_70%),rgb(5_11_24_/_88%))]"
+      />
+      <Background3DShapes
+        variant="orbits"
+        intensity="medium"
+        className={`opacity-70 max-md:opacity-28 ${lightOnMobile ? "max-md:opacity-12" : ""}`}
+      />
+      <Background3DShapes
+        variant="geometry"
+        intensity="subtle"
+        className={`opacity-50 max-md:opacity-18 ${lightOnMobile ? "max-md:opacity-10" : ""}`}
+      />
       <motion.span
         aria-hidden="true"
         className="pointer-events-none absolute -left-12 top-10 size-36 rounded-[42%] border border-accent/30 bg-accent/[0.06] shadow-[inset_10px_10px_28px_rgb(255_255_255_/_10%),inset_-12px_-12px_32px_rgb(83_50_4_/_26%),0_0_44px_rgb(201_154_50_/_15%)]"
@@ -52,7 +81,7 @@ export function FinalCtaSection() {
           whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: reducedMotion ? 0 : 0.72, ease }}
-          className="relative overflow-hidden rounded-[2rem] border border-accent/25 bg-[linear-gradient(135deg,rgb(18_49_83_/_96%),rgb(7_20_38_/_98%)_55%,rgb(20_38_55_/_96%))] px-6 py-10 shadow-[inset_0_1px_0_rgb(255_255_255_/_12%),inset_-16px_-18px_42px_rgb(0_0_0_/_20%),0_34px_90px_rgb(0_0_0_/_28%),0_0_60px_rgb(201_154_50_/_8%)] sm:px-10 md:px-14 md:py-14"
+          className="about-mobile-dark-card relative overflow-hidden rounded-[2rem] border border-accent/25  sm:px-10 md:px-14 md:py-14"
           style={{ transformPerspective: 1200, transformOrigin: "50% 60%" }}
         >
           <div aria-hidden="true" className="absolute right-[18%] top-0 h-px w-24 bg-[linear-gradient(90deg,transparent,var(--color-gold-300),transparent)]" />
