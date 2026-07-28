@@ -45,20 +45,7 @@ const icons: Record<ServiceIconKey, LucideIcon> = {
   solutions: Building2,
 };
 
-const cardPlacement = [
-  "max-md:translate-y-0 lg:col-span-2 lg:row-span-2 lg:min-h-[34rem] lg:mt-24",
-  "max-md:translate-y-8 lg:col-span-1 lg:mt-0",
-  "max-md:-translate-y-2 lg:col-span-1 lg:mt-12",
-  "max-md:translate-y-5 lg:col-span-1 lg:mt-6",
-  "max-md:translate-y-1 lg:col-span-1 lg:mt-28",
-  "max-md:translate-y-9 lg:col-span-1 lg:mt-0",
-  "max-md:-translate-y-3 lg:col-span-1 lg:mt-[4.5rem]",
-  "max-md:translate-y-6 lg:col-span-1 lg:mt-8",
-  "max-md:translate-y-1 lg:col-span-1 lg:mt-24",
-  "max-md:translate-y-8 lg:col-span-1 lg:mt-2",
-  "max-md:-translate-y-2 lg:col-span-1 lg:mt-16",
-  "max-md:translate-y-5 lg:col-span-1 lg:mt-10",
-] as const;
+const cardPlacement = ["", "", "", "", "", "", "", "", "", "", "", ""] as const;
 
 function ServiceIcon({ icon }: { icon: ServiceIconKey }) {
   if (icon === "microsoft") {
@@ -84,8 +71,6 @@ function ServiceCard({
   service: ServiceCategory["services"][number];
 }) {
   const reducedMotion = usePrefersReducedMotion();
-  const featured = index === 0;
-
   return (
     <motion.li
       initial={
@@ -104,13 +89,13 @@ function ServiceCard({
       className={cardPlacement[index % cardPlacement.length]}
     >
       <article
-        className={`group relative flex h-full min-h-[27rem] flex-col overflow-hidden rounded-[1.25rem] border border-blue-300/30 bg-surface p-3 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[29rem] sm:p-7 ${featured ? "lg:min-h-[36rem] lg:p-9" : "lg:min-h-[30rem]"}`}
+        className="group relative flex h-full min-h-[27rem] flex-col overflow-hidden rounded-[1.25rem] border border-blue-300/30 bg-surface p-3 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[29rem] sm:p-7 lg:min-h-[30rem]"
       >
         <Image
           src={serviceImageByIcon[service.icon]}
           alt=""
           fill
-          sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 18vw"
+          sizes="(max-width: 767px) 50vw, (max-width: 1023px) 48vw, 43vw"
           className="object-cover object-center opacity-84 transition-opacity duration-500 group-hover:opacity-95"
         />
         <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-navy-950)_16%,transparent)_0%,color-mix(in_srgb,var(--color-navy-950)_42%,transparent)_36%,var(--color-navy-950)_100%)]" />
@@ -118,7 +103,7 @@ function ServiceCard({
           <ServiceIcon icon={service.icon} />
         </span>
         <div className="relative mt-auto rounded-2xl p-3 backdrop-blur-[2px]">
-          <h3 className={featured ? "text-2xl font-semibold leading-[1.08] sm:text-3xl lg:text-4xl" : "text-xl font-semibold leading-[1.1] sm:text-2xl lg:text-[1.7rem]"}>
+          <h3 className="text-xl font-semibold leading-[1.1] sm:text-2xl lg:text-[1.7rem]">
             {service.title}
           </h3>
           <p className="mt-3 max-w-[34ch] text-sm font-medium leading-6 text-blue-100 sm:text-base lg:text-[1.0625rem] lg:leading-7">
@@ -380,7 +365,7 @@ function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
         <MobileServiceWheel category={category} />
       )}
 
-      <ul className="relative -mx-2 mt-10 hidden grid-cols-2 items-start gap-x-2 gap-y-10 md:mx-0 md:mt-14 md:grid md:grid-cols-3 md:gap-x-6 md:gap-y-10 lg:grid-cols-4 lg:gap-x-7 lg:gap-y-12">
+      <ul className="relative -mx-2 mt-10 hidden grid-cols-2 items-start gap-x-2 gap-y-10 md:mx-0 md:mt-14 md:grid md:grid-cols-2 md:gap-7 lg:gap-9">
         {category.services.map((service, index) => (
           <ServiceCard key={service.title} index={index} service={service} />
         ))}

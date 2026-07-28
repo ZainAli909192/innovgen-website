@@ -3,7 +3,6 @@
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { ArrowDown, ArrowRight } from "lucide-react";
-import { ServicesPreviewSection } from "./home/services-preview-section";
 import { TrustedClientsDirectory } from "./clients/trusted-clients-directory";
 import {
   AnimatePresence,
