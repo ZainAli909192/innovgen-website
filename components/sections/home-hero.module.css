@@ -70,6 +70,9 @@
   overflow: hidden;
   border-radius: 2rem;
   isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 42%, rgb(47 130 245 / 0.16%), transparent 55%),
+    var(--color-navy-950);
 }
 
 .logoVideoFrame::before {

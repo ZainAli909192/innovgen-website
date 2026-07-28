@@ -41,7 +41,6 @@ export function HomeHero({
         muted
         playsInline
         preload="metadata"
-        poster="/home-hero-3d-poster.svg"
         src="/hero_background.mp4"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-65 saturate-[1.08]"
       />

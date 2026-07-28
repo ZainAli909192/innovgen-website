@@ -40,7 +40,6 @@ export function HeroLogoVideo() {
       loop
       muted
       playsInline
-      poster="/home-hero-3d-poster.svg"
       preload="auto"
     >
       <source src="/logo_video.mp4" type="video/mp4" />
