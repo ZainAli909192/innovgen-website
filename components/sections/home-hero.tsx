@@ -2,7 +2,6 @@
 
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
-import { HeroLogoVideo } from "@/components/home/hero-logo-video";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,6 @@ export function HomeHero({
         muted
         playsInline
         preload="metadata"
-        poster="/home-hero-3d-poster.svg"
         src="/hero_background.mp4"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-65 saturate-[1.08]"
       />
@@ -88,10 +86,10 @@ export function HomeHero({
 
       <Container
         size="wide"
-        className="relative grid items-center gap-8 py-14 md:gap-10 md:py-16 lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)] lg:gap-12 lg:py-20 xl:gap-16"
+        className="relative flex min-h-[calc(100svh-5rem)] items-center justify-center py-20 text-center md:py-24 lg:py-28"
       >
         <motion.div
-          className="relative z-10 order-2 max-w-[40rem] lg:order-1 lg:py-10"
+          className="relative z-10 mx-auto max-w-[62rem]"
         >
           <motion.p
             initial={false}
@@ -102,7 +100,7 @@ export function HomeHero({
 
           <motion.h1
             aria-label={title}
-            className="mt-5 max-w-[15ch] text-[clamp(2.5rem,4.7vw,4.5rem)] font-semibold leading-[0.99] tracking-[-0.035em]"
+            className="mx-auto mt-5 max-w-[20ch] text-balance text-[clamp(2.5rem,5vw,5.15rem)] font-semibold leading-[0.98] tracking-[-0.04em]"
           >
             {words.map((word, index) => (
               <motion.span
@@ -124,7 +122,7 @@ export function HomeHero({
           <motion.p
             initial={false}
             style={{ animationDelay: "180ms" }}
-            className={`${styles.rise} mt-6 max-w-[59ch] text-base leading-relaxed text-muted sm:text-lg md:text-xl`}
+            className={`${styles.rise} mx-auto mt-6 max-w-[65ch] text-base leading-relaxed text-muted sm:text-lg md:text-[1.22rem] md:leading-8`}
           >
             {description}
           </motion.p>
@@ -132,7 +130,7 @@ export function HomeHero({
           <motion.div
             initial={false}
             style={{ animationDelay: "260ms" }}
-            className={`${styles.rise} mt-8 flex flex-row items-stretch gap-2 sm:gap-3`}
+            className={`${styles.rise} mt-8 flex flex-row items-stretch justify-center gap-2 sm:gap-3`}
           >
             <Button
               href={primaryAction.href}
@@ -160,7 +158,7 @@ export function HomeHero({
           <motion.p
             initial={false}
             style={{ animationDelay: "340ms" }}
-            className={`${styles.rise} mt-6 text-sm font-medium tracking-[0.01em] text-muted`}
+          className={`${styles.rise} mt-6 text-sm font-medium tracking-[0.01em] text-muted`}
           >
             Secure by design <span aria-hidden="true">·</span> Built to scale{" "}
             <span aria-hidden="true">·</span> Ready to evolve
@@ -168,7 +166,7 @@ export function HomeHero({
         </motion.div>
 
         <motion.div
-          className={`${styles.scene} relative z-0 order-1 h-[18rem] w-full overflow-hidden sm:h-[22rem] md:h-[27rem] lg:order-2 lg:ml-auto lg:h-[34rem] lg:max-w-[50rem] xl:h-[36rem]`}
+          className={`${styles.scene} pointer-events-none absolute inset-0 z-0 overflow-hidden`}
           initial={false}
         >
           <div
@@ -181,9 +179,9 @@ export function HomeHero({
             animate={reducedMotion ? undefined : { y: [0, -16, 0], rotate: [0, -12, 0] }}
             transition={{ duration: 6.6, ease: "easeInOut", repeat: Infinity }}
           />
-          <div className={styles.logoVideoFrame}>
+          {/* <div className={styles.logoVideoFrame}>
             <HeroLogoVideo />
-          </div>
+          </div> */}
         </motion.div>
       </Container>
     </SceneSection>

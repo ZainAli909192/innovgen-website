@@ -2,22 +2,15 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, BriefcaseBusiness, Check, CloudCog, Code2, Palette, Send } from "lucide-react";
+import { ArrowRight, Check, Send } from "lucide-react";
 import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
-import { Button, buttonStyles } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { SuccessPopup } from "@/components/ui/success-popup";
 import { cn } from "@/lib/utils";
-
-const departments = [
-  { title: "Software Engineering", description: "Build secure digital products.", icon: Code2 },
-  { title: "Cloud & Infrastructure", description: "Design resilient foundations.", icon: CloudCog },
-  { title: "AI & Data", description: "Turn information into action.", icon: BriefcaseBusiness },
-  { title: "Design & Product", description: "Create thoughtful experiences.", icon: Palette },
-] as const;
 
 const positions = ["Senior Software Engineer", "Product Designer"] as const;
 

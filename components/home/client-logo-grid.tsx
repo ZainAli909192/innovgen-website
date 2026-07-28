@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   motion,
+  useMotionValue,
 } from "framer-motion";
 import { MobileStackCarousel } from "@/components/motion/mobile-stack-carousel";
 import {
@@ -12,23 +15,28 @@ import {
 } from "@/components/motion/cylindrical-stage";
 import { useSectionProgress } from "@/hooks/use-section-progress";
 import { useSceneVisibility } from "@/hooks/use-scene-visibility";
+import { IconButton } from "@/components/ui/icon-button";
+import { partnerEcosystem } from "@/config/partner-ecosystem";
 
 type PartnerBrand = {
   id: string;
   name: string;
   wordmark: string;
   logoPath?: string;
+  logoTheme?: "light" | "dark";
   tone: "blue" | "orange" | "red";
 };
 
-const homePartnerBrands: readonly PartnerBrand[] = [
-  { id: "microsoft", name: "Microsoft", wordmark: "Microsoft", logoPath: "/microsoft.png", tone: "blue" },
-  { id: "cisco", name: "Cisco", wordmark: "cisco", logoPath: "/partners/cisco.svg", tone: "blue" },
-  { id: "aws", name: "AWS", wordmark: "aws", tone: "orange" },
-  { id: "vmware", name: "VMware", wordmark: "vmware", logoPath: "/partners/vmware.svg", tone: "blue" },
-  { id: "oracle", name: "Oracle", wordmark: "ORACLE", tone: "red" },
-  { id: "dell", name: "Dell Technologies", wordmark: "DELL", logoPath: "/partners/dell.svg", tone: "blue" },
-] as const;
+const homePartnerBrands: readonly PartnerBrand[] = partnerEcosystem.map(
+  ({ id, name, shortName, logoPath, logoTheme }) => ({
+    id,
+    name,
+    wordmark: shortName,
+    logoPath,
+    logoTheme,
+    tone: "blue",
+  }),
+);
 
 function PartnerBrandCard({ partner }: { partner: PartnerBrand }) {
   return (
@@ -42,7 +50,9 @@ function PartnerBrandCard({ partner }: { partner: PartnerBrand }) {
       <div className="relative flex w-full flex-col items-center justify-center text-center">
         <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-blue-600)]">Technology partner</p>
         {partner.logoPath ? (
-          <span className="relative mt-5 block h-10 w-40">
+          <span
+            className={`relative mt-5 block h-11 w-40 rounded-xl p-2 ${partner.logoTheme === "dark" ? "bg-navy-950" : "bg-white/80"}`}
+          >
             <Image src={partner.logoPath} alt={partner.name} fill sizes="10rem" className="object-contain" />
           </span>
         ) : (
@@ -80,19 +90,33 @@ export function ClientLogoGrid() {
   const { ref, progress } = useSectionProgress<HTMLDivElement>();
   const { ref: visibilityRef, isVisible } =
     useSceneVisibility<HTMLDivElement>();
+  const [paused, setPaused] = useState(false);
+  const manualOffset = useMotionValue(0);
   const cursor = useContinuousCylinder(
     progress,
     homePartnerBrands.length,
-    isVisible,
+    isVisible && !paused,
     5400,
+    manualOffset,
   );
+
+  function shift(direction: 1 | -1) {
+    manualOffset.set(manualOffset.get() + direction);
+  }
 
   return (
     <div ref={visibilityRef}>
       <MobileClientStack />
-      <div ref={ref} className="relative [perspective:1400px]">
+      <div
+        ref={ref}
+        className="relative hidden [perspective:1400px] md:block"
+        onPointerEnter={() => setPaused(true)}
+        onPointerLeave={() => setPaused(false)}
+        onFocusCapture={() => setPaused(true)}
+        onBlurCapture={() => setPaused(false)}
+      >
         <CylindricalStage
-          className="hidden md:h-[29rem] md:block lg:h-[31rem]"
+          className="md:h-[29rem] lg:h-[31rem]"
           label="InnovGen technology partners"
         >
           {homePartnerBrands.map((partner, index) => (
@@ -107,6 +131,22 @@ export function ClientLogoGrid() {
             </CylindricalItem>
           ))}
         </CylindricalStage>
+        <div className="mt-3 flex items-center justify-center gap-3">
+          <IconButton
+            label="Show previous technology partner"
+            onClick={() => shift(-1)}
+            className="border-accent/30 text-accent hover:border-accent/60 hover:bg-accent/10"
+          >
+            <ArrowLeft aria-hidden="true" className="size-5" />
+          </IconButton>
+          <IconButton
+            label="Show next technology partner"
+            onClick={() => shift(1)}
+            className="border-accent/30 text-accent hover:border-accent/60 hover:bg-accent/10"
+          >
+            <ArrowRight aria-hidden="true" className="size-5" />
+          </IconButton>
+        </div>
       </div>
     </div>
   );

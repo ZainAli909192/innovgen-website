@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { ArrowRight } from "lucide-react";
-import { useMotionValueEvent } from "motion/react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useMotionValue, useMotionValueEvent } from "motion/react";
 import { SceneSpatialItem } from "@/components/motion/scene-spatial-item";
 import { MobileStackCarousel } from "@/components/motion/mobile-stack-carousel";
 import { Background3DShapes } from "@/components/motion/background-3d-shapes";
@@ -21,6 +21,7 @@ import {
 } from "@/components/three/scene-section";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { IconButton } from "@/components/ui/icon-button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { homeServices } from "@/config/home-services";
 
@@ -66,36 +67,67 @@ function ServicesCylinder({
   onActiveChange: (serviceId: string | null) => void;
 }) {
   const { isSceneVisible, progress } = useSceneActivation();
+  const [paused, setPaused] = useState(false);
+  const manualOffset = useMotionValue(0);
   const cursor = useContinuousCylinder(
     progress,
     homeServices.length,
-    isSceneVisible,
+    isSceneVisible && !paused,
     4800,
+    manualOffset,
   );
 
+  function shift(direction: 1 | -1) {
+    manualOffset.set(manualOffset.get() + direction);
+  }
+
   return (
-    <CylindricalStage
-      className="mt-12 hidden md:!h-[31rem] md:block lg:!h-[33rem]"
-      label="InnovGen service capabilities"
+    <div
+      className="hidden md:block"
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
     >
-      {homeServices.map((service, index) => (
-        <CylindricalItem
-          key={service.id}
-          count={homeServices.length}
-          cursor={cursor}
-          index={index}
-          progress={progress}
-          spacing={96}
-          className="md:!w-[clamp(20rem,31vw,28rem)]"
+      <CylindricalStage
+        className="mt-12 md:!h-[31rem] lg:!h-[33rem]"
+        label="InnovGen service capabilities"
+      >
+        {homeServices.map((service, index) => (
+          <CylindricalItem
+            key={service.id}
+            count={homeServices.length}
+            cursor={cursor}
+            index={index}
+            progress={progress}
+            spacing={96}
+            className="md:!w-[clamp(20rem,31vw,28rem)]"
+          >
+            <ServiceCard
+              active={activeServiceId === service.id}
+              onActiveChange={onActiveChange}
+              service={service}
+            />
+          </CylindricalItem>
+        ))}
+      </CylindricalStage>
+      <div className="mt-3 flex items-center justify-center gap-3">
+        <IconButton
+          label="Show previous service"
+          onClick={() => shift(-1)}
+          className="border-accent/30 text-accent hover:border-accent/60 hover:bg-accent/10"
         >
-          <ServiceCard
-            active={activeServiceId === service.id}
-            onActiveChange={onActiveChange}
-            service={service}
-          />
-        </CylindricalItem>
-      ))}
-    </CylindricalStage>
+          <ArrowLeft aria-hidden="true" className="size-5" />
+        </IconButton>
+        <IconButton
+          label="Show next service"
+          onClick={() => shift(1)}
+          className="border-accent/30 text-accent hover:border-accent/60 hover:bg-accent/10"
+        >
+          <ArrowRight aria-hidden="true" className="size-5" />
+        </IconButton>
+      </div>
+    </div>
   );
 }
 

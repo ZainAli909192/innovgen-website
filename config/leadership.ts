@@ -21,12 +21,12 @@ export const leadershipProfiles: readonly LeadershipProfile[] = [
   },
   {
     id: "nayef-bin-bouta-al-harsoosi",
-    name: "Nayef bin Bouta Al Harsoosi",
+    name: "Nayef Bin Bouta Al Harsoosi",
     title: "Founder & Chief Operating Officer",
     description:
       "Nayef aligns operations, delivery discipline, and client experience to turn InnovGen's strategy into dependable outcomes.",
     imageUrl: "/heads/Nayef_bin_Bouta_Al_Harsoosi_founder_COO.png",
-    imageAlt: "Nayef bin Bouta Al Harsoosi, InnovGen Founder and Chief Operating Officer",
+    imageAlt: "Nayef Bin Bouta Al Harsoosi, InnovGen Founder and Chief Operating Officer",
     status: "approved",
   },
   {

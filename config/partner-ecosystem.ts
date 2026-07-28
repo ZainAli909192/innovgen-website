@@ -1,15 +1,9 @@
-export type PartnerIconKey =
-  | "microsoft"
-  | "cloud"
-  | "network"
-  | "data"
-  | "security"
-  | "workplace";
-
 export type PartnerEcosystemItem = {
+  id: string;
   name: string;
   shortName: string;
-  icon: PartnerIconKey;
+  logoPath: string;
+  logoTheme?: "light" | "dark";
   focus: string;
   description: string;
   areas: readonly string[];
@@ -17,75 +11,134 @@ export type PartnerEcosystemItem = {
 
 export const partnerEcosystem: readonly PartnerEcosystemItem[] = [
   {
+    id: "microsoft",
     name: "Microsoft",
     shortName: "Microsoft",
-    icon: "microsoft",
+    logoPath: "/microsoft.png",
     focus: "Cloud, data and modern workplace technology",
     description:
       "Practical Microsoft platform guidance and implementation support for organizations modernizing the way they operate.",
     areas: ["Microsoft Azure", "Modern Workplace", "Data & AI", "Security"],
   },
   {
-    name: "Cloud platforms",
-    shortName: "Cloud",
-    icon: "cloud",
-    focus: "Scalable cloud foundations",
+    id: "cisco",
+    name: "Cisco",
+    shortName: "Cisco",
+    logoPath: "/partners/cisco.svg",
+    focus: "Secure, connected operations",
     description:
-      "Cloud strategy, migration planning and governance aligned to your operating model.",
-    areas: ["Cloud strategy", "Migration planning", "Governance", "Optimization"],
+      "Network and collaboration capabilities that keep distributed teams, locations, and services reliably connected.",
+    areas: ["Network design", "Secure access", "Collaboration", "Observability"],
   },
   {
-    name: "Network systems",
-    shortName: "Network",
-    icon: "network",
-    focus: "Reliable connected operations",
-    description:
-      "Resilient network design and operational visibility for distributed organizations.",
-    areas: ["Network design", "Observability", "Secure access", "Operations"],
-  },
-  {
-    name: "Data & AI",
-    shortName: "Data & AI",
-    icon: "data",
-    focus: "Intelligence that supports decisions",
-    description:
-      "Data foundations and AI-ready workflows that turn information into meaningful action.",
-    areas: ["Data platforms", "Analytics", "Automation", "AI readiness"],
-  },
-  {
-    name: "Security ecosystem",
-    shortName: "Security",
-    icon: "security",
-    focus: "Secure-by-design technology",
-    description:
-      "Layered security capabilities designed around governance, resilience and trust.",
-    areas: ["Security posture", "Identity", "Compliance", "Resilience"],
-  },
-  {
-    name: "Workplace technology",
-    shortName: "Workplace",
-    icon: "workplace",
-    focus: "Better digital employee experiences",
-    description:
-      "End-user technology that helps people stay productive, protected and connected.",
-    areas: ["End-user computing", "Collaboration", "Device management", "Support"],
-  },
-  {
-    name: "Infrastructure",
-    shortName: "Infrastructure",
-    icon: "network",
+    id: "dell",
+    name: "Dell Technologies",
+    shortName: "Dell",
+    logoPath: "/partners/dell.svg",
     focus: "Business-critical infrastructure",
     description:
-      "Infrastructure capabilities that support dependable performance, continuity and scale.",
-    areas: ["Datacentre", "Compute", "Storage", "Continuity"],
+      "Infrastructure solutions that support dependable performance, continuity, and scalable operations.",
+    areas: ["Compute", "Storage", "Datacentre", "Continuity"],
   },
   {
-    name: "Business applications",
-    shortName: "Applications",
-    icon: "workplace",
-    focus: "Connected business operations",
+    id: "vmware",
+    name: "VMware",
+    shortName: "VMware",
+    logoPath: "/partners/vmware.svg",
+    focus: "Flexible hybrid cloud foundations",
     description:
-      "Business application capabilities that help teams coordinate work and improve service delivery.",
-    areas: ["Business systems", "Integration", "Automation", "Adoption"],
+      "Virtualization and cloud-management expertise for more resilient, adaptable technology estates.",
+    areas: ["Virtualization", "Hybrid cloud", "Automation", "Resilience"],
+  },
+  {
+    id: "fortinet",
+    name: "Fortinet",
+    shortName: "Fortinet",
+    logoPath: "/partners/Fortinet.png",
+    focus: "Integrated cyber security",
+    description:
+      "Security capabilities designed to protect networks, users, applications, and cloud environments together.",
+    areas: ["Network security", "Secure access", "Cloud security", "Threat response"],
+  },
+  {
+    id: "crowdstrike",
+    name: "CrowdStrike",
+    shortName: "CrowdStrike",
+    logoPath: "/partners/crowd strike.png",
+    focus: "Endpoint protection and threat intelligence",
+    description:
+      "Modern endpoint and workload protection that helps organizations detect, investigate, and respond with confidence.",
+    areas: ["Endpoint security", "Threat intelligence", "Incident response", "Cloud protection"],
+  },
+  {
+    id: "trend-micro",
+    name: "Trend Micro",
+    shortName: "Trend Micro",
+    logoPath: "/partners/trend.png",
+    focus: "Resilient cloud and enterprise security",
+    description:
+      "Layered security expertise for protecting enterprise systems and critical cloud workloads.",
+    areas: ["Cloud security", "Workload protection", "Risk visibility", "Compliance"],
+  },
+  {
+    id: "veeam",
+    name: "Veeam",
+    shortName: "Veeam",
+    logoPath: "/partners/veeam.png",
+    logoTheme: "dark",
+    focus: "Data protection and recovery",
+    description:
+      "Backup and recovery solutions that help organizations keep business-critical information available.",
+    areas: ["Backup", "Disaster recovery", "Data resilience", "Monitoring"],
+  },
+  {
+    id: "zoho",
+    name: "Zoho",
+    shortName: "Zoho",
+    logoPath: "/partners/zoho.png",
+    focus: "Connected business applications",
+    description:
+      "Business applications that help teams coordinate work, improve service delivery, and automate everyday operations.",
+    areas: ["Business systems", "Automation", "Customer operations", "Collaboration"],
+  },
+  {
+    id: "odoo",
+    name: "Odoo",
+    shortName: "Odoo",
+    logoPath: "/partners/odoo.png",
+    focus: "Adaptable business operations",
+    description:
+      "Integrated business applications that bring finance, operations, sales, and inventory into one adaptable platform.",
+    areas: ["ERP", "Operations", "Sales", "Integration"],
+  },
+  {
+    id: "samsung",
+    name: "Samsung",
+    shortName: "Samsung",
+    logoPath: "/partners/samsung.png",
+    focus: "Enterprise mobility and display solutions",
+    description:
+      "Connected device and display experiences that support modern, productive workplaces.",
+    areas: ["Mobility", "Displays", "Device management", "Workplace"],
+  },
+  {
+    id: "logitech",
+    name: "Logitech",
+    shortName: "Logitech",
+    logoPath: "/partners/logitech.png",
+    focus: "Better collaboration experiences",
+    description:
+      "Collaboration technology that helps teams communicate and work together more naturally from anywhere.",
+    areas: ["Video collaboration", "Meeting rooms", "Hybrid work", "Productivity"],
+  },
+  {
+    id: "apple",
+    name: "Apple",
+    shortName: "Apple",
+    logoPath: "/partners/iphone.png",
+    focus: "Secure, intuitive employee technology",
+    description:
+      "Premium employee devices and endpoint experiences that support secure, productive work.",
+    areas: ["End-user computing", "Mobility", "Endpoint management", "Employee experience"],
   },
 ] as const;
