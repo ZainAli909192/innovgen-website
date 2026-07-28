@@ -8,6 +8,7 @@ import {
 import {
   useAnimationFrame,
   useMotionValue,
+  useSpring,
   motion,
   useTransform,
   type MotionValue,
@@ -135,9 +136,17 @@ export function useContinuousCylinder(
   count: number,
   active = true,
   speedMs = 6200,
+  manualOffset?: MotionValue<number>,
 ) {
   const reduced = usePrefersReducedMotion();
   const autoCursor = useMotionValue(0);
+  const defaultManualOffset = useMotionValue(0);
+  const smoothManualOffset = useSpring(
+    manualOffset ?? defaultManualOffset,
+    reduced
+      ? { duration: 0 }
+      : { stiffness: 145, damping: 25, mass: 0.72 },
+  );
   const scrollCursor = useTransform(
     progress,
     [0.08, 0.3, 0.7, 0.94],
@@ -145,7 +154,9 @@ export function useContinuousCylinder(
     { clamp: true },
   );
   const cursor = useTransform(
-    () => (autoCursor.get() + scrollCursor.get()) % count,
+    () =>
+      (autoCursor.get() + scrollCursor.get() + smoothManualOffset.get()) %
+      count,
   );
 
   useAnimationFrame((_, delta) => {

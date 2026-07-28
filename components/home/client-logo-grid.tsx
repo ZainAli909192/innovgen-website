@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   motion,
+  useMotionValue,
 } from "framer-motion";
 import { MobileStackCarousel } from "@/components/motion/mobile-stack-carousel";
 import {
@@ -12,6 +15,7 @@ import {
 } from "@/components/motion/cylindrical-stage";
 import { useSectionProgress } from "@/hooks/use-section-progress";
 import { useSceneVisibility } from "@/hooks/use-scene-visibility";
+import { IconButton } from "@/components/ui/icon-button";
 
 type PartnerBrand = {
   id: string;
@@ -80,19 +84,33 @@ export function ClientLogoGrid() {
   const { ref, progress } = useSectionProgress<HTMLDivElement>();
   const { ref: visibilityRef, isVisible } =
     useSceneVisibility<HTMLDivElement>();
+  const [paused, setPaused] = useState(false);
+  const manualOffset = useMotionValue(0);
   const cursor = useContinuousCylinder(
     progress,
     homePartnerBrands.length,
-    isVisible,
+    isVisible && !paused,
     5400,
+    manualOffset,
   );
+
+  function shift(direction: 1 | -1) {
+    manualOffset.set(manualOffset.get() + direction);
+  }
 
   return (
     <div ref={visibilityRef}>
       <MobileClientStack />
-      <div ref={ref} className="relative [perspective:1400px]">
+      <div
+        ref={ref}
+        className="relative hidden [perspective:1400px] md:block"
+        onPointerEnter={() => setPaused(true)}
+        onPointerLeave={() => setPaused(false)}
+        onFocusCapture={() => setPaused(true)}
+        onBlurCapture={() => setPaused(false)}
+      >
         <CylindricalStage
-          className="hidden md:h-[29rem] md:block lg:h-[31rem]"
+          className="md:h-[29rem] lg:h-[31rem]"
           label="InnovGen technology partners"
         >
           {homePartnerBrands.map((partner, index) => (
@@ -107,6 +125,22 @@ export function ClientLogoGrid() {
             </CylindricalItem>
           ))}
         </CylindricalStage>
+        <div className="mt-3 flex items-center justify-center gap-3">
+          <IconButton
+            label="Show previous technology partner"
+            onClick={() => shift(-1)}
+            className="border-accent/30 text-accent hover:border-accent/60 hover:bg-accent/10"
+          >
+            <ArrowLeft aria-hidden="true" className="size-5" />
+          </IconButton>
+          <IconButton
+            label="Show next technology partner"
+            onClick={() => shift(1)}
+            className="border-accent/30 text-accent hover:border-accent/60 hover:bg-accent/10"
+          >
+            <ArrowRight aria-hidden="true" className="size-5" />
+          </IconButton>
+        </div>
       </div>
     </div>
   );
