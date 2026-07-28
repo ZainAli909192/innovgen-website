@@ -3,7 +3,8 @@
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { ArrowDown, ArrowRight } from "lucide-react";
-import  { ServicesPreviewSection } from "./home/services-preview-section";
+import { ServicesPreviewSection } from "./home/services-preview-section";
+import { TrustedClientsDirectory } from "./clients/trusted-clients-directory";
 import {
   AnimatePresence,
   motion,
@@ -622,7 +623,7 @@ function ProofSection() {
 
 export function AboutPage() {
   return (
-    <>
+    <div className="overflow-x-clip">
       <FounderHero />
       <LeadershipProfiles />
       <CompanyStory />
@@ -631,10 +632,10 @@ export function AboutPage() {
       <DirectionalReveal direction="left" mobileOnly>
         <ServicesPreviewSection />
       </DirectionalReveal>
+      <TrustedClientsDirectory variant="home" />
       <DirectionalReveal direction="right" mobileOnly>
         <FinalCtaSection />
       </DirectionalReveal>
-      
-    </>
+    </div>
   );
 }
