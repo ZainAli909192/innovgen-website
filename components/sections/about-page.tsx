@@ -629,9 +629,7 @@ export function AboutPage() {
       <CompanyStory />
       <ProcessSection />
       <ProofSection />
-      <DirectionalReveal direction="left" mobileOnly>
-        <ServicesPreviewSection />
-      </DirectionalReveal>
+     
       <TrustedClientsDirectory variant="home" />
       <DirectionalReveal direction="right" mobileOnly>
         <FinalCtaSection />
