@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Boxes,
   Ellipsis,
   FolderKanban,
   Home,
   Layers3,
+  UserRound,
   X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -27,8 +27,8 @@ import { isActiveRoute } from "./header";
 
 const icons = {
   home: Home,
+  about: UserRound,
   services: Layers3,
-  products: Boxes,
   projects: FolderKanban,
 } as const;
 

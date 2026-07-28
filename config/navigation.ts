@@ -22,7 +22,7 @@ export type NavigationItem = {
 };
 
 export type MobileNavigationItem = NavigationItem & {
-  icon: "home" | "services" | "products" | "projects";
+  icon: "home" | "about" | "services" | "projects";
 };
 
 export const routeNavigation = {
@@ -69,7 +69,7 @@ export const legalNavigation = [
 export const mobilePrimaryNavigation = [
   { ...routeNavigation.home, icon: "home" },
   { ...routeNavigation.services, icon: "services" },
-  { ...routeNavigation.products, icon: "products" },
+  { ...routeNavigation.about, icon: "about" },
   { ...routeNavigation.projects, icon: "projects" },
 ] as const satisfies readonly MobileNavigationItem[];
 

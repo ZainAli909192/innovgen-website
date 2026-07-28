@@ -27,20 +27,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SplitText } from "@/components/motion/split-text";
 import { Background3DShapes } from "@/components/motion/background-3d-shapes";
-import {
-  SpatialItem,
-  SpatialSection,
-} from "@/components/motion/spatial-section";
+import { SpatialSection } from "@/components/motion/spatial-section";
 import { FinalCtaSection } from "./home/final-cta-section";
 
 function DirectionalReveal({
   children,
   className,
   direction,
+  mobileOnly = false,
 }: {
   children: ReactNode;
   className?: string;
   direction: "left" | "right";
+  mobileOnly?: boolean;
 }) {
   const { ref, progress } = useSectionProgress<HTMLDivElement>();
   const reducedMotion = usePrefersReducedMotion();
@@ -65,8 +64,26 @@ function DirectionalReveal({
   return (
     <motion.div
       ref={ref}
-      className={className}
-      style={reducedMotion || mobile ? undefined : { x, opacity }}
+      className={`${className ?? ""} [transform-style:preserve-3d]`}
+      style={reducedMotion || mobile || mobileOnly ? undefined : { x, opacity }}
+      initial={
+        reducedMotion || !mobile
+          ? false
+          : {
+              opacity: 0,
+              x: distance,
+              scale: 0.86,
+              rotateY: direction === "left" ? 12 : -12,
+              rotateX: 8,
+            }
+      }
+      whileInView={
+        reducedMotion || !mobile
+          ? undefined
+          : { opacity: 1, x: 0, scale: 1, rotateY: 0, rotateX: 0 }
+      }
+      viewport={{ once: false, amount: 0.22 }}
+      transition={{ duration: reducedMotion ? 0 : 0.58, ease: motionEase }}
     >
       {children}
     </motion.div>
@@ -113,7 +130,7 @@ function FounderHero() {
     <section
       ref={ref}
       aria-labelledby="about-founder-heading"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),rgb(9_27_50),var(--color-navy-900))] py-14 md:py-20 lg:min-h-[calc(100svh-var(--header-height))] lg:py-24"
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),rgb(9_27_50),var(--color-navy-900))] py-8 md:py-20 lg:min-h-[calc(100svh-var(--header-height))] lg:py-24"
     >
       <div
         aria-hidden="true"
@@ -126,15 +143,19 @@ function FounderHero() {
 
       <Container
         size="wide"
-        className="relative grid items-center gap-12 [perspective:1500px] lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20"
+        className="relative grid items-center gap-8 [perspective:1500px] lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20"
       >
         <motion.div
-          className="relative mx-auto w-full max-w-[34rem] [transform-style:preserve-3d]"
+          className="relative mx-auto w-full max-w-[21rem] [transform-style:preserve-3d] sm:max-w-[34rem]"
           style={
             staticPresentation
               ? undefined
               : { x: imageX, z: imageZ, rotateY: imageRotateY }
           }
+          initial={reducedMotion || !mobile ? false : { opacity: 0, scale: 0.74, x: -72, y: 32, rotateX: -12, rotateY: 10 }}
+          whileInView={reducedMotion || !mobile ? undefined : { opacity: 1, scale: 1, x: 0, y: 0, rotateX: 0, rotateY: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: reducedMotion ? 0 : 0.68, ease: motionEase }}
         >
           <span
             aria-hidden="true"
@@ -144,15 +165,15 @@ function FounderHero() {
             aria-hidden="true"
             className="absolute -bottom-5 -right-5 size-16 rounded-full border border-blue-300/30 bg-blue-500/10 md:-bottom-8 md:-right-8 md:size-24"
           />
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-accent/25 bg-surface-elevated p-2 shadow-[0_38px_110px_rgb(0_0_0_/_38%),0_0_46px_rgb(201_154_50_/_8%)]">
-            <div className="relative h-full overflow-hidden rounded-[1.5rem]">
+          <div className="relative aspect-[5/4] overflow-hidden rounded-[1.5rem] border border-accent/25 bg-surface-elevated p-2 shadow-[0_28px_72px_rgb(0_0_0_/_38%),0_0_38px_rgb(201_154_50_/_8%)] sm:aspect-[4/5] sm:rounded-[2rem] sm:shadow-[0_38px_110px_rgb(0_0_0_/_38%),0_0_46px_rgb(201_154_50_/_8%)]">
+            <div className="relative h-full overflow-hidden rounded-[1rem] sm:rounded-[1.5rem]">
               <Image
                 src={founderContent.image}
                 alt={founderContent.imageAlt}
                 fill
                 priority
                 sizes="(max-width: 1023px) 92vw, 42vw"
-                className="object-cover object-center"
+                className="object-cover object-center max-sm:object-[center_28%]"
               />
               <span
                 aria-hidden="true"
@@ -167,6 +188,10 @@ function FounderHero() {
           style={
             staticPresentation ? undefined : { x: copyX, opacity: copyOpacity }
           }
+          initial={reducedMotion || !mobile ? false : { opacity: 0, scale: 0.88, x: 72, y: 28, rotateX: 10 }}
+          whileInView={reducedMotion || !mobile ? undefined : { opacity: 1, scale: 1, x: 0, y: 0, rotateX: 0 }}
+          viewport={{ once: false, amount: 0.28 }}
+          transition={{ duration: reducedMotion ? 0 : 0.62, delay: reducedMotion ? 0 : 0.08, ease: motionEase }}
         >
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">
             {founderContent.eyebrow}
@@ -174,7 +199,7 @@ function FounderHero() {
           <SplitText
             as="h1"
             text="Leadership with clarity at its core."
-            className="mt-5 max-w-3xl text-[clamp(2.65rem,6vw,5.5rem)]"
+            className="mt-4 max-w-3xl text-[clamp(2.5rem,12vw,3.4rem)] sm:mt-5 sm:text-[clamp(2.65rem,6vw,5.5rem)]"
           />
           <div className="mt-7 h-px w-32 bg-[linear-gradient(90deg,var(--color-gold-300),transparent)]" />
           <p
@@ -192,12 +217,12 @@ function FounderHero() {
           <Badge variant="gold" className="mt-6">
              Stev , Founder & CEO
           </Badge>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="#who-we-are">
+          <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
+            <Button href="#who-we-are" className="w-full sm:w-auto">
               Discover InnovGen
               <ArrowDown aria-hidden="true" className="size-4" />
             </Button>
-            <Button href="/consultation" variant="secondary">
+            <Button href="/consultation" variant="secondary" className="w-full sm:w-auto">
               Start a conversation
             </Button>
           </div>
@@ -237,10 +262,10 @@ function CompanyStory() {
         </DirectionalReveal>
         <DirectionalReveal
           direction="right"
-          className="mx-auto mt-10 grid max-w-5xl gap-6 border-t border-border pt-10 md:grid-cols-2 md:gap-12"
+          className="mx-auto mt-8 grid max-w-5xl gap-4 border-t border-border pt-8 md:mt-10 md:grid-cols-2 md:gap-12 md:pt-10"
         >
           {companyStory.paragraphs.map((paragraph) => (
-            <p key={paragraph} className="text-lg leading-relaxed text-muted">
+            <p key={paragraph} className="rounded-2xl border border-blue-300/15 bg-[rgb(5_15_32_/_32%)] p-5 text-base leading-relaxed text-muted shadow-[0_16px_38px_rgb(0_0_0_/_14%)] md:rounded-none md:border-0 md:bg-transparent md:p-0 md:text-lg md:shadow-none">
               {paragraph}
             </p>
           ))}
@@ -256,7 +281,7 @@ function LeadershipProfiles() {
   return (
     <section
       aria-labelledby="leadership-profiles-heading"
-      className="relative isolate overflow-hidden bg-[linear-gradient(145deg,var(--color-navy-900),rgb(10_30_54),var(--color-navy-950))] py-16 sm:py-24"
+      className="relative isolate overflow-hidden bg-[linear-gradient(145deg,var(--color-navy-900),rgb(10_30_54),var(--color-navy-950))] py-12 sm:py-24"
     >
       <div
         aria-hidden="true"
@@ -268,22 +293,23 @@ function LeadershipProfiles() {
         className="opacity-35"
       />
       <Container size="wide" className="relative">
-        <div className="mx-auto max-w-3xl text-center">
+        <DirectionalReveal direction="right" className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">Leadership team</p>
           <h2 id="leadership-profiles-heading" className="mt-4 text-[var(--text-h1)]">The people who turn vision into progress.</h2>
-        </div>
+        </DirectionalReveal>
 
-        <div className="mx-auto mt-12 grid max-w-5xl gap-7 md:grid-cols-2 md:gap-10">
+        <div className="mx-auto mt-9 grid max-w-5xl gap-5 md:mt-12 md:grid-cols-2 md:gap-10">
           {profiles.map((profile, index) => (
             <DirectionalReveal
               key={profile.id}
               direction={index === 0 ? "left" : "right"}
-              className="[perspective:1200px]"
+              className="mx-auto w-full max-w-[23rem] [perspective:1200px] md:max-w-none"
             >
               <motion.article
                 whileHover={{ y: -7, rotateX: 1.5, rotateY: index === 0 ? 1.5 : -1.5 }}
+                whileTap={{ scale: 0.985 }}
                 transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative min-h-[32rem] overflow-hidden rounded-[2rem] border border-blue-300/30 bg-navy-950 shadow-[0_24px_62px_rgb(0_0_0_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)] sm:min-h-[36rem]"
+                className="group relative min-h-[28rem] overflow-hidden rounded-[1.6rem] border border-blue-300/30 bg-navy-950 shadow-[0_24px_62px_rgb(0_0_0_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)] sm:min-h-[36rem] sm:rounded-[2rem]"
               >
                 <Image
                   src={profile.imageUrl}
@@ -295,7 +321,7 @@ function LeadershipProfiles() {
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(5_11_24_/_8%)_18%,rgb(5_11_24_/_20%)_42%,rgb(5_11_24_/_96%)_100%)]" />
                 <span aria-hidden="true" className="absolute left-6 top-7 h-px w-14 bg-accent" />
                 <p className="absolute left-6 top-10 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Leadership profile</p>
-                <div className="relative mt-auto flex min-h-[32rem] flex-col justify-end px-6 pb-7 pt-28 sm:min-h-[36rem] sm:px-8 sm:pb-8">
+                <div className="relative mt-auto flex min-h-[28rem] flex-col justify-end px-6 pb-7 pt-28 sm:min-h-[36rem] sm:px-8 sm:pb-8">
                   <h3 className="text-2xl font-semibold text-foreground sm:text-3xl">{profile.name}</h3>
                   <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-blue-300">{profile.title}</p>
                   <p className="mt-5 text-base leading-7 text-muted">{profile.description}</p>
@@ -329,7 +355,7 @@ function ProcessSection() {
           </h2>
         </DirectionalReveal>
 
-        <div className="mt-14 grid gap-14 lg:grid-cols-[minmax(16rem,0.75fr)_minmax(0,2.25fr)] lg:gap-20">
+        <div className="mt-9 grid gap-8 lg:mt-14 lg:grid-cols-[minmax(16rem,0.75fr)_minmax(0,2.25fr)] lg:gap-20">
           <DirectionalReveal
             direction="left"
             className="border-l-2 border-accent/55 pl-6 md:pl-9 lg:sticky lg:top-32 lg:self-start"
@@ -349,17 +375,17 @@ function ProcessSection() {
             </div>
           </DirectionalReveal>
 
-          <ol className="relative border-y border-border">
+          <ol className="relative space-y-3 border-y border-border max-md:border-0">
             {processSteps.map((step, index) => {
               const Icon = step.icon;
               return (
                 <li
                   key={step.number}
-                  className="group relative border-b border-border last:border-b-0"
+                  className="group relative border-b border-border last:border-b-0 max-md:rounded-2xl max-md:border max-md:border-blue-300/20 max-md:bg-[linear-gradient(145deg,rgb(18_47_83_/_78%),rgb(5_15_32_/_92%))] max-md:px-5 max-md:shadow-[0_18px_44px_rgb(0_0_0_/_20%),inset_0_1px_0_rgb(255_255_255_/_7%)]"
                 >
                   <DirectionalReveal
                     direction={index % 2 === 0 ? "right" : "left"}
-                    className="grid gap-5 py-8 md:grid-cols-[4.5rem_1fr_auto] md:items-center md:gap-8 md:py-10"
+                    className="grid gap-4 py-6 md:grid-cols-[4.5rem_1fr_auto] md:items-center md:gap-8 md:py-10"
                   >
                     <span className="font-mono text-sm font-semibold text-accent">
                       {step.number}
@@ -372,7 +398,7 @@ function ProcessSection() {
                         {step.description}
                       </p>
                     </div>
-                    <span className="grid size-12 place-items-center rounded-full border border-blue-300/25 text-blue-300 transition-[transform,border-color,background-color] duration-[var(--duration-standard)] group-hover:rotate-6 group-hover:scale-110 group-hover:border-accent/50 group-hover:bg-accent/10 motion-reduce:transform-none">
+                    <span className="grid size-12 place-items-center rounded-full border border-blue-300/25 bg-blue-500/[0.06] text-blue-300 transition-[transform,border-color,background-color] duration-[var(--duration-standard)] group-hover:rotate-6 group-hover:scale-110 group-hover:border-accent/50 group-hover:bg-accent/10 motion-reduce:transform-none">
                       <Icon aria-hidden="true" className="size-5" />
                     </span>
                   </DirectionalReveal>
@@ -431,11 +457,11 @@ function ProofSection() {
           </Button>
         </DirectionalReveal>
 
-        <DirectionalReveal direction="right" className="mt-14">
+        <DirectionalReveal direction="right" className="mt-9 md:mt-14">
           <div
             role="tablist"
             aria-label="Reasons to choose InnovGen"
-            className="grid border-y border-border sm:grid-cols-2 xl:grid-cols-4"
+            className="grid gap-3 sm:grid-cols-2 sm:gap-0 sm:border-y sm:border-border xl:grid-cols-4"
           >
           {aboutProofs.map((proof, index) => {
             const Icon = proof.icon;
@@ -450,7 +476,7 @@ function ProofSection() {
                   aria-controls="about-proof-panel"
                   onClick={() => setActiveProofIndex(index)}
                   onMouseEnter={() => setActiveProofIndex(index)}
-                  className="group relative flex min-h-36 cursor-pointer flex-col items-start justify-between border-b border-border px-5 py-6 text-left transition-colors hover:bg-blue-500/[0.04] focus-visible:bg-blue-500/[0.04] sm:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b-0 xl:border-r xl:last:border-r-0 md:px-7"
+                  className="group relative flex min-h-32 cursor-pointer flex-col items-start justify-between rounded-2xl border border-blue-300/20 bg-[rgb(12_32_58_/_72%)] px-5 py-5 text-left shadow-[0_14px_36px_rgb(0_0_0_/_16%)] transition-colors hover:bg-blue-500/[0.08] focus-visible:bg-blue-500/[0.08] sm:min-h-36 sm:rounded-none sm:border-0 sm:border-b sm:border-border sm:bg-transparent sm:px-5 sm:py-6 sm:shadow-none sm:[&:nth-last-child(-n+2)]:border-b-0 xl:border-b-0 xl:border-r xl:last:border-r-0 md:px-7"
                 >
                   <span className="flex w-full items-center justify-between">
                     <span className="font-mono text-xs text-accent">
@@ -465,7 +491,7 @@ function ProofSection() {
                       }`}
                     />
                   </span>
-                  <span className="mt-8 text-lg font-semibold text-foreground">
+                  <span className="mt-6 text-lg font-semibold text-foreground sm:mt-8">
                     {proof.title}
                   </span>
                   <motion.span
@@ -483,7 +509,7 @@ function ProofSection() {
             id="about-proof-panel"
             role="tabpanel"
             aria-labelledby={`about-proof-tab-${activeProofIndex}`}
-            className="grid min-h-60 items-center gap-8 border-b border-border py-10 md:grid-cols-[auto_1fr] md:gap-12 md:py-14"
+            className="grid min-h-60 items-center gap-6 rounded-[1.5rem] border border-blue-300/15 bg-[rgb(5_15_32_/_42%)] p-6 shadow-[0_20px_48px_rgb(0_0_0_/_18%)] sm:rounded-none sm:border-x-0 sm:border-t-0 sm:border-b sm:border-border sm:bg-transparent sm:p-0 sm:py-10 sm:shadow-none md:grid-cols-[auto_1fr] md:gap-12 md:py-14"
           >
             <AnimatePresence mode="wait">
               <motion.span
@@ -532,8 +558,12 @@ export function AboutPage() {
       <CompanyStory />
       <ProcessSection />
       <ProofSection />
-      <ServicesPreviewSection />
-      <FinalCtaSection />
+      <DirectionalReveal direction="left" mobileOnly>
+        <ServicesPreviewSection />
+      </DirectionalReveal>
+      <DirectionalReveal direction="right" mobileOnly>
+        <FinalCtaSection />
+      </DirectionalReveal>
       
     </>
   );

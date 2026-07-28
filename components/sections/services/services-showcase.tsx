@@ -308,10 +308,10 @@ function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
         <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-accent">
           {category.label}
         </p>
-        <h2 id={`${category.id}-heading`} className="mt-4 text-[clamp(2rem,4.6vw,3.75rem)]">
+        <h2 id={`${category.id}-heading`} className="mt-4 text-[clamp(2rem,4.6vw,3.75rem)] max-md:text-[var(--color-navy-900)]">
           {category.title}
         </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted max-md:text-[var(--color-navy-800)] sm:text-lg">
           {category.description}
         </p>
       </motion.div>
@@ -331,7 +331,7 @@ export function ServicesShowcase() {
   return (
     <section
       aria-labelledby="services-heading"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))]  "
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] max-md:bg-white"
     >
       <div
         aria-hidden="true"
