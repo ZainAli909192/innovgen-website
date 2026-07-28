@@ -34,9 +34,20 @@ export function HomeHero({
       className="relative isolate overflow-hidden bg-[var(--color-navy-950)]"
       sceneId="home-hero"
     >
+      <video
+        aria-hidden="true"
+        autoPlay={!reducedMotion}
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        poster="/home-hero-3d-poster.svg"
+        src="/hero_background.mp4"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-65 saturate-[1.08]"
+      />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_42%,rgb(47_130_245_/_18%),transparent_29rem),radial-gradient(circle_at_60%_75%,rgb(13_32_58_/_52%),transparent_34rem),linear-gradient(180deg,rgb(5_11_24_/_15%),rgb(5_11_24_/_78%))]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_42%,rgb(47_130_245_/_20%),transparent_29rem),radial-gradient(circle_at_60%_75%,rgb(13_32_58_/_58%),transparent_34rem),linear-gradient(100deg,rgb(5_11_24_/_88%)_0%,rgb(5_11_24_/_58%)_50%,rgb(5_11_24_/_76%)_100%)]"
       />
       <div
         aria-hidden="true"

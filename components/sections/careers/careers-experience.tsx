@@ -211,25 +211,12 @@ export function CareersExperience() {
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Careers at InnovGen</p>
             <h1 className="mt-4 text-[clamp(2.6rem,6vw,5.5rem)] leading-[0.95] tracking-[-0.05em]">Your next mission starts here.</h1>
             <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-blue-100 sm:text-lg">Join InnovGen and help shape thoughtful technology solutions for a better tomorrow.</p>
-            <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <a href="#application" className={buttonStyles({ variant: "secondary", className: "border-blue-300/35 bg-navy-950/65 text-white hover:bg-blue-500/15" })}>Apply now</a>
-            </div>
           </motion.div>
 
           <motion.div aria-hidden="true" initial={reducedMotion ? false : { opacity: 0, scale: 0.75 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: reducedMotion ? 0 : 0.8, delay: reducedMotion ? 0 : 0.18, ease: [0.22, 1, 0.36, 1] }} className="absolute top-[48%] grid size-44 place-items-center rounded-full border border-blue-300/45 bg-[radial-gradient(circle_at_36%_30%,rgb(131_185_255_/_35%),rgb(13_32_58_/_82%)_48%,var(--color-navy-950)_76%)] shadow-[0_0_44px_rgb(47_130_245_/_48%),inset_0_0_30px_rgb(131_185_255_/_25%)] sm:size-56">
             <span className="size-[78%] rounded-full border border-blue-300/40 [background-image:radial-gradient(circle_at_25%_36%,rgb(131_185_255_/_72%)_0_1px,transparent_2px),radial-gradient(circle_at_70%_25%,rgb(131_185_255_/_62%)_0_1px,transparent_2px),radial-gradient(circle_at_58%_72%,rgb(131_185_255_/_62%)_0_1px,transparent_2px)] [background-size:18px_18px]" />
           </motion.div>
 
-          <div id="openings" className="absolute inset-x-0 bottom-0 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {departments.map((department, index) => {
-              const Icon = department.icon;
-              return <motion.a key={department.title} href="#application" initial={reducedMotion ? false : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reducedMotion ? 0 : 0.4, delay: reducedMotion ? 0 : 0.32 + index * 0.06, ease: [0.22, 1, 0.36, 1] }} className="group rounded-2xl border border-blue-300/25 bg-navy-950/80 p-5 text-left shadow-lg backdrop-blur-sm transition hover:-translate-y-1 hover:border-blue-300/65 hover:bg-navy-800/95">
-                <span className="grid size-11 place-items-center rounded-xl border border-blue-300/35 bg-blue-500/10 text-blue-300"><Icon className="size-5" /></span>
-                <h2 className="mt-4 text-base font-semibold text-foreground">{department.title}</h2>
-                <p className="mt-2 text-sm leading-6 text-muted">{department.description}</p>
-              </motion.a>;
-            })}
-          </div>
         </Container>
       </section>
       <CareersApplicationForm />

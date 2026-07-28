@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { useMotionValueEvent } from "motion/react";
 import { SceneSpatialItem } from "@/components/motion/scene-spatial-item";
 import { MobileStackCarousel } from "@/components/motion/mobile-stack-carousel";
+import { Background3DShapes } from "@/components/motion/background-3d-shapes";
 import {
   CylindricalItem,
   CylindricalStage,
@@ -74,7 +75,7 @@ function ServicesCylinder({
 
   return (
     <CylindricalStage
-      className="mt-12 hidden md:block"
+      className="mt-12 hidden md:!h-[31rem] md:block lg:!h-[33rem]"
       label="InnovGen service capabilities"
     >
       {homeServices.map((service, index) => (
@@ -85,6 +86,7 @@ function ServicesCylinder({
           index={index}
           progress={progress}
           spacing={96}
+          className="md:!w-[clamp(20rem,31vw,28rem)]"
         >
           <ServiceCard
             active={activeServiceId === service.id}
@@ -119,7 +121,11 @@ function MobileServicesStack({
   );
 }
 
-export function ServicesPreviewSection() {
+export function ServicesPreviewSection({
+  lightOnMobile = false,
+}: {
+  lightOnMobile?: boolean;
+}) {
   const [hoveredServiceId, setHoveredServiceId] = useState<string | null>(null);
   const [storyServiceId, setStoryServiceId] = useState<string | null>(null);
   const activeServiceId = hoveredServiceId ?? storyServiceId;
@@ -130,7 +136,7 @@ export function ServicesPreviewSection() {
   return (
     <SceneSection
       aria-labelledby="services-preview-heading"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-900),var(--color-navy-950))] py-24 pb-28 md:py-32"
+      className={`relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-900),var(--color-navy-950))] py-24 pb-28 max-md:bg-[linear-gradient(160deg,#f8fbff,#e8f3ff)] md:py-32 ${lightOnMobile ? "about-mobile-light-surface" : ""}`}
       interactionId={activeServiceId}
       sceneId="services-ecosystem"
       scrollOffset={["start end", "end start"]}
@@ -140,7 +146,7 @@ export function ServicesPreviewSection() {
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-45 max-md:opacity-15"
+        className="pointer-events-none absolute inset-0 opacity-45 max-md:hidden"
       >
         <GlobalCanvas
           className="!absolute !inset-0 !h-full !rounded-none !border-0 !bg-transparent !shadow-none [&_figcaption]:hidden"
@@ -150,6 +156,16 @@ export function ServicesPreviewSection() {
           reducedMotionBehavior="minimal"
         />
       </div>
+      <Background3DShapes
+        variant="services-blue"
+        intensity="medium"
+        className={`opacity-70 mix-blend-screen max-md:opacity-24 ${lightOnMobile ? "max-md:opacity-12" : ""}`}
+      />
+      <Background3DShapes
+        variant="network"
+        intensity="subtle"
+        className={`opacity-55 max-md:opacity-18 ${lightOnMobile ? "max-md:opacity-10" : ""}`}
+      />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-[radial-gradient(circle_at_18%_0%,rgb(47_130_245_/_10%),transparent_48rem)]"

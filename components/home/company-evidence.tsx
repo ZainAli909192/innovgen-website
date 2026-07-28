@@ -57,7 +57,7 @@ function EvidenceItem({
 
   return (
     <motion.li
-      className="group/module relative grid gap-3 overflow-hidden rounded-2xl border border-border bg-[linear-gradient(145deg,rgb(19_46_77_/_72%),rgb(8_20_38_/_92%))] px-5 py-6 shadow-[inset_7px_7px_20px_rgb(255_255_255_/_3%),inset_-9px_-9px_24px_rgb(0_0_0_/_20%),0_20px_55px_rgb(0_0_0_/_16%)] focus-visible:outline-offset-4 sm:grid-cols-[3rem_1fr] md:px-6 md:py-7 [transform-style:preserve-3d]"
+      className="group/module relative grid gap-3 overflow-hidden rounded-2xl border border-border bg-[linear-gradient(145deg,rgb(19_46_77_/_72%),rgb(8_20_38_/_92%))] px-5 py-6 shadow-[inset_7px_7px_20px_rgb(255_255_255_/_3%),inset_-9px_-9px_24px_rgb(0_0_0_/_20%),0_20px_55px_rgb(0_0_0_/_16%)] focus-visible:outline-offset-4 max-md:grid-cols-[3rem_1fr] max-md:gap-4 max-md:rounded-none max-md:border-x-0 max-md:border-t-0 max-md:border-b-blue-200/15 max-md:bg-transparent max-md:px-1 max-md:py-7 max-md:shadow-none sm:grid-cols-[3rem_1fr] md:px-6 md:py-7 [transform-style:preserve-3d]"
       tabIndex={0}
       style={
         reduced
@@ -70,16 +70,13 @@ function EvidenceItem({
       whileFocus={reduced || mobile ? undefined : { z: 16, x: -4 }}
       transition={{ type: "spring", stiffness: 170, damping: 22 }}
     >
-      <span
-        aria-hidden="true"
-        className="absolute inset-y-0 left-0 w-px bg-[linear-gradient(transparent,var(--color-gold-300),transparent)] opacity-70"
-      />
-      <span className="font-mono text-xs font-semibold tracking-[0.18em] text-accent">
+      <span aria-hidden="true" className="absolute inset-y-0 left-0 w-px bg-[linear-gradient(transparent,var(--color-gold-300),transparent)] opacity-70 max-md:hidden" />
+      <span className="relative z-10 font-mono text-xs font-semibold tracking-[0.18em] text-accent max-md:grid max-md:size-11 max-md:place-items-center max-md:rounded-2xl max-md:border max-md:border-blue-300/45 max-md:bg-blue-500/15 max-md:text-blue-200 max-md:shadow-[0_10px_24px_rgb(0_0_0_/_16%)]">
         {item.number}
       </span>
       <div>
-        <h3 className="text-xl font-semibold md:text-2xl">{item.title}</h3>
-        <p className="mt-2 max-w-[48ch] text-sm leading-relaxed text-muted md:text-base">
+        <h3 className="text-xl font-semibold max-md:text-[1.35rem] md:text-2xl">{item.title}</h3>
+        <p className="mt-2 max-w-[48ch] text-sm leading-relaxed text-muted max-md:leading-6 md:text-base">
           {item.description}
         </p>
       </div>
@@ -93,7 +90,7 @@ export function CompanyEvidence() {
   return (
     <ol
       ref={ref}
-      className="relative grid gap-4 [perspective:1300px] [transform-style:preserve-3d]"
+      className="relative grid gap-4 [perspective:1300px] [transform-style:preserve-3d] max-md:gap-0 max-md:before:absolute max-md:before:bottom-8 max-md:before:left-[1.375rem] max-md:before:top-8 max-md:before:w-px max-md:before:bg-[linear-gradient(var(--color-blue-500),rgb(131_185_255_/_12%),transparent)]"
     >
       {companyEvidence.map((item, index) => (
         <EvidenceItem

@@ -46,7 +46,7 @@ const icons: Record<ServiceIconKey, LucideIcon> = {
 };
 
 const cardPlacement = [
-  "max-md:translate-y-0 lg:col-span-2 lg:row-span-2 lg:min-h-[29rem] lg:mt-24",
+  "max-md:translate-y-0 lg:col-span-2 lg:row-span-2 lg:min-h-[34rem] lg:mt-24",
   "max-md:translate-y-8 lg:col-span-1 lg:mt-0",
   "max-md:-translate-y-2 lg:col-span-1 lg:mt-12",
   "max-md:translate-y-5 lg:col-span-1 lg:mt-6",
@@ -104,24 +104,24 @@ function ServiceCard({
       className={cardPlacement[index % cardPlacement.length]}
     >
       <article
-        className={`group relative flex h-full min-h-[25rem] flex-col overflow-hidden rounded-[1.25rem] border border-blue-300/30 bg-surface p-2 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[27rem] sm:p-6 ${featured ? "lg:min-h-[32rem] lg:p-8" : ""}`}
+        className={`group relative flex h-full min-h-[27rem] flex-col overflow-hidden rounded-[1.25rem] border border-blue-300/30 bg-surface p-3 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[29rem] sm:p-7 ${featured ? "lg:min-h-[36rem] lg:p-9" : "lg:min-h-[30rem]"}`}
       >
         <Image
           src={serviceImageByIcon[service.icon]}
           alt=""
           fill
           sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 18vw"
-          className="object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-95"
+          className="object-cover object-center opacity-84 transition-opacity duration-500 group-hover:opacity-95"
         />
         <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-navy-950)_16%,transparent)_0%,color-mix(in_srgb,var(--color-navy-950)_42%,transparent)_36%,var(--color-navy-950)_100%)]" />
         <span className="relative grid size-11 place-items-center rounded-2xl border border-accent/40 bg-[color-mix(in_srgb,var(--color-navy-950)_76%,transparent)] text-accent shadow-lg">
           <ServiceIcon icon={service.icon} />
         </span>
         <div className="relative mt-auto rounded-2xl p-3 backdrop-blur-[2px]">
-          <h3 className={featured ? "text-2xl font-semibold leading-[1.08] sm:text-3xl" : "text-xl font-semibold leading-[1.1] sm:text-2xl"}>
+          <h3 className={featured ? "text-2xl font-semibold leading-[1.08] sm:text-3xl lg:text-4xl" : "text-xl font-semibold leading-[1.1] sm:text-2xl lg:text-[1.7rem]"}>
             {service.title}
           </h3>
-          <p className="mt-3 text-sm font-medium leading-6 text-blue-100 sm:text-base">
+          <p className="mt-3 max-w-[34ch] text-sm font-medium leading-6 text-blue-100 sm:text-base lg:text-[1.0625rem] lg:leading-7">
             {service.description}
           </p>
         </div>
@@ -188,10 +188,11 @@ function MobileServiceWheel({ category }: { category: ServiceCategory }) {
       style={{ transformPerspective: 1000 }}
       className="relative mx-auto mt-10 max-w-[25rem] md:hidden"
     >
-      <div className="relative aspect-square">
-        <div aria-hidden="true" className="absolute inset-[8%] rounded-full border border-blue-300/35 bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-blue-500)_15%,transparent)_0%,transparent_62%)] shadow-[inset_0_0_36px_rgb(47_130_245_/_12%),0_0_36px_rgb(47_130_245_/_10%)]" />
-        <div aria-hidden="true" className="absolute inset-[18%] rounded-full border border-blue-500/25" />
-        <div aria-hidden="true" className="absolute inset-[30%] rounded-full border border-accent/35 bg-[radial-gradient(circle_at_35%_30%,color-mix(in_srgb,var(--color-blue-500)_28%,transparent),var(--color-navy-900)_68%)] shadow-[0_0_28px_rgb(47_130_245_/_30%),inset_0_0_24px_rgb(228_196_119_/_14%)]" />
+      <div className="relative rounded-[2.25rem] border border-blue-200/80 bg-white/55 p-3 shadow-[0_18px_50px_rgb(26_93_175_/_10%),inset_0_1px_0_rgb(255_255_255_/_92%)]">
+        <div className="relative aspect-square overflow-hidden rounded-[1.75rem] bg-[radial-gradient(circle_at_50%_45%,rgb(221_237_255)_0%,rgb(244_249_255)_48%,rgb(232_242_255)_100%)]">
+          <div aria-hidden="true" className="absolute inset-[7%] rounded-full border border-blue-300/60 bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-blue-500)_10%,transparent)_0%,transparent_66%)] shadow-[inset_0_0_30px_rgb(47_130_245_/_9%)]" />
+          <div aria-hidden="true" className="absolute inset-[18%] rounded-full border border-blue-300/50" />
+          <div aria-hidden="true" className="absolute inset-[31%] rounded-full border border-blue-400/70 bg-[radial-gradient(circle_at_35%_27%,rgb(81_156_255),var(--color-navy-900)_66%)] shadow-[0_14px_28px_rgb(13_32_58_/_28%),inset_0_1px_10px_rgb(255_255_255_/_24%)]" />
 
         <motion.ol
           aria-label={`${category.label} services`}
@@ -214,7 +215,7 @@ function MobileServiceWheel({ category }: { category: ServiceCategory }) {
                   onClick={() => selectService(index)}
                   animate={reducedMotion ? undefined : { rotate: activeIndex * step }}
                   transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
-                  className={`grid size-12 cursor-pointer place-items-center rounded-2xl border shadow-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent ${isActive ? "border-blue-300 bg-blue-500/20 text-blue-100 shadow-[0_0_20px_rgb(47_130_245_/_34%)]" : "border-blue-300/40 bg-[color-mix(in_srgb,var(--color-navy-900)_90%,transparent)] text-blue-300"}`}
+                  className={`grid size-12 cursor-pointer place-items-center rounded-2xl border shadow-lg transition-[transform,border-color,background-color,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 ${isActive ? "scale-110 border-blue-300 bg-blue-600 text-white shadow-[0_12px_24px_rgb(21_105_224_/_38%),inset_0_1px_0_rgb(255_255_255_/_28%)]" : "border-blue-200 bg-white text-blue-600 shadow-[0_8px_18px_rgb(35_94_163_/_15%)]"}`}
                 >
                   <ServiceIcon icon={service.icon} />
                 </motion.button>
@@ -225,8 +226,10 @@ function MobileServiceWheel({ category }: { category: ServiceCategory }) {
 
         <div className="absolute inset-[31%] z-10 grid place-items-center rounded-full px-3 text-center pointer-events-none">
           <div>
-            <p aria-live="polite" className="mt-2 text-xs leading-snug text-blue-100">{activeService.title}</p>
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-blue-100/75">Active</p>
+            <p aria-live="polite" className="mt-1 text-xs font-semibold leading-snug text-white">{activeService.title}</p>
           </div>
+        </div>
         </div>
       </div>
 
@@ -234,18 +237,18 @@ function MobileServiceWheel({ category }: { category: ServiceCategory }) {
         <button
           type="button"
           onClick={() => selectService(activeIndex - 1)}
-          className="grid size-11 cursor-pointer place-items-center rounded-full border border-blue-300/35 bg-navy-900 text-blue-100 transition-colors hover:border-accent/60 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="grid size-11 cursor-pointer place-items-center rounded-full border border-blue-200 bg-white text-blue-600 shadow-[0_6px_16px_rgb(35_94_163_/_10%)] transition-colors hover:border-blue-500 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           aria-label="Previous service"
         >
           <ChevronLeft aria-hidden="true" className="size-5" />
         </button>
-        <p className="text-center text-xs font-medium text-muted">
+        <p className="max-w-40 text-center text-xs font-semibold leading-4 text-[var(--color-navy-700)]">
           Rotates every 2 seconds — tap an icon to explore
         </p>
         <button
           type="button"
           onClick={() => selectService(activeIndex + 1)}
-          className="grid size-11 cursor-pointer place-items-center rounded-full border border-blue-300/35 bg-navy-900 text-blue-100 transition-colors hover:border-accent/60 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="grid size-11 cursor-pointer place-items-center rounded-full border border-blue-200 bg-white text-blue-600 shadow-[0_6px_16px_rgb(35_94_163_/_10%)] transition-colors hover:border-blue-500 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           aria-label="Next service"
         >
           <ChevronRight aria-hidden="true" className="size-5" />
@@ -260,17 +263,72 @@ function MobileServiceWheel({ category }: { category: ServiceCategory }) {
           exit={reducedMotion ? { opacity: 0 } : isMobile ? { opacity: 0, x: -40 } : { opacity: 0, y: -8, rotateX: 5, scale: 0.98 }}
           transition={{ duration: reducedMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
           style={{ transformPerspective: 800 }}
-          className="mt-5 rounded-2xl border border-blue-300/25 bg-[color-mix(in_srgb,var(--color-navy-900)_82%,transparent)] p-5 shadow-[0_14px_30px_rgb(0_0_0_/_20%)]"
+          className="mt-5 overflow-hidden rounded-[1.5rem] border border-blue-200 bg-white p-5 shadow-[0_18px_36px_rgb(35_94_163_/_14%),inset_0_1px_0_rgb(255_255_255_/_90%)]"
         >
-          <h3 className="text-xl font-semibold leading-tight text-foreground">{activeService.title}</h3>
-          <p className="mt-2 text-sm leading-6 text-blue-100">{activeService.description}</p>
-          <Button href="/consultation" variant="secondary" size="sm" className="mt-4 border-blue-300/40 bg-blue-600 text-white hover:bg-blue-500">
+          <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-blue-600">Selected service</p>
+          <h3 className="mt-2 text-xl font-semibold leading-tight text-[var(--color-navy-900)]">{activeService.title}</h3>
+          <p className="mt-2 text-sm leading-6 text-[var(--color-navy-700)]">{activeService.description}</p>
+          <Button href="/consultation" variant="secondary" size="sm" className="mt-4 border-blue-600 bg-blue-600 text-white shadow-[0_10px_22px_rgb(21_105_224_/_24%)] hover:bg-blue-500">
             Let&apos;s discuss
             <ArrowUpRight aria-hidden="true" className="size-4" />
           </Button>
         </motion.div>
       </AnimatePresence>
     </motion.div>
+  );
+}
+
+function MobileImageServiceCards({ category }: { category: ServiceCategory }) {
+  const reducedMotion = usePrefersReducedMotion();
+
+  return (
+    <ul className="relative mt-10 grid grid-cols-2 gap-3 md:hidden" aria-label={`${category.label} services`}>
+      {category.services.map((service, index) => {
+        const featured = index === 0;
+
+        return (
+          <motion.li
+            key={service.title}
+            initial={reducedMotion ? false : { opacity: 0, x: index % 2 === 0 ? -28 : 28, y: 18, scale: 0.94 }}
+            whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.15 }}
+            transition={{
+              duration: reducedMotion ? 0 : 0.45,
+              delay: reducedMotion ? 0 : Math.min(index * 0.035, 0.2),
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className={featured ? "col-span-2" : ""}
+          >
+            <article className={`group relative isolate flex overflow-hidden rounded-[1.45rem] border border-blue-200 bg-[var(--color-navy-900)] shadow-[0_16px_32px_rgb(28_78_141_/_18%)] ${featured ? "min-h-[17.5rem]" : "min-h-[13.5rem]"}`}>
+              <Image
+                src={serviceImageByIcon[service.icon]}
+                alt=""
+                fill
+                sizes={featured ? "100vw" : "50vw"}
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(4_18_40_/_12%)_0%,rgb(4_18_40_/_28%)_38%,rgb(4_18_40_/_94%)_100%)]" />
+              <div className="relative z-10 mt-auto w-full p-4">
+                <span className="mb-3 grid size-9 place-items-center rounded-xl border border-blue-200/60 bg-white/90 text-blue-600 shadow-[0_6px_18px_rgb(4_18_40_/_20%)]">
+                  <ServiceIcon icon={service.icon} />
+                </span>
+                <h3 className={`font-semibold leading-tight text-white ${featured ? "text-2xl" : "text-base"}`}>{service.title}</h3>
+                <p className={`mt-1.5 max-w-[28ch] leading-5 text-blue-100 ${featured ? "text-sm" : "text-xs"}`}>{service.description}</p>
+                <Button
+                  href="/consultation"
+                  variant="secondary"
+                  size="sm"
+                  className={`mt-3 border-blue-300/50 bg-blue-600 text-white shadow-[0_8px_18px_rgb(21_105_224_/_26%)] hover:bg-blue-500 ${featured ? "" : "px-3 text-xs"}`}
+                >
+                  Let&apos;s discuss
+                  <ArrowUpRight aria-hidden="true" className="size-3.5" />
+                </Button>
+              </div>
+            </article>
+          </motion.li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -308,17 +366,21 @@ function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
         <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-accent">
           {category.label}
         </p>
-        <h2 id={`${category.id}-heading`} className="mt-4 text-[clamp(2rem,4.6vw,3.75rem)]">
+        <h2 id={`${category.id}-heading`} className="mt-4 text-[clamp(2rem,4.6vw,3.75rem)] max-md:text-[var(--color-navy-900)]">
           {category.title}
         </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted max-md:text-[var(--color-navy-800)] sm:text-lg">
           {category.description}
         </p>
       </motion.div>
 
-      <MobileServiceWheel category={category} />
+      {category.id === "industry-solutions" || category.id === "managed-services" ? (
+        <MobileImageServiceCards category={category} />
+      ) : (
+        <MobileServiceWheel category={category} />
+      )}
 
-      <ul className="relative -mx-2 mt-10 hidden grid-cols-2 items-start gap-x-2 gap-y-10 md:mx-0 md:mt-14 md:grid md:grid-cols-3 md:gap-x-5 md:gap-y-8 lg:grid-cols-6">
+      <ul className="relative -mx-2 mt-10 hidden grid-cols-2 items-start gap-x-2 gap-y-10 md:mx-0 md:mt-14 md:grid md:grid-cols-3 md:gap-x-6 md:gap-y-10 lg:grid-cols-4 lg:gap-x-7 lg:gap-y-12">
         {category.services.map((service, index) => (
           <ServiceCard key={service.title} index={index} service={service} />
         ))}
@@ -331,7 +393,7 @@ export function ServicesShowcase() {
   return (
     <section
       aria-labelledby="services-heading"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))]  "
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] max-md:bg-[linear-gradient(160deg,#f8fbff,#e8f3ff)]"
     >
       <div
         aria-hidden="true"
