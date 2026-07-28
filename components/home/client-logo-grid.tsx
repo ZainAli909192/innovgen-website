@@ -16,23 +16,27 @@ import {
 import { useSectionProgress } from "@/hooks/use-section-progress";
 import { useSceneVisibility } from "@/hooks/use-scene-visibility";
 import { IconButton } from "@/components/ui/icon-button";
+import { partnerEcosystem } from "@/config/partner-ecosystem";
 
 type PartnerBrand = {
   id: string;
   name: string;
   wordmark: string;
   logoPath?: string;
+  logoTheme?: "light" | "dark";
   tone: "blue" | "orange" | "red";
 };
 
-const homePartnerBrands: readonly PartnerBrand[] = [
-  { id: "microsoft", name: "Microsoft", wordmark: "Microsoft", logoPath: "/microsoft.png", tone: "blue" },
-  { id: "cisco", name: "Cisco", wordmark: "cisco", logoPath: "/partners/cisco.svg", tone: "blue" },
-  { id: "aws", name: "AWS", wordmark: "aws", tone: "orange" },
-  { id: "vmware", name: "VMware", wordmark: "vmware", logoPath: "/partners/vmware.svg", tone: "blue" },
-  { id: "oracle", name: "Oracle", wordmark: "ORACLE", tone: "red" },
-  { id: "dell", name: "Dell Technologies", wordmark: "DELL", logoPath: "/partners/dell.svg", tone: "blue" },
-] as const;
+const homePartnerBrands: readonly PartnerBrand[] = partnerEcosystem.map(
+  ({ id, name, shortName, logoPath, logoTheme }) => ({
+    id,
+    name,
+    wordmark: shortName,
+    logoPath,
+    logoTheme,
+    tone: "blue",
+  }),
+);
 
 function PartnerBrandCard({ partner }: { partner: PartnerBrand }) {
   return (
@@ -46,7 +50,9 @@ function PartnerBrandCard({ partner }: { partner: PartnerBrand }) {
       <div className="relative flex w-full flex-col items-center justify-center text-center">
         <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-blue-600)]">Technology partner</p>
         {partner.logoPath ? (
-          <span className="relative mt-5 block h-10 w-40">
+          <span
+            className={`relative mt-5 block h-11 w-40 rounded-xl p-2 ${partner.logoTheme === "dark" ? "bg-navy-950" : "bg-white/80"}`}
+          >
             <Image src={partner.logoPath} alt={partner.name} fill sizes="10rem" className="object-contain" />
           </span>
         ) : (

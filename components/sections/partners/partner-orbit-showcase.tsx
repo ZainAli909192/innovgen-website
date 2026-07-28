@@ -1,17 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
 import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   Boxes,
-  Cloud,
-  Database,
-  MonitorCog,
-  Network,
-  ShieldCheck,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
@@ -21,31 +16,28 @@ import { useMobileLayout } from "@/hooks/use-mobile-layout";
 import {
   partnerEcosystem,
   type PartnerEcosystemItem,
-  type PartnerIconKey,
 } from "@/config/partner-ecosystem";
 
-const iconByKey: Record<Exclude<PartnerIconKey, "microsoft">, LucideIcon> = {
-  cloud: Cloud,
-  network: Network,
-  data: Database,
-  security: ShieldCheck,
-  workplace: MonitorCog,
-};
-
-function PartnerIcon({ icon }: { icon: PartnerIconKey }) {
-  if (icon === "microsoft") {
-    return (
-      <span aria-label="Microsoft" className="grid size-8 grid-cols-2 gap-1">
-        <span className="bg-[#f25022]" />
-        <span className="bg-[#7fba00]" />
-        <span className="bg-[#00a4ef]" />
-        <span className="bg-[#ffb900]" />
-      </span>
-    );
-  }
-
-  const Icon = iconByKey[icon];
-  return <Icon aria-hidden="true" className="size-8" strokeWidth={1.65} />;
+function PartnerLogo({
+  partner,
+  className,
+}: {
+  partner: PartnerEcosystemItem;
+  className: string;
+}) {
+  return (
+    <span
+      className={`relative block overflow-hidden rounded-xl p-2 ${partner.logoTheme === "dark" ? "bg-navy-950" : "bg-white/95"} ${className}`}
+    >
+      <Image
+        src={partner.logoPath}
+        alt=""
+        fill
+        sizes="(max-width: 767px) 5rem, 8rem"
+        className="object-contain p-2"
+      />
+    </span>
+  );
 }
 
 function PartnerDetails({ partner }: { partner: PartnerEcosystemItem }) {
@@ -61,7 +53,7 @@ function PartnerDetails({ partner }: { partner: PartnerEcosystemItem }) {
       >
         <div className="flex items-center gap-4 text-foreground">
           <span className="grid size-14 place-items-center rounded-2xl border border-blue-300/35 bg-navy-950 text-blue-300">
-            <PartnerIcon icon={partner.icon} />
+            <PartnerLogo partner={partner} className="h-10 w-10" />
           </span>
           <h2 className="text-3xl font-semibold tracking-tight">{partner.name}</h2>
         </div>
@@ -90,17 +82,6 @@ function PartnerDetails({ partner }: { partner: PartnerEcosystemItem }) {
   );
 }
 
-const mobileGridPositions = [
-  "col-start-1 row-start-1",
-  "col-start-2 row-start-1",
-  "col-start-3 row-start-1",
-  "col-start-1 row-start-2",
-  "col-start-3 row-start-2",
-  "col-start-1 row-start-3",
-  "col-start-2 row-start-3",
-  "col-start-3 row-start-3",
-] as const;
-
 function MobilePartnerGrid({
   activeIndex,
   onSelect,
@@ -109,7 +90,12 @@ function MobilePartnerGrid({
   onSelect: (index: number) => void;
 }) {
   return (
-    <div className="relative mx-auto grid w-full max-w-[28rem] grid-cols-3 grid-rows-3 gap-3 rounded-[2rem] border border-blue-300/25 bg-[linear-gradient(145deg,var(--color-navy-900),var(--color-navy-950))] p-3 shadow-[inset_0_1px_0_rgb(255_255_255_/_8%),0_20px_48px_rgb(0_0_0_/_26%)] md:hidden">
+    <div className="relative mx-auto grid w-full max-w-[28rem] grid-cols-3 gap-3 rounded-[2rem] border border-blue-300/25 bg-[linear-gradient(145deg,var(--color-navy-900),var(--color-navy-950))] p-3 shadow-[inset_0_1px_0_rgb(255_255_255_/_8%),0_20px_48px_rgb(0_0_0_/_26%)] md:hidden">
+      <div className="col-span-3 rounded-2xl border border-accent/35 bg-navy-950/70 px-4 py-3 text-center shadow-[inset_0_0_18px_rgb(228_196_119_/_10%)]">
+        <p aria-live="polite" className="text-sm font-semibold text-foreground">
+          {partnerEcosystem[activeIndex].name}
+        </p>
+      </div>
       {partnerEcosystem.map((partner, index) => {
         const isActive = index === activeIndex;
         return (
@@ -122,18 +108,13 @@ function MobilePartnerGrid({
             whileHover={{ y: -5, scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className={`grid aspect-square cursor-pointer place-items-center rounded-2xl border p-2 text-center transition-[border-color,background-color,box-shadow] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${mobileGridPositions[index]} ${isActive ? "border-blue-300 bg-blue-500/15 text-blue-100 shadow-[0_0_20px_rgb(47_130_245_/_30%)]" : "border-blue-300/35 bg-navy-950 text-blue-300 hover:border-blue-300/75 hover:bg-blue-500/10"}`}
+            className={`grid aspect-square cursor-pointer place-items-center rounded-2xl border p-2 text-center transition-[border-color,background-color,box-shadow] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${isActive ? "border-blue-300 bg-blue-500/15 text-blue-100 shadow-[0_0_20px_rgb(47_130_245_/_30%)]" : "border-blue-300/35 bg-navy-950 text-blue-300 hover:border-blue-300/75 hover:bg-blue-500/10"}`}
           >
-            <PartnerIcon icon={partner.icon} />
+            <PartnerLogo partner={partner} className="size-10" />
             <span className="mt-1 text-[0.65rem] font-semibold leading-tight text-foreground">{partner.shortName}</span>
           </motion.button>
         );
       })}
-      <div className="col-start-2 row-start-2 grid aspect-square place-items-center rounded-2xl border border-accent/40 bg-[radial-gradient(circle_at_35%_30%,color-mix(in_srgb,var(--color-blue-500)_25%,transparent),var(--color-navy-950))] p-2 text-center shadow-[0_0_24px_rgb(47_130_245_/_20%),inset_0_0_18px_rgb(228_196_119_/_12%)]">
-        <div>
-          <p aria-live="polite" className="mt-1 text-xs font-semibold leading-tight text-foreground">{partnerEcosystem[activeIndex].name}</p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -215,7 +196,7 @@ export function PartnerOrbitShowcase() {
                 {partnerEcosystem.map((partner, index) => {
                   const isActive = index === activeIndex;
                   return (
-                    <div key={partner.name} className="absolute left-1/2 top-1/2" style={{ transform: `translate(-50%, -50%) rotate(${index * step}deg) translateY(clamp(-12rem, -19vw, -7.5rem))` }}>
+                    <div key={partner.name} className="absolute left-1/2 top-1/2" style={{ transform: `translate(-50%, -50%) rotate(${index * step}deg) translateY(clamp(-14rem, -24vw, -9rem))` }}>
                       <motion.button
                         type="button"
                         onClick={() => selectPartner(index)}
@@ -223,10 +204,10 @@ export function PartnerOrbitShowcase() {
                         aria-current={isActive ? "true" : undefined}
                         animate={{ rotate: activeIndex * step, scale: isActive ? 1.1 : 1 }}
                         transition={{ duration: reducedMotion ? 0 : 0.38, ease: [0.22, 1, 0.36, 1] }}
-                        className={`grid h-24 w-32 cursor-pointer place-items-center rounded-2xl border p-3 text-center shadow-xl backdrop-blur-sm transition-colors sm:h-28 sm:w-40 ${isActive ? "border-accent/80 bg-[color-mix(in_srgb,var(--color-navy-950)_64%,transparent)] text-accent shadow-[0_0_30px_rgb(228_196_119_/_28%)]" : "border-blue-300/40 bg-[color-mix(in_srgb,var(--color-navy-900)_78%,transparent)] text-blue-300 hover:border-blue-300/70"}`}
+                        className={`grid h-16 w-20 cursor-pointer place-items-center rounded-xl border p-2 text-center shadow-xl backdrop-blur-sm transition-colors sm:h-20 sm:w-28 ${isActive ? "border-accent/80 bg-[color-mix(in_srgb,var(--color-navy-950)_64%,transparent)] text-accent shadow-[0_0_30px_rgb(228_196_119_/_28%)]" : "border-blue-300/40 bg-[color-mix(in_srgb,var(--color-navy-900)_78%,transparent)] text-blue-300 hover:border-blue-300/70"}`}
                       >
-                        <PartnerIcon icon={partner.icon} />
-                        <span className="mt-1 text-xs font-semibold leading-tight text-foreground sm:text-sm">{partner.shortName}</span>
+                        <PartnerLogo partner={partner} className="h-7 w-12 sm:h-8 sm:w-16" />
+                        <span className="mt-1 text-[0.58rem] font-semibold leading-tight text-foreground sm:text-xs">{partner.shortName}</span>
                       </motion.button>
                     </div>
                   );
