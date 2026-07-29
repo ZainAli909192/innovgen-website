@@ -90,19 +90,19 @@ function PartnerDetails({ partner }: { partner: PartnerEcosystemItem }) {
 }
 
 const treePositions = [
-  "lg:col-start-1 lg:row-start-1",
-  "lg:col-start-1 lg:row-start-2",
-  "lg:col-start-1 lg:row-start-3",
-  "lg:col-start-1 lg:row-start-4",
-  "lg:col-start-1 lg:row-start-5",
-  "lg:col-start-5 lg:row-start-1",
-  "lg:col-start-5 lg:row-start-2",
-  "lg:col-start-5 lg:row-start-3",
-  "lg:col-start-5 lg:row-start-4",
-  "lg:col-start-5 lg:row-start-5",
-  "lg:col-start-2 lg:row-start-1",
-  "lg:col-start-4 lg:row-start-1",
-  "lg:col-start-4 lg:row-start-5",
+  "col-start-1 row-start-1 lg:col-start-1 lg:row-start-1",
+  "col-start-1 row-start-2 lg:col-start-2 lg:row-start-2",
+  "col-start-1 row-start-3 lg:col-start-1 lg:row-start-3",
+  "col-start-1 row-start-4 lg:col-start-2 lg:row-start-4",
+  "col-start-1 row-start-5 lg:col-start-1 lg:row-start-5",
+  "col-start-3 row-start-1 lg:col-start-5 lg:row-start-1",
+  "col-start-3 row-start-2 lg:col-start-4 lg:row-start-2",
+  "col-start-3 row-start-3 lg:col-start-5 lg:row-start-3",
+  "col-start-3 row-start-4 lg:col-start-4 lg:row-start-4",
+  "col-start-3 row-start-5 lg:col-start-5 lg:row-start-5",
+  "col-start-2 row-start-1 lg:col-start-2 lg:row-start-1",
+  "col-start-2 row-start-2 lg:col-start-4 lg:row-start-1",
+  "col-start-2 row-start-5 lg:col-start-4 lg:row-start-5",
 ] as const;
 
 function PartnerLeaf({
@@ -119,6 +119,7 @@ function PartnerLeaf({
   index: number;
 }) {
   const reducedMotion = usePrefersReducedMotion();
+  const swayDirection = index % 2 === 0 ? 1 : -1;
 
   return (
     <motion.button
@@ -128,20 +129,64 @@ function PartnerLeaf({
       onClick={onSelect}
       whileHover={reducedMotion ? undefined : { y: -4, scale: 1.025 }}
       whileTap={reducedMotion ? undefined : { scale: 0.98 }}
-      animate={reducedMotion ? undefined : { y: [0, -3, 0] }}
+      animate={
+        reducedMotion
+          ? undefined
+          : {
+              y: [0, -6, 0, -2, 0],
+              x: [0, swayDirection * 3, 0, swayDirection * -1.5, 0],
+              rotate: [0, swayDirection * 1.25, 0, swayDirection * -0.6, 0],
+            }
+      }
       transition={{
         y: { duration: 4.2 + (index % 4) * 0.45, delay: index * 0.08, ease: "easeInOut", repeat: Infinity },
+        x: { duration: 4.2 + (index % 4) * 0.45, delay: index * 0.08, ease: "easeInOut", repeat: Infinity },
+        rotate: { duration: 4.2 + (index % 4) * 0.45, delay: index * 0.08, ease: "easeInOut", repeat: Infinity },
         default: { duration: reducedMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] },
       }}
-      className={`group relative z-10 flex min-h-[8rem] cursor-pointer flex-col items-center justify-center overflow-hidden [clip-path:polygon(50%_0%,70%_7%,87%_24%,98%_45%,94%_65%,82%_84%,65%_96%,50%_100%,35%_96%,18%_84%,6%_65%,2%_45%,13%_24%,30%_7%)] border bg-transparent px-3 py-4 text-center shadow-[0_12px_26px_rgb(0_0_0_/_16%)] transition-[border-color,background-color,box-shadow] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-accent sm:min-h-36 sm:px-4 ${placement} ${active ? "border-2 border-accent bg-[radial-gradient(circle_at_50%_0%,rgb(40_105_170),rgb(8_28_53)_72%)] shadow-[0_16px_36px_rgb(0_0_0_/_26%),0_0_28px_rgb(228_196_119_/_22%)]" : "border-blue-300/35 bg-[radial-gradient(circle_at_50%_0%,rgb(17_62_108),rgb(5_19_39)_72%)] hover:border-blue-300/80 hover:bg-[radial-gradient(circle_at_50%_0%,rgb(25_81_138),rgb(7_26_51)_72%)]"}`}
+      className={`group relative z-10 flex min-h-[5.75rem] cursor-pointer flex-col items-center justify-center overflow-hidden [clip-path:polygon(50%_0%,70%_7%,87%_24%,98%_45%,94%_65%,82%_84%,65%_96%,50%_100%,35%_96%,18%_84%,6%_65%,2%_45%,13%_24%,30%_7%)] border bg-transparent px-2 py-3 text-center shadow-[0_12px_26px_rgb(0_0_0_/_16%)] transition-[border-color,background-color,box-shadow] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-accent sm:min-h-36 sm:px-4 sm:py-4 ${placement} ${active ? "border-2 border-accent bg-[radial-gradient(circle_at_50%_0%,rgb(40_105_170),rgb(8_28_53)_72%)] shadow-[0_16px_36px_rgb(0_0_0_/_26%),0_0_28px_rgb(228_196_119_/_22%)]" : "border-blue-300/35 bg-[radial-gradient(circle_at_50%_0%,rgb(17_62_108),rgb(5_19_39)_72%)] hover:border-blue-300/80 hover:bg-[radial-gradient(circle_at_50%_0%,rgb(25_81_138),rgb(7_26_51)_72%)]"}`}
     >
       <PartnerLogo partner={partner} cover className="!absolute !inset-0 !block !p-0" />
       <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[45%] bg-[linear-gradient(to_top,rgb(3_15_31_/_95%),rgb(3_15_31_/_62%),transparent)]" />
-      <span className="relative mt-auto inline-flex items-center justify-center gap-1.5 px-3 pb-1 text-xs font-semibold text-foreground [text-shadow:0_1px_5px_rgb(0_0_0_/_70%)] sm:text-sm">
+      <span className="relative mt-auto inline-flex items-center justify-center gap-1 px-2 pb-0.5 text-[0.65rem] font-semibold text-foreground [text-shadow:0_1px_5px_rgb(0_0_0_/_70%)] sm:gap-1.5 sm:px-3 sm:pb-1 sm:text-sm">
         <span>{partner.shortName}</span>
         {active ? <Check aria-hidden="true" className="size-3.5 text-accent" /> : null}
       </span>
     </motion.button>
+  );
+}
+
+function PartnerTreeRoot() {
+  const reducedMotion = usePrefersReducedMotion();
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      animate={reducedMotion ? undefined : { y: [0, -2, 0], scale: [1, 1.015, 1] }}
+      transition={{ duration: 5.5, ease: "easeInOut", repeat: Infinity }}
+      className="relative z-10 col-span-1 col-start-2 row-start-6 mx-auto h-24 w-32 sm:h-36 sm:w-44 lg:col-start-3 lg:row-start-5 lg:h-40 lg:w-48 lg:self-end"
+    >
+      <svg viewBox="0 0 180 160" className="size-full overflow-visible" role="presentation">
+        <defs>
+          <linearGradient id="rootTrunk" x1="0" x2="0.8" y1="0" y2="1">
+            <stop stopColor="#6ab3ff" />
+            <stop offset="0.42" stopColor="#1d74db" />
+            <stop offset="1" stopColor="#071b35" />
+          </linearGradient>
+          <radialGradient id="rootGround" cx="50%" cy="42%" r="68%">
+            <stop stopColor="#2782f0" stopOpacity="0.36" />
+            <stop offset="1" stopColor="#06162d" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <ellipse cx="90" cy="141" rx="77" ry="14" fill="url(#rootGround)" />
+        <path d="M88 6C78 26 80 45 79 66C78 87 68 103 51 121C42 130 31 135 19 139M91 6C102 28 99 47 100 67C101 87 113 104 130 121C139 130 150 135 163 139M80 79C69 91 55 100 39 107M100 79C111 91 125 100 141 107" fill="none" stroke="#2e8df9" strokeOpacity="0.75" strokeWidth="2.6" strokeLinecap="round" />
+        <path d="M76 9C79 31 74 57 77 77C79 96 71 112 56 128C69 127 80 120 90 107C100 120 111 127 124 128C109 112 101 96 103 77C106 57 101 31 104 9C96 18 84 18 76 9Z" fill="url(#rootTrunk)" stroke="#78beff" strokeOpacity="0.72" strokeWidth="1.3" />
+        <path d="M90 18V105M76 72C82 78 86 85 90 94M104 72C98 78 94 85 90 94" fill="none" stroke="#b5dcff" strokeOpacity="0.46" strokeWidth="1.15" strokeLinecap="round" />
+        <circle cx="90" cy="46" r="7" fill="#a3d3ff" fillOpacity="0.58" />
+        <circle cx="90" cy="46" r="3" fill="#e4c477" />
+        <path d="M24 140H156" stroke="#e4c477" strokeOpacity="0.5" strokeWidth="1.2" strokeLinecap="round" />
+      </svg>
+    </motion.div>
   );
 }
 
@@ -163,6 +208,10 @@ function PartnerTree({
       className="relative overflow-hidden rounded-[2rem] border border-blue-300/20 bg-[radial-gradient(circle_at_50%_85%,rgb(31_120_242_/_15%),transparent_25rem),linear-gradient(150deg,rgb(8_31_59_/_96%),rgb(3_14_30_/_98%))] p-4 shadow-[inset_0_1px_0_rgb(255_255_255_/_08%),0_25px_70px_rgb(0_0_0_/_20%)] sm:p-6"
       aria-label="Technology partner tree"
     >
+      <svg aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 size-full opacity-75 lg:hidden">
+        <path d="M50 95V9 M50 14C41 11 28 9 17 9 M50 14V9 M50 14C59 11 72 9 83 9 M50 28C41 25 28 25 17 25 M50 28V25 M50 28C59 25 72 25 83 25 M50 44C41 40 28 41 17 42 M50 44C59 40 72 41 83 42 M50 60C41 56 28 57 17 59 M50 60C59 56 72 57 83 59 M50 76C41 73 28 74 17 76 M50 76V76 M50 76C59 73 72 74 83 76 M50 89C57 87 66 86 83 76" fill="none" stroke="#4a9ff5" strokeOpacity="0.62" strokeWidth="0.9" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        <g fill="#8ec7ff" fillOpacity="0.8"><circle cx="50" cy="14" r="0.8" /><circle cx="50" cy="28" r="0.8" /><circle cx="50" cy="44" r="0.8" /><circle cx="50" cy="60" r="0.8" /><circle cx="50" cy="76" r="0.8" /></g>
+      </svg>
       <svg aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 hidden size-full opacity-90 lg:block">
         <defs>
           <linearGradient id="treeLine" x1="0" x2="1" y1="1" y2="0">
@@ -171,14 +220,14 @@ function PartnerTree({
             <stop offset="1" stopColor="#9dd2ff" stopOpacity="0.18" />
           </linearGradient>
         </defs>
-        <path d="M50 93V11 M50 18C42 14 31 11 10 11 M50 18C44 14 37 11 30 11 M50 18C56 14 63 11 70 11 M50 18C58 14 69 11 90 11 M50 32C41 29 29 29 10 30 M50 32C59 29 71 29 90 30 M50 48C41 45 29 45 10 50 M50 48C59 45 71 45 90 50 M50 64C41 61 29 62 10 70 M50 64C59 61 71 62 90 70 M50 80C41 78 29 80 10 90 M50 80C57 82 64 87 70 90 M50 80C59 78 71 80 90 90" fill="none" stroke="url(#treeLine)" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+        <path d="M50 93V11 M50 18C42 14 31 11 10 11 M50 18C44 14 37 11 30 11 M50 18C56 14 63 11 70 11 M50 18C58 14 69 11 90 11 M50 32C45 30 37 30 30 30 M50 32C55 30 63 30 70 30 M50 48C41 45 29 45 10 50 M50 48C59 45 71 45 90 50 M50 64C45 62 37 68 30 70 M50 64C55 62 63 68 70 70 M50 80C41 78 29 80 10 90 M50 80C57 82 64 87 70 90 M50 80C59 78 71 80 90 90" fill="none" stroke="url(#treeLine)" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
         <g fill="#8ec7ff" fillOpacity="0.8">
           <circle cx="50" cy="18" r="0.85" /><circle cx="50" cy="32" r="0.85" /><circle cx="50" cy="48" r="0.85" /><circle cx="50" cy="64" r="0.85" /><circle cx="50" cy="80" r="0.85" />
         </g>
         <path d="M50 94C45 88 43 84 45 80C47 76 53 76 55 80C57 84 55 88 50 94Z" fill="#1f7bef" fillOpacity="0.3" stroke="#6ab3ff" strokeOpacity="0.7" strokeWidth="0.3" />
       </svg>
 
-      <div className="relative grid grid-cols-2 gap-3 sm:grid-cols-3 lg:min-h-[49rem] lg:grid-cols-5 lg:grid-rows-5 lg:gap-x-4 lg:gap-y-2">
+      <div className="relative grid grid-cols-3 gap-2.5 sm:gap-3 lg:min-h-[49rem] lg:grid-cols-5 lg:grid-rows-5 lg:gap-x-4 lg:gap-y-2">
         {partnerEcosystem.map((partner, index) => (
           <PartnerLeaf
             key={partner.id}
@@ -189,7 +238,7 @@ function PartnerTree({
             onSelect={() => onSelect(index)}
           />
         ))}
-        <div aria-hidden="true" className="relative z-10 col-span-2 row-start-7 mx-auto size-28 rounded-[50%_50%_38%_38%] border border-blue-300/45 bg-[radial-gradient(circle_at_50%_25%,rgb(39_128_245),rgb(5_23_47)_72%)] shadow-[0_0_34px_rgb(48_139_255_/_28%)] sm:size-32 lg:col-span-1 lg:col-start-3 lg:row-start-5 lg:self-end" />
+        <PartnerTreeRoot />
       </div>
       <p className="relative mt-5 flex items-center justify-center gap-2 text-center text-xs font-medium text-blue-200 lg:hidden">
         <GitBranch aria-hidden="true" className="size-4 text-blue-300" />
