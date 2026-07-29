@@ -48,6 +48,12 @@ export function HomeHero({
     setEndMessageVisibility(currentTime >= duration - 3 && currentTime < duration);
   }
 
+  function handleHeroVideoMetadata(
+    event: React.SyntheticEvent<HTMLVideoElement>,
+  ) {
+    event.currentTarget.playbackRate = 3;
+  }
+ 
   return (
     <SceneSection
       className="relative isolate min-h-[calc(88svh-5rem)] overflow-hidden bg-white"
@@ -73,7 +79,7 @@ export function HomeHero({
         initial={reducedMotion ? false : { opacity: 0, scale: 1.05 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: reducedMotion ? 0 : 1.8, ease: entranceEase }}
-        className="pointer-events-none absolute left-1/2 top-[46%] h-[88%] w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-[var(--color-navy-950)] opacity-55 shadow-[0_28px_80px_rgb(5_11_24_/_20%)] mix-blend-multiply md:inset-0 md:h-full md:w-full md:translate-x-0 md:translate-y-0 md:rounded-none md:shadow-none"
+        className="pointer-events-none absolute left-1/2 top-[46%] h-[88%] w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-white opacity-55 shadow-[0_28px_80px_rgb(5_11_24_/_20%)] mix-blend-multiply md:inset-0 md:h-full md:w-full md:translate-x-0 md:translate-y-0 md:rounded-none md:shadow-none"
       >
         <video
           autoPlay={!reducedMotion}
@@ -82,8 +88,9 @@ export function HomeHero({
           playsInline
           preload="metadata"
           src={heroVideoUrl}
+          onLoadedMetadata={handleHeroVideoMetadata}
           onTimeUpdate={handleHeroVideoTimeUpdate}
-          className="h-full w-full object-cover object-center md:translate-x-[4%] md:scale-[1.04]"
+          className="h-full w-full object-cover object-center md:translate-x-[2%] md:scale-[1.06]"
         />
     
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(255_255_255_/_42%),transparent_65%)]" />
