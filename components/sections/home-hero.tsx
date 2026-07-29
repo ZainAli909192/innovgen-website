@@ -63,7 +63,7 @@ export function HomeHero({ description, eyebrow, title }: HomeHeroProps) {
           preload="auto"
           src={heroVideoUrl}
           onLoadedMetadata={handleHeroVideoMetadata}
-          className="h-full w-full origin-[52%_52%] scale-[1.58] object-cover object-center opacity-95 brightness-[0.88] contrast-[1.28] saturate-110 md:scale-[1.08] md:object-[72%_50%]"
+          className="h-full w-full origin-[52%_52%] scale-[1.58] object-cover object-center opacity-95 brightness-[0.88] contrast-[1.28] saturate-110 md:relative md:left-[3%] md:scale-[1.08] md:object-[72%_50%]"
         />
       </motion.div>
 
