@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Boxes, Check, GitBranch } from "lucide-react";
+import { ArrowUpRight, Boxes, GitBranch } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { Button } from "@/components/ui/button";
@@ -51,7 +51,7 @@ function PartnerDetails({ partner }: { partner: PartnerEcosystemItem }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.985 }}
         transition={{ duration: reducedMotion ? 0 : 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative h-full overflow-hidden rounded-[1.9rem] border border-blue-300/30 bg-[linear-gradient(145deg,rgb(19_57_97_/_96%),rgb(5_16_33_/_98%))] p-6 shadow-[inset_0_1px_0_rgb(255_255_255_/_12%),0_24px_60px_rgb(0_0_0_/_24%)] sm:p-8"
+        className="relative h-full min-h-[31rem] overflow-hidden rounded-[1.9rem] border border-blue-300/30 bg-[linear-gradient(145deg,rgb(19_57_97_/_96%),rgb(5_16_33_/_98%))] p-6 shadow-[inset_0_1px_0_rgb(255_255_255_/_12%),0_24px_60px_rgb(0_0_0_/_24%)] sm:min-h-[29rem] sm:p-8 lg:min-h-[33rem]"
       >
         <span aria-hidden="true" className="absolute -right-20 -top-24 size-60 rounded-full border border-blue-300/20 bg-blue-500/[0.06]" />
         <span aria-hidden="true" className="absolute -bottom-16 -left-14 size-40 rounded-full border border-accent/20 bg-accent/[0.05]" />
@@ -148,9 +148,8 @@ function PartnerLeaf({
     >
       <PartnerLogo partner={partner} cover className="!absolute !inset-0 !block !p-0" />
       <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[45%] bg-[linear-gradient(to_top,rgb(3_15_31_/_95%),rgb(3_15_31_/_62%),transparent)]" />
-      <span className="relative mt-auto inline-flex items-center justify-center gap-1 px-2 pb-0.5 text-[0.65rem] font-semibold text-foreground [text-shadow:0_1px_5px_rgb(0_0_0_/_70%)] sm:gap-1.5 sm:px-3 sm:pb-1 sm:text-sm">
+      <span className="relative mt-auto inline-flex whitespace-nowrap px-2 pb-0.5 text-[0.65rem] font-semibold text-foreground [text-shadow:0_1px_5px_rgb(0_0_0_/_70%)] sm:px-3 sm:pb-1 sm:text-sm">
         <span>{partner.shortName}</span>
-        {active ? <Check aria-hidden="true" className="size-3.5 text-accent" /> : null}
       </span>
     </motion.button>
   );
