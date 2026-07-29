@@ -37,8 +37,6 @@ export function PageHero({
         eyebrow={eyebrow}
         title={title}
         description={description}
-        primaryAction={primaryAction}
-        secondaryAction={secondaryAction}
       />
     );
   }
@@ -53,7 +51,6 @@ export function PageHero({
           </p>
           {approvalRequired ? (
             <Badge variant="gold" className="mt-4">
-              Client approval required
             </Badge>
           ) : null}
           <h1 className="mt-5 max-w-4xl text-[length:var(--text-h1)] font-semibold">
