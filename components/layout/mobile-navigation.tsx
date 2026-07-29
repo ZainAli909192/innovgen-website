@@ -96,7 +96,7 @@ export function MobileNavigation() {
           duration: reduceMotion ? 0 : 0.28,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[70] overflow-hidden rounded-[1.35rem] border border-white/55 bg-[var(--color-blue-300)] p-1 shadow-[0_16px_32px_rgb(2_20_45_/_38%),0_4px_8px_rgb(2_20_45_/_22%),inset_0_1px_0_rgb(255_255_255_/_72%),inset_0_-6px_14px_rgb(24_85_160_/_28%)] [transform:translateZ(0)] lg:hidden"
+        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[70] overflow-hidden rounded-[1.35rem] border border-white/30 bg-[linear-gradient(135deg,var(--color-blue-600),var(--color-blue-500))] p-1 shadow-[0_16px_32px_rgb(2_20_45_/_38%),0_4px_8px_rgb(2_20_45_/_22%),inset_0_1px_0_rgb(255_255_255_/_28%),inset_0_-6px_14px_rgb(3_31_70_/_26%)] [transform:translateZ(0)] lg:hidden"
       >
         <ul className="mx-auto grid max-w-xl grid-cols-5 px-1">
           {mobilePrimaryNavigation.map((item) => {
@@ -108,7 +108,7 @@ export function MobileNavigation() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.6875rem] font-semibold text-[var(--color-navy-900)] transition-[color,background-color,box-shadow]",
+                    "relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.6875rem] font-semibold text-white transition-[color,background-color,box-shadow]",
                     active && "mobile-nav-active bg-white/14 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)] [text-shadow:0_1px_0_rgb(5_11_24_/_32%)]",
                   )}
                 >
