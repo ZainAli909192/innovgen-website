@@ -30,18 +30,16 @@ export function HomeHero({
     >
       <motion.div
         aria-hidden="true"
-        initial={reducedMotion ? false : { opacity: 0, scale: 0.9, x: "-8%", y: 10 }}
+        initial={false}
         animate={
           reducedMotion
             ? undefined
             : {
                 opacity: 1,
-                scale: [0.9, 1.035, 1],
-                x: ["-8%", "-3%", "0%"],
-                y: [10, -6, 0],
+                scale: [1, 1.025, 1],
               }
         }
-        transition={{ duration: reducedMotion ? 0 : 1.8, ease: entranceEase }}
+        transition={{ duration: reducedMotion ? 0 : 7, ease: "easeInOut", repeat: Infinity }}
         className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/home_hero_bg.jpg')" }}
       />
@@ -50,7 +48,7 @@ export function HomeHero({
         initial={reducedMotion ? false : { opacity: 0, scale: 1.05 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: reducedMotion ? 0 : 1.8, ease: entranceEase }}
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-[var(--color-navy-950)] opacity-55 shadow-[0_28px_80px_rgb(5_11_24_/_20%)] mix-blend-multiply md:inset-0 md:h-full md:w-full md:translate-x-0 md:translate-y-0 md:rounded-none md:shadow-none"
+        className="pointer-events-none absolute left-1/2 top-[46%] h-[88%] w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-[var(--color-navy-950)] opacity-55 shadow-[0_28px_80px_rgb(5_11_24_/_20%)] mix-blend-multiply md:inset-0 md:h-full md:w-full md:translate-x-0 md:translate-y-0 md:rounded-none md:shadow-none"
       >
         <video
           autoPlay={!reducedMotion}
@@ -71,7 +69,7 @@ export function HomeHero({
 
       <Container
         size="wide"
-        className="relative z-20 flex min-h-[calc(88svh-5rem)] items-center py-8 sm:py-10 md:py-12"
+        className="relative z-20 flex min-h-[calc(88svh-5rem)] items-end py-8 sm:py-10 md:items-center md:py-12"
       >
         <motion.div
           initial={reducedMotion ? false : { opacity: 0, y: 20 }}
@@ -94,17 +92,22 @@ export function HomeHero({
               initial={reducedMotion ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: reducedMotion ? 0 : 0.8, duration: reducedMotion ? 0 : 0.8, ease: entranceEase }}
-              className="max-w-[15ch] text-balance text-[clamp(1.9rem,7vw,2.75rem)] font-medium leading-none tracking-[-0.045em] text-[var(--color-navy-950)] md:max-w-[12ch] md:text-[clamp(2.5rem,5.5vw,4.5rem)]"
+              className="max-w-none whitespace-nowrap text-[clamp(1.05rem,5.4vw,1.4rem)] font-medium leading-none tracking-[-0.055em] text-[var(--color-navy-950)] md:max-w-[12ch] md:whitespace-normal md:text-[clamp(2.5rem,5.5vw,4.5rem)]"
             >
-              {titleParts.map((part, index) =>
-                part.toLowerCase() === "digital systems" ? (
-                  <span key={`${part}-${index}`} className="text-[var(--color-blue-600)]">
-                    {part}
-                  </span>
-                ) : (
-                  part
-                ),
-              )}
+              <span className="md:hidden">
+                Build secure <span className="text-[var(--color-blue-600)]">digital systems</span>
+              </span>
+              <span className="hidden md:inline">
+                {titleParts.map((part, index) =>
+                  part.toLowerCase() === "digital systems" ? (
+                    <span key={`${part}-${index}`} className="text-[var(--color-blue-600)]">
+                      {part}
+                    </span>
+                  ) : (
+                    part
+                  ),
+                )}
+              </span>
             </motion.h1>
 
             <motion.p
