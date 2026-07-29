@@ -296,6 +296,11 @@
       "scope": "careers-page",
       "choice": "Use a control-room-inspired careers hero followed by a white, accessible three-step application form.",
       "reason": "Matches the selected visual direction while keeping the application flow clear, keyboard accessible, and anchored from the hero CTA."
+    },
+    {
+      "scope": "consultation-form",
+      "choice": "Use a layered navy form surface with icon-led fields, high-contrast focus states, and restrained transform-only Motion reveals.",
+      "reason": "Modernizes the consultation experience with a premium 21st-inspired composition while preserving the existing five fields, validation, and enquiry workflow."
     }
   ],
   "evidence": [
