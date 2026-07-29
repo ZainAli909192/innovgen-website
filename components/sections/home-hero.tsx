@@ -30,10 +30,27 @@ export function HomeHero({
     >
       <motion.div
         aria-hidden="true"
+        initial={reducedMotion ? false : { opacity: 0, scale: 0.9, x: "-8%", y: 10 }}
+        animate={
+          reducedMotion
+            ? undefined
+            : {
+                opacity: 1,
+                scale: [0.9, 1.035, 1],
+                x: ["-8%", "-3%", "0%"],
+                y: [10, -6, 0],
+              }
+        }
+        transition={{ duration: reducedMotion ? 0 : 1.8, ease: entranceEase }}
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/home_hero_bg.jpg')" }}
+      />
+      <motion.div
+        aria-hidden="true"
         initial={reducedMotion ? false : { opacity: 0, scale: 1.05 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: reducedMotion ? 0 : 1.8, ease: entranceEase }}
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-[var(--color-navy-950)] shadow-[0_28px_80px_rgb(5_11_24_/_20%)] md:inset-0 md:h-full md:w-full md:translate-x-0 md:translate-y-0 md:rounded-none md:shadow-none"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-[var(--color-navy-950)] opacity-55 shadow-[0_28px_80px_rgb(5_11_24_/_20%)] mix-blend-multiply md:inset-0 md:h-full md:w-full md:translate-x-0 md:translate-y-0 md:rounded-none md:shadow-none"
       >
         <video
           autoPlay={!reducedMotion}
@@ -44,23 +61,23 @@ export function HomeHero({
           src={heroVideoUrl}
           className="h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(5_11_24_/_22%),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(255_255_255_/_42%),transparent_65%)]" />
       </motion.div>
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[72%] bg-[linear-gradient(to_top,#ffffff_0%,rgb(255_255_255_/_92%)_45%,rgb(255_255_255_/_12%)_82%,transparent_100%)]"
+        className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(90deg,rgb(255_255_255_/_92%)_0%,rgb(255_255_255_/_72%)_32%,rgb(255_255_255_/_12%)_67%,transparent_100%),linear-gradient(to_top,rgb(255_255_255_/_82%)_0%,transparent_48%)]"
       />
 
       <Container
         size="wide"
-        className="relative z-20 flex min-h-[calc(88svh-5rem)] items-end py-8 sm:py-10 md:py-12"
+        className="relative z-20 flex min-h-[calc(88svh-5rem)] items-center py-8 sm:py-10 md:py-12"
       >
         <motion.div
           initial={reducedMotion ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reducedMotion ? 0 : 0.5, duration: reducedMotion ? 0 : 1, ease: entranceEase }}
-          className="flex w-full flex-col gap-7 md:flex-row md:items-end md:justify-between md:gap-12"
+          className="flex w-full flex-col gap-7 md:flex-row md:items-center md:justify-between md:gap-12"
         >
           <div className="max-w-4xl">
             <motion.p
@@ -77,7 +94,7 @@ export function HomeHero({
               initial={reducedMotion ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: reducedMotion ? 0 : 0.8, duration: reducedMotion ? 0 : 0.8, ease: entranceEase }}
-              className="max-w-[15ch] text-balance text-[clamp(1.9rem,7vw,2.75rem)] font-light leading-none tracking-[-0.045em] text-[var(--color-navy-950)] md:text-[clamp(2.5rem,5.5vw,4.5rem)]"
+              className="max-w-[15ch] text-balance text-[clamp(1.9rem,7vw,2.75rem)] font-medium leading-none tracking-[-0.045em] text-[var(--color-navy-950)] md:max-w-[12ch] md:text-[clamp(2.5rem,5.5vw,4.5rem)]"
             >
               {titleParts.map((part, index) =>
                 part.toLowerCase() === "digital systems" ? (
