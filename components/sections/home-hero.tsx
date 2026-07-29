@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "motion/react";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
 import { Container } from "@/components/ui/container";
@@ -13,136 +12,105 @@ type HomeHeroProps = {
   title: string;
 };
 
-const entranceEase = [0.16, 1, 0.3, 1] as const;
 const heroVideoUrl =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_215831_c6a8989c-d716-4d8d-8745-e972a2eec711.mp4";
 
-export function HomeHero({
-  description,
-  eyebrow,
-  title,
-}: HomeHeroProps) {
+const heroEase = [0.16, 1, 0.3, 1] as const;
+
+export function HomeHero({ description, eyebrow, title }: HomeHeroProps) {
   const reducedMotion = usePrefersReducedMotion();
   const titleParts = title.split(/(digital systems)/i);
-  const endMessageIsVisibleRef = useRef(false);
-  const [showEndMessage, setShowEndMessage] = useState(false);
-
-  function setEndMessageVisibility(visible: boolean) {
-    if (visible === endMessageIsVisibleRef.current) return;
-
-    endMessageIsVisibleRef.current = visible;
-    setShowEndMessage(visible);
-  }
-
-  function handleHeroVideoTimeUpdate(
-    event: React.SyntheticEvent<HTMLVideoElement>,
-  ) {
-    if (reducedMotion || !window.matchMedia("(max-width: 767px)").matches) {
-      setEndMessageVisibility(false);
-      return;
-    }
-
-    const { currentTime, duration } = event.currentTarget;
-    if (!Number.isFinite(duration) || duration <= 0) return;
-
-    setEndMessageVisibility(currentTime >= duration - 3 && currentTime < duration);
-  }
 
   function handleHeroVideoMetadata(
     event: React.SyntheticEvent<HTMLVideoElement>,
   ) {
-    event.currentTarget.playbackRate = 3;
+    event.currentTarget.playbackRate = 2;
   }
- 
+
   return (
     <SceneSection
-      className="relative isolate min-h-[calc(88svh-5rem)] overflow-hidden bg-white"
+      className="relative isolate min-h-[calc(88svh-5rem)] overflow-hidden bg-[#f6faff]"
       sceneId="home-hero"
     >
-      <motion.div
+      <div
         aria-hidden="true"
-        initial={false}
-        animate={
-          reducedMotion
-            ? undefined
-            : {
-                opacity: 1,
-                scale: [1, 1.025, 1],
-              }
-        }
-        transition={{ duration: reducedMotion ? 0 : 7, ease: "easeInOut", repeat: Infinity }}
-        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/home_hero_bg.jpg')" }}
+        className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_78%_48%,rgb(224_245_255_/_58%)_0%,transparent_34%),linear-gradient(120deg,rgb(246_250_255)_0%,rgb(255_255_255)_48%,rgb(243_250_255)_100%)]"
       />
       <motion.div
         aria-hidden="true"
-        initial={reducedMotion ? false : { opacity: 0, scale: 1.05 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: reducedMotion ? 0 : 1.8, ease: entranceEase }}
-        className="pointer-events-none absolute left-1/2 top-[46%] h-[88%] w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] bg-white opacity-55 shadow-[0_28px_80px_rgb(5_11_24_/_20%)] mix-blend-multiply md:inset-0 md:h-full md:w-full md:translate-x-0 md:translate-y-0 md:rounded-none md:shadow-none"
+        initial={reducedMotion ? false : { opacity: 0, scale: 1.08 }}
+        animate={{ opacity: 0.58, scale: 1.02 }}
+        transition={{ duration: 1.35, ease: heroEase }}
+        className="pointer-events-none absolute -inset-6 z-[1] bg-cover bg-center bg-no-repeat brightness-90 contrast-110 saturate-125"
+        style={{ backgroundImage: "url('/home_hero_bg.jpg')" }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[2] bg-[linear-gradient(90deg,rgb(247_251_255_/_76%)_0%,rgb(250_253_255_/_45%)_36%,rgb(255_255_255_/_12%)_66%,rgb(246_251_255_/_26%)_100%)]"
+      />
+      <motion.div
+        aria-hidden="true"
+        initial={reducedMotion ? false : { opacity: 0, scale: 1.08, x: 28 }}
+        animate={{ opacity: 1, scale: 1, x: 0 }}
+        transition={{ duration: 1.1, delay: 0.08, ease: heroEase }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-[2%] z-10 overflow-hidden mix-blend-multiply md:inset-0 md:[mask-image:linear-gradient(90deg,transparent_0%,black_34%,black_100%)] md:[-webkit-mask-image:linear-gradient(90deg,transparent_0%,black_34%,black_100%)]"
       >
         <video
           autoPlay={!reducedMotion}
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           src={heroVideoUrl}
           onLoadedMetadata={handleHeroVideoMetadata}
-          onTimeUpdate={handleHeroVideoTimeUpdate}
-          className="h-full w-full object-cover object-center md:translate-x-[2%] md:scale-[1.06]"
+          className="h-full w-full origin-[52%_52%] scale-[1.58] object-cover object-center opacity-95 brightness-[0.88] contrast-[1.28] saturate-110 md:scale-[1.08] md:object-[72%_50%]"
         />
-    
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(255_255_255_/_42%),transparent_65%)]" />
       </motion.div>
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(90deg,rgb(255_255_255_/_92%)_0%,rgb(255_255_255_/_72%)_32%,rgb(255_255_255_/_12%)_67%,transparent_100%),linear-gradient(to_top,rgb(255_255_255_/_82%)_0%,transparent_48%)]"
+        className="pointer-events-none absolute bottom-[11%] right-[8%] z-[11] h-28 w-44 rounded-full bg-[radial-gradient(ellipse,rgba(5,11,24,0.28),transparent_68%)] blur-xl md:bottom-[8%] md:right-[15%] md:h-40 md:w-64"
       />
-
-      <motion.p
+      <motion.div
         aria-hidden="true"
-        initial={false}
-        animate={
-          showEndMessage
-            ? { opacity: 1, x: "-50%", y: 0 }
-            : { opacity: 0, x: "-165%", y: -12 }
-        }
-        transition={{ duration: reducedMotion ? 0 : 0.65, ease: entranceEase }}
-        className="pointer-events-none absolute left-1/2 top-[13%] z-30 whitespace-nowrap text-[clamp(1.35rem,7.1vw,1.9rem)] font-semibold leading-none tracking-[-0.06em] text-[var(--color-navy-950)] md:hidden"
+        initial={reducedMotion ? false : { opacity: 0, scale: 0.8, rotate: -12 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ duration: 0.85, delay: 0.34, ease: heroEase }}
+        className="pointer-events-none absolute left-1/2 top-[43%] z-[13] size-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgb(31_111_235_/_34%)] shadow-[0_0_42px_rgb(31_111_235_/_22%),inset_0_0_32px_rgb(31_111_235_/_12%)] md:left-[72%] md:top-[50%] md:size-64"
       >
-        Build secure <span className="text-[var(--color-blue-600)]">digital systems</span>
-      </motion.p>
+        <motion.span
+          animate={reducedMotion ? undefined : { rotate: 360 }}
+          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-4 rounded-full border border-[rgb(111_201_255_/_24%)]"
+        />
+        <span className="absolute -left-1 top-[18%] size-2 rounded-full bg-[var(--color-blue-600)] shadow-[0_0_14px_rgb(31_111_235_/_92%)] motion-safe:animate-pulse" />
+        <span className="absolute right-3 top-[34%] size-1.5 rounded-full bg-[#6fc9ff] shadow-[0_0_12px_rgb(111_201_255_/_95%)] motion-safe:animate-pulse" />
+        <span className="absolute bottom-[22%] left-[16%] size-1.5 rounded-full bg-[var(--color-blue-600)] shadow-[0_0_12px_rgb(31_111_235_/_92%)] motion-safe:animate-pulse" />
+      </motion.div>
+      <motion.div
+        aria-hidden="true"
+        initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5, ease: heroEase }}
+        className="pointer-events-none absolute left-[8%] top-[22%] z-[12] hidden size-16 rotate-12 rounded-[1.5rem] border border-[rgb(31_111_235_/_22%)] bg-[linear-gradient(145deg,rgb(255_255_255_/_76%),rgb(221_240_255_/_22%))] shadow-[0_16px_28px_rgb(31_111_235_/_10%)] md:block"
+      />
 
       <Container
         size="wide"
         className="relative z-20 flex min-h-[calc(88svh-5rem)] items-end py-8 sm:py-10 md:items-center md:py-12"
       >
-        <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: reducedMotion ? 0 : 0.5, duration: reducedMotion ? 0 : 1, ease: entranceEase }}
-          className="flex w-full flex-col gap-7 md:flex-row md:items-center md:justify-between md:gap-12"
-        >
+        <div className="flex w-full flex-col gap-7 md:flex-row md:items-center md:justify-between md:gap-12">
           <div className="max-w-4xl">
-            <motion.p
-              initial={reducedMotion ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: reducedMotion ? 0 : 0.6, duration: reducedMotion ? 0 : 0.8, ease: entranceEase }}
-              className="hidden items-center gap-2 text-[0.8125rem] font-medium text-[rgb(5_11_24_/_62%)]"
-            >
+            <p className="hidden items-center gap-2 text-[0.8125rem] font-medium text-[rgb(5_11_24_/_62%)]">
               <span aria-hidden="true" className="size-2 rounded-full bg-[var(--color-navy-950)]" />
               {eyebrow}
-            </motion.p>
+            </p>
 
-            <motion.h1
-              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: reducedMotion ? 0 : 0.8, duration: reducedMotion ? 0 : 0.8, ease: entranceEase }}
-              className="max-w-none whitespace-nowrap text-[clamp(1.05rem,5.4vw,1.4rem)] font-medium leading-none tracking-[-0.055em] text-[var(--color-navy-950)] md:max-w-[12ch] md:whitespace-normal md:text-[clamp(2.5rem,5.5vw,4.5rem)]"
-            >
-              <span className="sr-only md:hidden">Build secure digital systems</span>
+            <h1 className="absolute left-1/2 top-5 z-30 w-max max-w-[calc(100%-2rem)] -translate-x-1/2 whitespace-nowrap text-[clamp(1.3rem,6.3vw,1.85rem)] font-semibold italic leading-none tracking-[-0.065em] text-[var(--color-navy-950)] [text-shadow:0_1px_0_rgb(255_255_255_/_88%)] md:static md:w-auto md:max-w-[12ch] md:translate-x-0 md:whitespace-normal md:text-[clamp(2.5rem,5.5vw,4.5rem)]">
+              <span className="md:hidden">
+                Build secure{" "}
+                <span className="text-[var(--color-blue-600)]">digital systems</span>
+              </span>
               <span className="hidden md:inline">
                 {titleParts.map((part, index) =>
                   part.toLowerCase() === "digital systems" ? (
@@ -154,28 +122,23 @@ export function HomeHero({
                   ),
                 )}
               </span>
-            </motion.h1>
+            </h1>
 
             <Link
               href="/services"
-              className="mx-auto mt-5 flex min-h-11 w-fit items-center justify-center rounded-full bg-[var(--color-blue-600)] px-6 text-sm font-semibold text-white shadow-[0_12px_24px_rgb(31_111_235_/_22%)] transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-blue-700)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-blue-600)] md:hidden"
+              className="group relative mx-auto mt-4 flex min-h-11 w-fit items-center gap-2 overflow-hidden rounded-full border border-[rgb(31_111_235_/_45%)] bg-[linear-gradient(135deg,var(--color-navy-950)_0%,rgb(14_43_82)_100%)] py-1 pl-5 pr-1 text-[0.8125rem] font-semibold text-white shadow-[0_14px_28px_rgb(5_11_24_/_24%)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgb(5_11_24_/_30%)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-blue-600)] md:hidden"
             >
-              Explore services
+              <span className="relative z-10">Explore services</span>
+              <span aria-hidden="true" className="relative z-10 grid size-9 place-items-center rounded-full bg-white text-lg leading-none text-[var(--color-blue-600)] shadow-[0_3px_10px_rgb(5_11_24_/_18%)] transition-transform duration-200 group-hover:translate-x-0.5">→</span>
             </Link>
 
-            <motion.p
-              initial={reducedMotion ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: reducedMotion ? 0 : 0.9, duration: reducedMotion ? 0 : 0.8, ease: entranceEase }}
-              className="hidden mt-5 max-w-2xl text-base leading-relaxed text-[rgb(5_11_24_/_68%)] md:text-lg"
-            >
+            <p className="hidden mt-5 max-w-2xl text-base leading-relaxed text-[rgb(5_11_24_/_68%)] md:text-lg">
               {description}
-            </motion.p>
-
+            </p>
           </div>
 
           <div className="hidden flex-wrap gap-2 md:max-w-64 md:justify-end">
-            {['Strategy', 'Engineering', 'Security'].map((tag) => (
+            {["Strategy", "Engineering", "Security"].map((tag) => (
               <span
                 key={tag}
                 className="rounded-full border border-black/12 bg-white/85 px-3 py-1.5 text-[11px] font-medium text-[rgb(5_11_24_/_72%)] shadow-[0_4px_16px_rgb(5_11_24_/_6%)] backdrop-blur-sm"
@@ -184,7 +147,7 @@ export function HomeHero({
               </span>
             ))}
           </div>
-        </motion.div>
+        </div>
       </Container>
     </SceneSection>
   );
