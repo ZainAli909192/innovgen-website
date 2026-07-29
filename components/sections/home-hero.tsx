@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
@@ -24,7 +25,7 @@ export function HomeHero({ description, eyebrow, title }: HomeHeroProps) {
   function handleHeroVideoMetadata(
     event: React.SyntheticEvent<HTMLVideoElement>,
   ) {
-    event.currentTarget.playbackRate = 2;
+    event.currentTarget.playbackRate = 1.5;
   }
 
   return (
@@ -53,7 +54,7 @@ export function HomeHero({ description, eyebrow, title }: HomeHeroProps) {
         initial={reducedMotion ? false : { opacity: 0, scale: 1.08, x: 28 }}
         animate={{ opacity: 1, scale: 1, x: 0 }}
         transition={{ duration: 1.1, delay: 0.08, ease: heroEase }}
-        className="pointer-events-none absolute inset-x-0 bottom-0 top-[2%] z-10 overflow-hidden mix-blend-multiply md:inset-0 md:[mask-image:linear-gradient(90deg,transparent_0%,black_34%,black_100%)] md:[-webkit-mask-image:linear-gradient(90deg,transparent_0%,black_34%,black_100%)]"
+        className="pointer-events-none absolute inset-0 z-10 overflow-hidden mix-blend-multiply md:[mask-image:linear-gradient(90deg,transparent_0%,black_34%,black_100%)] md:[-webkit-mask-image:linear-gradient(90deg,transparent_0%,black_34%,black_100%)]"
       >
         <video
           autoPlay={!reducedMotion}
@@ -126,9 +127,18 @@ export function HomeHero({ description, eyebrow, title }: HomeHeroProps) {
 
             <Link
               href="/services"
-              className="group relative mx-auto mt-4 flex min-h-11 w-fit items-center gap-2 overflow-hidden rounded-full border border-[rgb(31_111_235_/_45%)] bg-[linear-gradient(135deg,var(--color-navy-950)_0%,rgb(14_43_82)_100%)] py-1 pl-5 pr-1 text-[0.8125rem] font-semibold text-white shadow-[0_14px_28px_rgb(5_11_24_/_24%)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgb(5_11_24_/_30%)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-blue-600)] md:hidden"
+              className="group relative mx-auto mt-5 flex min-h-12 w-fit items-center gap-3 overflow-hidden rounded-full border border-[rgb(31_111_235_/_58%)] bg-[linear-gradient(135deg,var(--color-navy-950)_0%,rgb(9_30_62)_100%)] py-1 pl-5 pr-1 text-sm font-semibold text-white shadow-[0_12px_28px_rgb(5_11_24_/_28%),inset_0_1px_0_rgb(255_255_255_/_16%)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgb(5_11_24_/_38%)] active:translate-y-px active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-blue-600)] [&>span:last-child]:hidden md:hidden"
             >
               <span className="relative z-10">Explore services</span>
+              <span
+                aria-hidden="true"
+                className="relative z-10 grid size-10 place-items-center rounded-full border border-white/50 bg-white text-[var(--color-blue-600)] shadow-[0_4px_12px_rgb(5_11_24_/_16%)] transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-active:scale-95"
+              >
+                <ArrowUpRight
+                  className="size-4 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  strokeWidth={2.25}
+                />
+              </span>
               <span aria-hidden="true" className="relative z-10 grid size-9 place-items-center rounded-full bg-white text-lg leading-none text-[var(--color-blue-600)] shadow-[0_3px_10px_rgb(5_11_24_/_18%)] transition-transform duration-200 group-hover:translate-x-0.5">→</span>
             </Link>
 
