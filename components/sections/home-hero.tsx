@@ -57,7 +57,7 @@ export function HomeHero({
           playsInline
           preload="metadata"
           src={heroVideoUrl}
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full object-cover object-center md:translate-x-[4%] md:scale-[1.04]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(255_255_255_/_42%),transparent_65%)]" />
       </motion.div>

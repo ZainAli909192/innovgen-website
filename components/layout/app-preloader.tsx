@@ -2,11 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { usePathname } from "next/navigation";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
-const loaderDuration = 2_000;
+const loaderDuration = 1_000;
 
 export function AppPreloader() {
+  const pathname = usePathname();
+
+  return <AppPreloaderScreen key={pathname} />;
+}
+
+function AppPreloaderScreen() {
   const [isVisible, setIsVisible] = useState(true);
   const reducedMotion = usePrefersReducedMotion();
 
