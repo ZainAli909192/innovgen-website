@@ -1,6 +1,8 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { motion } from "motion/react";
+import Link from "next/link";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
 import { Container } from "@/components/ui/container";
@@ -22,6 +24,29 @@ export function HomeHero({
 }: HomeHeroProps) {
   const reducedMotion = usePrefersReducedMotion();
   const titleParts = title.split(/(digital systems)/i);
+  const endMessageIsVisibleRef = useRef(false);
+  const [showEndMessage, setShowEndMessage] = useState(false);
+
+  function setEndMessageVisibility(visible: boolean) {
+    if (visible === endMessageIsVisibleRef.current) return;
+
+    endMessageIsVisibleRef.current = visible;
+    setShowEndMessage(visible);
+  }
+
+  function handleHeroVideoTimeUpdate(
+    event: React.SyntheticEvent<HTMLVideoElement>,
+  ) {
+    if (reducedMotion || !window.matchMedia("(max-width: 767px)").matches) {
+      setEndMessageVisibility(false);
+      return;
+    }
+
+    const { currentTime, duration } = event.currentTarget;
+    if (!Number.isFinite(duration) || duration <= 0) return;
+
+    setEndMessageVisibility(currentTime >= duration - 3 && currentTime < duration);
+  }
 
   return (
     <SceneSection
@@ -57,8 +82,10 @@ export function HomeHero({
           playsInline
           preload="metadata"
           src={heroVideoUrl}
-          className="h-full w-full object-cover object-center"
+          onTimeUpdate={handleHeroVideoTimeUpdate}
+          className="h-full w-full object-cover object-center md:translate-x-[4%] md:scale-[1.04]"
         />
+    
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(255_255_255_/_42%),transparent_65%)]" />
       </motion.div>
 
@@ -66,6 +93,20 @@ export function HomeHero({
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(90deg,rgb(255_255_255_/_92%)_0%,rgb(255_255_255_/_72%)_32%,rgb(255_255_255_/_12%)_67%,transparent_100%),linear-gradient(to_top,rgb(255_255_255_/_82%)_0%,transparent_48%)]"
       />
+
+      <motion.p
+        aria-hidden="true"
+        initial={false}
+        animate={
+          showEndMessage
+            ? { opacity: 1, x: "-50%", y: 0 }
+            : { opacity: 0, x: "-165%", y: -12 }
+        }
+        transition={{ duration: reducedMotion ? 0 : 0.65, ease: entranceEase }}
+        className="pointer-events-none absolute left-1/2 top-[13%] z-30 whitespace-nowrap text-[clamp(1.35rem,7.1vw,1.9rem)] font-semibold leading-none tracking-[-0.06em] text-[var(--color-navy-950)] md:hidden"
+      >
+        Build secure <span className="text-[var(--color-blue-600)]">digital systems</span>
+      </motion.p>
 
       <Container
         size="wide"
@@ -94,9 +135,7 @@ export function HomeHero({
               transition={{ delay: reducedMotion ? 0 : 0.8, duration: reducedMotion ? 0 : 0.8, ease: entranceEase }}
               className="max-w-none whitespace-nowrap text-[clamp(1.05rem,5.4vw,1.4rem)] font-medium leading-none tracking-[-0.055em] text-[var(--color-navy-950)] md:max-w-[12ch] md:whitespace-normal md:text-[clamp(2.5rem,5.5vw,4.5rem)]"
             >
-              <span className="md:hidden">
-                Build secure <span className="text-[var(--color-blue-600)]">digital systems</span>
-              </span>
+              <span className="sr-only md:hidden">Build secure digital systems</span>
               <span className="hidden md:inline">
                 {titleParts.map((part, index) =>
                   part.toLowerCase() === "digital systems" ? (
@@ -109,6 +148,13 @@ export function HomeHero({
                 )}
               </span>
             </motion.h1>
+
+            <Link
+              href="/services"
+              className="mx-auto mt-5 flex min-h-11 w-fit items-center justify-center rounded-full bg-[var(--color-blue-600)] px-6 text-sm font-semibold text-white shadow-[0_12px_24px_rgb(31_111_235_/_22%)] transition-transform duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-blue-700)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-blue-600)] md:hidden"
+            >
+              Explore services
+            </Link>
 
             <motion.p
               initial={reducedMotion ? false : { opacity: 0, y: 16 }}

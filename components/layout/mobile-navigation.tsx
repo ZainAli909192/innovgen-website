@@ -108,8 +108,8 @@ export function MobileNavigation() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.6875rem] font-semibold text-white transition-[color,background-color,box-shadow]",
-                    active && "mobile-nav-active bg-white/14 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)] [text-shadow:0_1px_0_rgb(5_11_24_/_32%)]",
+                    "relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.6875rem] font-semibold text-white/78 transition-[color,background-color,box-shadow]",
+                    active && "mobile-nav-active !text-[var(--color-blue-100)] bg-white/18 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)]",
                   )}
                 >
                   {active ? (
@@ -120,12 +120,12 @@ export function MobileNavigation() {
                         duration: reduceMotion ? 0 : 0.18,
                         ease: [0.22, 1, 0.36, 1],
                       }}
-                      className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-[var(--color-navy-900)]"
+                      className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-[var(--color-blue-100)]"
                     />
                   ) : null}
                   <Icon
                     aria-hidden="true"
-                    className="size-5 fill-current"
+                    className="size-5"
                     strokeWidth={1.8}
                   />
                   <span>{item.label}</span>
@@ -142,14 +142,14 @@ export function MobileNavigation() {
               aria-controls="mobile-more-sheet"
               onClick={() => setIsOpen(true)}
               className={cn(
-                "relative flex min-h-16 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl px-1 text-xs font-semibold text-white transition-[color,background-color,box-shadow]",
-                (moreIsActive || isOpen) && "mobile-nav-active !text-white bg-white/14 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)] [text-shadow:0_1px_0_rgb(5_11_24_/_32%)]",
+                "relative flex min-h-16 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl px-1 text-xs font-semibold text-white/78 transition-[color,background-color,box-shadow]",
+                (moreIsActive || isOpen) && "mobile-nav-active !text-[var(--color-blue-100)] bg-white/18 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)]",
               )}
             >
               {moreIsActive || isOpen ? (
                 <span
                   aria-hidden="true"
-                  className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-[var(--color-navy-900)]"
+                  className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-[var(--color-blue-100)]"
                 />
               ) : null}
               <Ellipsis aria-hidden="true" className="size-6" strokeWidth={2} />
