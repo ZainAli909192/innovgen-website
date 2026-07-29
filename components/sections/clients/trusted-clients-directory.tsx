@@ -68,7 +68,7 @@ export function TrustedClientsDirectory({ variant }: { variant: "home" | "page" 
     return (
       <Section aria-labelledby="trusted-clients-heading" className="relative isolate overflow-hidden bg-white py-16 md:py-24">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_12%,rgb(47_130_245_/_10%),transparent_24rem),radial-gradient(circle_at_90%_80%,rgb(47_130_245_/_7%),transparent_26rem)]" />
-        <Container size="standard" className="relative !max-w-[64rem]">
+        <Container size="standard" className="relative max-w-[90rem] bg-blue-50 p-9 rounded rounded-2xl">
           <motion.div
             initial={reducedMotion ? false : { opacity: 0, y: 24, scale: 0.97 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
