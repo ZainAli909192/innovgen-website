@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
+import { AppPreloader } from "@/components/layout/app-preloader";
 import { Header } from "@/components/layout/header";
 import { MobileNavigation } from "@/components/layout/mobile-navigation";
 import { MotionProvider } from "@/components/providers/motion-provider";
@@ -50,6 +51,7 @@ export default function RootLayout({
       <body className="flex min-h-dvh flex-col">
         <MotionProvider>
           <SmoothScrollProvider>
+            <AppPreloader />
             <ScrollProgressIndicator />
             <a
               href="#main-content"
