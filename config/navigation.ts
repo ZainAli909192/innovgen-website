@@ -63,7 +63,6 @@ export const consultationNavigation = routeNavigation.consultation;
 export const legalNavigation = [
   routeNavigation.privacy,
   routeNavigation.terms,
-  routeNavigation.sitemap,
 ] as const;
 
 export const mobilePrimaryNavigation = [
