@@ -4,8 +4,11 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Mail, MessageSquareText, Phone, Send, UserRound } from "lucide-react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { SuccessPopup } from "@/components/ui/success-popup";
+import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
 const consultationSchema = z.object({
   name: z.string().trim().min(2, "Enter your full name.").max(120),
@@ -19,9 +22,10 @@ type ConsultationValues = z.infer<typeof consultationSchema>;
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
 const fieldClass =
-  "mt-2 min-h-12 w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted/70 transition-colors focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300/20";
+  "mt-2 min-h-14 w-full rounded-xl border border-blue-300/20 bg-navy-950/75 py-3 text-foreground placeholder:text-muted/60 shadow-[inset_0_1px_0_rgb(255_255_255_/_4%)] transition-[border-color,box-shadow,background-color] duration-[var(--duration-standard)] focus:border-blue-300/80 focus:bg-navy-950 focus:outline-blue-300 focus:outline-offset-2 focus:ring-4 focus:ring-blue-500/15";
 
 export function ConsultationForm() {
+  const reducedMotion = usePrefersReducedMotion();
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const {
@@ -66,37 +70,54 @@ export function ConsultationForm() {
         description="Thank you for reaching out. Our team will review your message and get back to you soon."
         onClose={() => setSubmitState("idle")}
       />
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <motion.form
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        initial={reducedMotion ? false : { opacity: 0, y: 18, rotateX: -3 }}
+        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+        transition={{ duration: reducedMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
+        className="relative"
+        style={{ transformPerspective: 1000 }}
+      >
+      <div className="mb-7 flex items-start gap-4 border-b border-blue-300/15 pb-6">
+        <span aria-hidden="true" className="grid size-11 shrink-0 place-items-center rounded-2xl border border-blue-300/25 bg-blue-500/10 text-blue-300 shadow-[0_12px_28px_rgb(21_105_224_/_15%)]">
+          <MessageSquareText className="size-5" />
+        </span>
         <div>
-          <label className="font-semibold" htmlFor="name">Full name <span aria-hidden="true">*</span></label>
-          <input {...register("name")} className={fieldClass} id="name" autoComplete="name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} />
-          {errors.name ? <p id="name-error" className="mt-2 text-sm text-red-300">{errors.name.message}</p> : null}
-        </div>
-        <div>
-          <label className="font-semibold" htmlFor="email">Email <span aria-hidden="true">*</span></label>
-          <input {...register("email")} className={fieldClass} id="email" type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} />
-          {errors.email ? <p id="email-error" className="mt-2 text-sm text-red-300">{errors.email.message}</p> : null}
-        </div>
-        <div>
-          <label className="font-semibold" htmlFor="phone">Phone number <span aria-hidden="true">*</span></label>
-          <input {...register("phone")} className={fieldClass} id="phone" type="tel" autoComplete="tel" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "phone-error" : undefined} />
-          {errors.phone ? <p id="phone-error" className="mt-2 text-sm text-red-300">{errors.phone.message}</p> : null}
-        </div>
-        <div>
-          <label className="font-semibold" htmlFor="subject">Subject <span aria-hidden="true">*</span></label>
-          <input {...register("subject")} className={fieldClass} id="subject" autoComplete="off" aria-invalid={Boolean(errors.subject)} aria-describedby={errors.subject ? "subject-error" : undefined} />
-          {errors.subject ? <p id="subject-error" className="mt-2 text-sm text-red-300">{errors.subject.message}</p> : null}
-        </div>
-        <div className="sm:col-span-2">
-          <label className="font-semibold" htmlFor="message">Message <span aria-hidden="true">*</span></label>
-          <textarea {...register("message")} className={`${fieldClass} min-h-36 resize-y`} id="message" rows={5} aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "message-error" : undefined} />
-          {errors.message ? <p id="message-error" className="mt-2 text-sm text-red-300">{errors.message.message}</p> : null}
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-300">Start a conversation</p>
+          <p className="mt-1 text-sm leading-6 text-muted">Share the essentials and we will prepare the right next step.</p>
         </div>
       </div>
+      <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
+        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reducedMotion ? 0 : 0.08, duration: 0.32 }} className="group rounded-2xl border border-transparent p-2 transition-colors focus-within:border-blue-300/20 focus-within:bg-blue-500/[0.035]">
+          <label className="text-sm font-semibold" htmlFor="name">Full name <span aria-hidden="true">*</span></label>
+          <div className="relative"><UserRound aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-blue-300/80" /><input {...register("name")} className={`${fieldClass} pl-11`} id="name" autoComplete="name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} /></div>
+          {errors.name ? <p id="name-error" className="mt-2 text-sm text-red-300">{errors.name.message}</p> : null}
+        </motion.div>
+        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reducedMotion ? 0 : 0.13, duration: 0.32 }} className="group rounded-2xl border border-transparent p-2 transition-colors focus-within:border-blue-300/20 focus-within:bg-blue-500/[0.035]">
+          <label className="text-sm font-semibold" htmlFor="email">Email <span aria-hidden="true">*</span></label>
+          <div className="relative"><Mail aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-blue-300/80" /><input {...register("email")} className={`${fieldClass} pl-11`} id="email" type="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} /></div>
+          {errors.email ? <p id="email-error" className="mt-2 text-sm text-red-300">{errors.email.message}</p> : null}
+        </motion.div>
+        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reducedMotion ? 0 : 0.18, duration: 0.32 }} className="group rounded-2xl border border-transparent p-2 transition-colors focus-within:border-blue-300/20 focus-within:bg-blue-500/[0.035]">
+          <label className="text-sm font-semibold" htmlFor="phone">Phone number <span aria-hidden="true">*</span></label>
+          <div className="relative"><Phone aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-blue-300/80" /><input {...register("phone")} className={`${fieldClass} pl-11`} id="phone" type="tel" autoComplete="tel" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "phone-error" : undefined} /></div>
+          {errors.phone ? <p id="phone-error" className="mt-2 text-sm text-red-300">{errors.phone.message}</p> : null}
+        </motion.div>
+        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reducedMotion ? 0 : 0.23, duration: 0.32 }} className="group rounded-2xl border border-transparent p-2 transition-colors focus-within:border-blue-300/20 focus-within:bg-blue-500/[0.035]">
+          <label className="text-sm font-semibold" htmlFor="subject">Subject <span aria-hidden="true">*</span></label>
+          <div className="relative"><MessageSquareText aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-blue-300/80" /><input {...register("subject")} className={`${fieldClass} pl-11`} id="subject" autoComplete="off" aria-invalid={Boolean(errors.subject)} aria-describedby={errors.subject ? "subject-error" : undefined} /></div>
+          {errors.subject ? <p id="subject-error" className="mt-2 text-sm text-red-300">{errors.subject.message}</p> : null}
+        </motion.div>
+        <motion.div initial={reducedMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reducedMotion ? 0 : 0.28, duration: 0.32 }} className="group rounded-2xl border border-transparent p-2 transition-colors focus-within:border-blue-300/20 focus-within:bg-blue-500/[0.035] sm:col-span-2">
+          <label className="text-sm font-semibold" htmlFor="message">Message <span aria-hidden="true">*</span></label>
+          <div className="relative"><MessageSquareText aria-hidden="true" className="pointer-events-none absolute left-4 top-5 size-4 text-blue-300/80" /><textarea {...register("message")} className={`${fieldClass} min-h-40 resize-y pl-11`} id="message" rows={5} aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "message-error" : undefined} /></div>
+          {errors.message ? <p id="message-error" className="mt-2 text-sm text-red-300">{errors.message.message}</p> : null}
+        </motion.div>
+      </div>
       {submitState === "error" ? <p role="alert" className="mt-5 rounded-lg border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">{submitMessage}</p> : null}
-      <Button type="submit" size="lg" className="mt-7 w-full sm:w-auto" loading={submitState === "submitting"} loadingLabel="Sending enquiry">Submit enquiry</Button>
-      </form>
+      <Button type="submit" size="lg" className="mt-7 w-full bg-blue-600 text-white shadow-[0_16px_32px_rgb(21_105_224_/_28%)] hover:bg-blue-500 sm:w-auto" loading={submitState === "submitting"} loadingLabel="Sending enquiry">Submit enquiry <Send aria-hidden="true" className="size-4" /></Button>
+      </motion.form>
     </>
   );
 }

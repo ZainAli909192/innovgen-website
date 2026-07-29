@@ -284,10 +284,12 @@ export function PartnerOrbitShowcase() {
         </motion.header>
 
         <div className="mt-11 grid gap-6 lg:mt-14 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-9">
-          <div className="lg:sticky lg:top-28 lg:self-start">
+          <div className="order-last lg:order-none lg:sticky lg:top-28 lg:self-start">
             <PartnerDetails partner={activePartner} />
           </div>
-          <PartnerTree activeIndex={activeIndex} onSelect={setActiveIndex} />
+          <div className="order-first lg:order-none">
+            <PartnerTree activeIndex={activeIndex} onSelect={setActiveIndex} />
+          </div>
         </div>
 
         <motion.dl

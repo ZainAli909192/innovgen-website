@@ -44,7 +44,11 @@ export default function ConsultationPage() {
               </div>
             </Reveal>
             <Reveal preset="spatial" once={false} amount={0.24} className="[perspective:1200px]">
-              <Card className="[transform-style:preserve-3d]"><ConsultationForm /></Card>
+              <Card className="relative overflow-hidden border-blue-300/30 bg-[linear-gradient(145deg,rgb(16_48_83_/_96%),rgb(5_15_31_/_99%))] p-4 shadow-[inset_0_1px_0_rgb(255_255_255_/_12%),0_30px_80px_rgb(0_0_0_/_28%)] [transform-style:preserve-3d] sm:p-7">
+                <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full border border-blue-300/20 bg-blue-500/[0.08]" />
+                <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 size-56 rounded-full border border-accent/20 bg-accent/[0.05]" />
+                <div className="relative"><ConsultationForm /></div>
+              </Card>
             </Reveal>
           </div>
         </Container>
