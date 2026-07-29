@@ -212,7 +212,7 @@ export function MobileNavigation() {
                         className={cn(
                           "flex min-h-12 items-center rounded-lg border border-border bg-background/40 px-4 font-semibold text-muted",
                           isActiveRoute(pathname, item.href) &&
-                            "mobile-nav-active border-[rgb(228_196_119_/_40%)]",
+                            "mobile-nav-active !border-blue-300/60 !bg-blue-500/15 !text-foreground shadow-[inset_0_1px_0_rgb(255_255_255_/_12%)]",
                         )}
                       >
                         {item.label}
