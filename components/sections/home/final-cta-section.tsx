@@ -127,12 +127,10 @@ export function FinalCtaSection({
               Share your next technology challenge with InnovGen. Together, we&apos;ll turn it into a secure, scalable way forward.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-             
-              <Button href="/consultation" variant="secondary" size="lg" className=" border-blue-300/70 bg-white/65 text-[var(--color-navy-900)] shadow-[inset_0_1px_0_rgb(255_255_255_/_92%),0_10px_24px_rgb(23_105_224_/_8%)] backdrop-blur-md   hover:text-white hover:shadow-[inset_0_1px_0_rgb(255_255_255_/_92%),0_10px_24px_rgb(23_105_224_/_12%)] focus-visible:outline-blue-500/70 focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white/70 dark:border-blue-300/50 dark:bg-white/20 dark:text-white dark:shadow-[inset_0_1px_0_rgb(255_255_255_/_32%),0_10px_24px_rgb(23_105_224_/_8%)]  dark:hover:text-white  ">
-               Let Go digital
-                                <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
-
-              </Button> 
+              <Button href="/consultation" variant="secondary" size="lg" className="group border-blue-300/70 bg-[var(--color-navy-800)] !text-white shadow-[0_10px_24px_rgb(23_105_224_/_18%)] transition-[transform,color,background-color,box-shadow] hover:-translate-y-0.5 hover:!bg-[var(--color-navy-900)] hover:!text-white hover:shadow-[0_16px_30px_rgb(23_105_224_/_24%)] focus-visible:outline-blue-500/70 focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white/70">
+                Lets Go digital
+                <ArrowRight aria-hidden="true" className="size-4 text-white transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
           </motion.div>
 
