@@ -4,9 +4,9 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Mail, MessageSquareText, Phone, Send, UserRound } from "lucide-react";
+import { Mail, MessageSquareText, Phone, UserRound } from "lucide-react";
 import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { LiquidSubmitButton } from "@/components/forms/liquid-submit-button";
 import { SuccessPopup } from "@/components/ui/success-popup";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
@@ -19,7 +19,7 @@ const consultationSchema = z.object({
 });
 
 type ConsultationValues = z.infer<typeof consultationSchema>;
-type SubmitState = "idle" | "submitting" | "success" | "error";
+type SubmitState = "idle" | "submitting" | "completing" | "success" | "error";
 
 const fieldClass =
   "mt-2 min-h-14 w-full rounded-xl border border-blue-300/20 bg-navy-950/75 py-3 text-foreground placeholder:text-muted/60 shadow-[inset_0_1px_0_rgb(255_255_255_/_4%)] transition-[border-color,box-shadow,background-color] duration-[var(--duration-standard)] focus:border-blue-300/80 focus:bg-navy-950 focus:outline-blue-300 focus:outline-offset-2 focus:ring-4 focus:ring-blue-500/15";
@@ -55,6 +55,10 @@ export function ConsultationForm() {
       }
 
       reset();
+      setSubmitState("completing");
+      await new Promise((resolve) =>
+        window.setTimeout(resolve, reducedMotion ? 120 : 900),
+      );
       setSubmitState("success");
     } catch (error) {
       setSubmitState("error");
@@ -116,7 +120,15 @@ export function ConsultationForm() {
         </motion.div>
       </div>
       {submitState === "error" ? <p role="alert" className="mt-5 rounded-lg border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">{submitMessage}</p> : null}
-      <Button type="submit" size="lg" className="mt-7 w-full bg-blue-600 text-white shadow-[0_16px_32px_rgb(21_105_224_/_28%)] hover:bg-blue-500 sm:w-auto" loading={submitState === "submitting"} loadingLabel="Sending enquiry">Submit enquiry <Send aria-hidden="true" className="size-4" /></Button>
+      <LiquidSubmitButton
+        state={
+          submitState === "submitting"
+            ? "loading"
+            : submitState === "completing" || submitState === "success"
+              ? "complete"
+              : "idle"
+        }
+      />
       </motion.form>
     </>
   );
