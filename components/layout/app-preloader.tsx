@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
-const loaderDuration = 7_000;
+const loaderDuration = 6_000;
 const handoffDuration = 450;
 const loaderEase = [0.22, 1, 0.36, 1] as const;
 const loaderWords = ["MODERN", "ICONIC", "AI", "TECHNOLOGY", "PREMIUM" , "INNOVATIVE"];
