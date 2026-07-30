@@ -2,18 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { usePathname } from "next/navigation";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
-const loaderDuration = 3_000;
-const handoffDuration = 700;
+const loaderDuration = 1_200;
+const handoffDuration = 450;
 const loaderEase = [0.22, 1, 0.36, 1] as const;
-const loaderWords = ["MODERN", "ICONIC", "AI", "TECHNOLOGY", "PREMIUM" , "INNOVATIVE", "FUTURE", "SUSTAINABLE", "EXPERIENCE", "INNOVGEN"];
+const loaderWords = ["MODERN", "ICONIC", "AI", "TECHNOLOGY", "PREMIUM" , "INNOVATIVE"];
  
 export function AppPreloader() {
-  const pathname = usePathname();
-
-  return <AppPreloaderScreen key={pathname} />;
+  return <AppPreloaderScreen />;
 }
 
 function AppPreloaderScreen() {
@@ -31,7 +28,7 @@ function AppPreloaderScreen() {
 
     document.body.classList.add("preloader-active");
     document.body.style.overflow = "hidden";
-    document.body.style.backgroundColor = "#eaf4ff";
+    document.body.style.backgroundColor = "#0d72de";
     videos.forEach((video) => video.pause());
 
     const finishId = window.setTimeout(() => {
@@ -80,7 +77,7 @@ function AppPreloaderScreen() {
           role="status"
           initial={reducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1, y: isCompleting && !reducedMotion ? "-100%" : 0 }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, transition: { duration: 0 } }}
           transition={{ duration: reducedMotion ? 0 : handoffDuration / 1000, ease: loaderEase }}
           className="fixed inset-0 z-[200] grid place-items-center bg-[var(--color-blue-600)] p-6 will-change-transform"
         >
@@ -110,14 +107,15 @@ function AppPreloaderScreen() {
                   > 
                     {loaderWords[activeWordIndex]}
                   </motion.p>
+                
+
                 </AnimatePresence>
               </div>
 
             </motion.div>
 
           </div>
-          <span className="sr-only">Loading InnovGen</span>
-
+  
         </motion.div>
       ) : null}
     </AnimatePresence>
