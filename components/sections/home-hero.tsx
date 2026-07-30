@@ -106,17 +106,17 @@ function MobileClientCarousel({ reducedMotion }: { reducedMotion: boolean }) {
       <div
         ref={trackRef}
         aria-label="Selected InnovGen client logos"
-        className="flex h-[8.5rem] snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-[calc(50%-4.75rem)] pb-3 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex h-[8.5rem] gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-[calc(50%-4.75rem)] pb-3 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {cards.map((image, index) => (
-          <div key={`${image}-${index}`} className="grid h-[7rem] w-[9.5rem] shrink-0 snap-center place-items-center rounded-2xl border border-blue-200/30 bg-[#0a1c30]/80 p-4 shadow-[0_12px_28px_rgb(2_13_35_/_30%)]">
+          <div key={`${image}-${index}`} className="grid h-[7rem] w-[9.5rem] shrink-0 place-items-center rounded-2xl border border-blue-200/30 bg-[#0a1c30]/80 p-4 shadow-[0_12px_28px_rgb(2_13_35_/_30%)]">
             <span className="relative block h-12 w-28">
               <Image src={image} alt="" fill sizes="112px" className="object-contain" />
             </span>
           </div>
         ))}
       </div>
-      <div className="mt-2 flex items-center justify-center gap-3" aria-label="Client logo controls">
+      <div className="mt-2 flex items-center justify-center gap-3" role="group" aria-label="Client logo controls">
         <button
           type="button"
           aria-label="Show previous client logo"
