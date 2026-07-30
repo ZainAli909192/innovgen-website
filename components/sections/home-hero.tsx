@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { motion } from "motion/react";
@@ -16,8 +17,51 @@ type HomeHeroProps = {
 
 const heroEase = [0.16, 1, 0.3, 1] as const;
 
+const mobileClients = [
+  "/clients%20logos/McDonalds_Logo.png",
+  "/clients%20logos/cms.png",
+  "/clients%20logos/rolls_royals.png",
+  "/clients%20logos/fantco-logo.png",
+] as const;
+
+function useMobileViewport() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 1023px)");
+    const update = () => setIsMobile(query.matches);
+
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return isMobile;
+}
+
+function MobileClientCarousel({ reducedMotion }: { reducedMotion: boolean }) {
+  const cards = [...mobileClients, ...mobileClients];
+
+  return (
+    <div aria-hidden="true" className="relative mt-8 h-[8.5rem] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] lg:hidden">
+      <motion.div
+        className="absolute left-0 top-1/2 flex w-max -translate-y-1/2 gap-3 pr-3 will-change-transform"
+        animate={reducedMotion ? { x: 0 } : { x: ["-50%", "0%"] }}
+        transition={reducedMotion ? { duration: 0 } : { duration: 20, ease: "linear", repeat: Infinity }}
+      >
+        {cards.map((image, index) => (
+          <div key={`${image}-${index}`} className="grid h-[7rem] w-[9.5rem] shrink-0 place-items-center rounded-2xl border border-blue-200/30 bg-[#0a1c30]/80 p-4 shadow-[0_12px_28px_rgb(2_13_35_/_30%)]">
+            <div className="h-full w-full bg-contain bg-center bg-no-repeat" style={{ backgroundImage: `url('${image}')` }} />
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
 export function HomeHero({ description, eyebrow }: HomeHeroProps) {
   const reducedMotion = usePrefersReducedMotion();
+  const isMobile = useMobileViewport();
 
   return (
     <SceneSection
@@ -25,10 +69,12 @@ export function HomeHero({ description, eyebrow }: HomeHeroProps) {
       className="relative isolate min-h-[calc(100dvh-5rem)] overflow-hidden bg-[#071423] text-white"
     >
 
-      <div
+      <motion.div
         aria-hidden="true"
         className="absolute inset-0 bg-cover bg-center opacity-45"
         style={{ backgroundImage: "url('/home_hero_bg.jpg')" }}
+        animate={isMobile && !reducedMotion ? { scale: [1, 1.035, 1] } : { scale: 1 }}
+        transition={isMobile && !reducedMotion ? { duration: 7, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
       />
       <div aria-hidden="true" className="absolute inset-0 bg-[#071423]/42" />
       <div aria-hidden="true" className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgb(87_154_239_/_8%)_1px,transparent_1px),linear-gradient(90deg,rgb(87_154_239_/_8%)_1px,transparent_1px)] [background-size:54px_54px]" />
@@ -37,8 +83,8 @@ export function HomeHero({ description, eyebrow }: HomeHeroProps) {
 
       <Container size="wide" className="relative z-10 grid min-h-[calc(100dvh-5rem)] items-center gap-8 py-12 pb-16 lg:grid-cols-[minmax(0,45%)_minmax(0,55%)] lg:py-16">
         <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={reducedMotion ? false : { opacity: 0, x: -32, y: isMobile ? 0 : 30 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
           transition={{ duration: reducedMotion ? 0 : 0.7, ease: heroEase }}
           className="max-w-xl"
         >
@@ -62,6 +108,7 @@ export function HomeHero({ description, eyebrow }: HomeHeroProps) {
             </Link>
           </div>
           <p className="mt-6 hidden items-center gap-2 text-sm text-blue-100/72 lg:flex"><Check className="size-4 text-blue-300" aria-hidden="true" /> Trusted by enterprises across UAE</p>
+          <MobileClientCarousel reducedMotion={reducedMotion} />
         </motion.div>
 
         <motion.div
