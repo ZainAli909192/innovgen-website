@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Check, Cloud, Database, Network, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
@@ -58,8 +58,34 @@ const industries: readonly Industry[] = [
 const heroEase = [0.16, 1, 0.3, 1] as const;
 
 function InfrastructureFlow({ reducedMotion }: { reducedMotion: boolean }) {
+  const mobileCards = [...industries.slice(0, 4), ...industries.slice(0, 4)];
+
   return (
-    <div className="relative mx-auto h-[30rem] w-full max-w-[46rem] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_2%,black_90%,transparent)] sm:h-[34rem] lg:h-auto lg:flex-1">
+    <div className="relative mx-auto w-full max-w-[46rem] overflow-hidden lg:h-auto lg:flex-1">
+      <div className="relative h-[12.5rem] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)] sm:h-[14rem] lg:hidden">
+        <motion.div
+          aria-hidden="true"
+          className="absolute left-0 top-1/2 flex w-max -translate-y-1/2 gap-4 pr-4 will-change-transform"
+          animate={reducedMotion ? { x: 0 } : { x: ["-50%", "0%"] }}
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : { duration: 22, ease: "linear", repeat: Infinity, repeatType: "loop" }
+          }
+        >
+          {mobileCards.map((industry, index) => (
+            <div
+              key={`${industry.id}-${index}`}
+              className="relative h-[10.5rem] w-[15rem] shrink-0 overflow-hidden rounded-[1.35rem] border border-blue-200/25 bg-[#0a1c30] shadow-[0_18px_38px_rgb(0_0_0_/_30%)] sm:h-[12rem] sm:w-[17.5rem]"
+            >
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${industry.image}')` }} />
+              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgb(4_15_29_/_15%),rgb(4_15_29_/_70%))]" />
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="relative hidden h-full overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_2%,black_90%,transparent)] lg:block">
       <div aria-hidden="true" className="absolute left-[44%] top-0 h-full w-px bg-[linear-gradient(transparent,rgb(94_174_255_/_30%),transparent)]" />
       {industries.slice(0, 3).map((industry, index) => (
         <motion.article
@@ -93,6 +119,7 @@ function InfrastructureFlow({ reducedMotion }: { reducedMotion: boolean }) {
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgb(4_15_29_/_6%),rgb(4_15_29_/_15%)_40%,rgb(4_15_29_/_92%))]" />
         </motion.article>
       ))}
+      </div>
     </div>
   );
 }
