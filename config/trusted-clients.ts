@@ -40,7 +40,7 @@ export const trustedClientGroups = [
       { name: "Abu Dhabi Indian School", logoPath: "/clients%20logos/adis-new-logo-3.webp" },
       { name: "BITS Pilani Dubai Campus", logoPath: "/clients%20logos/bits-dubai-campus-color-1.png.webp" },
       { name: "University of Khorfakkan" },
-      { name: "University of Kalba" },
+      { name: "University of Kalba", logoPath: "/clients%20logos/kalaba.png" },
       { name: "Arab Maritime Academy" },
     ],
   },
@@ -72,7 +72,7 @@ export const trustedClientGroups = [
       { name: "GMG" },
       { name: "Al Ghurair Iron & Steel (Al Ghallaf)" },
       { name: "Aditya Birla Star Cement", logoPath: "/clients%20logos/adita.webp" },
-      { name: "Menasco" },
+      { name: "Menasco" , logoPath: "/clients%20logos/menasco.png" },
     
       { name: "Fantco", logoPath: "/clients%20logos/fantco-logo.png" },
       { name: "DuPod" },
@@ -92,9 +92,10 @@ export const trustedClientGroups = [
     title: "Retail & Consumer",
     clients: [
       { name: "Choithrams" },
-      { name: "Aswaaq", logoPath: "/clients%20logos/aswaaq-logo.png" },
       { name: "Kiko Milano" , logoPath: "/clients%20logos/kiko.png" },
       { name: "McDonald's", logoPath: "/clients%20logos/McDonalds_Logo.png" },
+       { name: "Aswaaq", logoPath: "/clients%20logos/aswaaq-logo.png" },
+ 
     ],        
   },
   {
@@ -109,7 +110,7 @@ export const trustedClientGroups = [
     title: "Printing & Media",
     clients: [
       { name: "MASAR Printing & Publishing" , logoPath: "/clients%20logos/media.png" },
-      { name: "CMS Printing Press" },
+      { name: "CMS Printing Press" , logoPath: "/clients%20logos/cms.png" },
       { name: "Seed Group" },
     ],
   },
