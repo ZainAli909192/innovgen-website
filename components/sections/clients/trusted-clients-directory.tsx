@@ -127,7 +127,7 @@ export function TrustedClientsDirectory({ variant }: { variant: "home" | "page" 
               <h2 id="trusted-clients-heading" className="mt-4 text-[clamp(2rem,3.2vw,3rem)] font-semibold leading-[1.04] tracking-[-0.035em] text-[var(--color-navy-900)]">Organizations that count on InnovGen.</h2>
             </div>
             <Link
-              href="/clients"
+              href="/projects"
               className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-[var(--color-blue-600)] px-5 font-semibold text-white shadow-[0_10px_22px_rgb(47_130_245_/_24%)] transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-blue-700)] hover:shadow-[0_14px_28px_rgb(47_130_245_/_30%)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
             >
               View all clients

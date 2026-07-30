@@ -94,6 +94,7 @@ function AppPreloaderScreen() {
             <motion.div
               animate={isCompleting ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: reducedMotion ? 0 : handoffDuration / 1000, ease: loaderEase }}
+              className="flex flex-col items-center"
             >
               <div className="flex h-28 items-center justify-center overflow-hidden px-4">
                 <AnimatePresence initial={!reducedMotion} mode="wait">
@@ -112,6 +113,29 @@ function AppPreloaderScreen() {
                 </AnimatePresence>
               </div>
 
+              <motion.video
+                aria-hidden="true"
+                autoPlay
+                className="mt-3 h-auto w-[10.5rem] max-w-full object-contain sm:mt-4 sm:w-48"
+                data-preloader-video
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                animate={
+                  reducedMotion || isCompleting
+                    ? { opacity: isCompleting ? 0 : 1, scale: isCompleting ? 0.96 : 1 }
+                    : { opacity: 1, y: [0, -4, 0], scale: 1 }
+                }
+                initial={reducedMotion ? false : { opacity: 0, scale: 0.96 }}
+                transition={
+                  isCompleting || reducedMotion
+                    ? { duration: reducedMotion ? 0 : handoffDuration / 1000, ease: loaderEase }
+                    : { opacity: { duration: 0.35, ease: loaderEase }, y: { duration: 2.4, repeat: Infinity, ease: "easeInOut" } }
+                }
+              >
+                <source src="/logo_video.mp4" type="video/mp4" />
+              </motion.video>
             </motion.div>
 
           </div>
