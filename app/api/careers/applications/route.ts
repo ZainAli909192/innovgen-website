@@ -4,7 +4,7 @@ import { z } from "zod";
 export const runtime = "nodejs";
 
 const MAX_CV_SIZE = 2 * 1024 * 1024;
-const recipient = "nayef@innovgen.com";
+const recipient = process.env.CAREERS_EMAIL_TO;
 
 const applicationSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
@@ -26,7 +26,7 @@ function escapeHtml(value: string) {
 }
 
 export async function POST(request: Request) {
-  if (!process.env.RESEND_API_KEY || !process.env.CAREERS_EMAIL_FROM) {
+  if (!process.env.RESEND_API_KEY || !process.env.CAREERS_EMAIL_FROM || !recipient) {
     return Response.json(
       { message: "Applications are temporarily unavailable. Please try again later." },
       { status: 503 },
