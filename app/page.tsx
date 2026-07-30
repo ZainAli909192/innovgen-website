@@ -8,12 +8,10 @@ export const metadata = createMetadata(pages.home.seo, "/");
 export default function HomePage() {
   return (
     <>
-    <main style={{ padding: "40px", color: "white" }}>
-      <h1>Website is working</h1>
-    </main>
+   
  
-      {/* <JsonLd data={organizationSchema()} />
-      <MarketingPage heroSceneId="home-hero" page={pages.home} /> */}
+      <JsonLd data={organizationSchema()} />
+      <MarketingPage heroSceneId="home-hero" page={pages.home} />
     </>
   );
 }
