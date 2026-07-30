@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { motion } from "motion/react";
 import { InfrastructureScrollObject } from "@/components/motion/infrastructure-scroll-object";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
@@ -40,21 +41,70 @@ function useMobileViewport() {
 }
 
 function MobileClientCarousel({ reducedMotion }: { reducedMotion: boolean }) {
-  const cards = [...mobileClients, ...mobileClients];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+  const cards = [...mobileClients, ...mobileClients, ...mobileClients];
+
+  const move = useCallback((direction: -1 | 1) => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const card = track.firstElementChild as HTMLElement | null;
+    const gap = 12;
+    const step = (card?.offsetWidth ?? 152) + gap;
+
+    track.scrollBy({
+      left: direction * step,
+      behavior: reducedMotion ? "auto" : "smooth",
+    });
+  }, [reducedMotion]);
+
+  useEffect(() => {
+    if (reducedMotion || paused) return;
+
+    const interval = window.setInterval(() => move(1), 4000);
+    return () => window.clearInterval(interval);
+  }, [move, paused, reducedMotion]);
 
   return (
-    <div aria-hidden="true" className="relative mt-8 h-[8.5rem] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] lg:hidden">
-      <motion.div
-        className="absolute left-0 top-1/2 flex w-max -translate-y-1/2 gap-3 pr-3 will-change-transform"
-        animate={reducedMotion ? { x: 0 } : { x: ["-50%", "0%"] }}
-        transition={reducedMotion ? { duration: 0 } : { duration: 20, ease: "linear", repeat: Infinity }}
+    <div
+      className="relative mt-8 lg:hidden"
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+    >
+      <div
+        ref={trackRef}
+        aria-label="Selected InnovGen client logos"
+        className="flex h-[8.5rem] snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-[calc(50%-4.75rem)] pb-3 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {cards.map((image, index) => (
-          <div key={`${image}-${index}`} className="grid h-[7rem] w-[9.5rem] shrink-0 place-items-center rounded-2xl border border-blue-200/30 bg-[#0a1c30]/80 p-4 shadow-[0_12px_28px_rgb(2_13_35_/_30%)]">
-            <div className="h-full w-full bg-contain bg-center bg-no-repeat" style={{ backgroundImage: `url('${image}')` }} />
+          <div key={`${image}-${index}`} className="grid h-[7rem] w-[9.5rem] shrink-0 snap-center place-items-center rounded-2xl border border-blue-200/30 bg-[#0a1c30]/80 p-4 shadow-[0_12px_28px_rgb(2_13_35_/_30%)]">
+            <span className="relative block h-12 w-28">
+              <Image src={image} alt="" fill sizes="112px" className="object-contain" />
+            </span>
           </div>
         ))}
-      </motion.div>
+      </div>
+      <div className="mt-2 flex items-center justify-center gap-3" aria-label="Client logo controls">
+        <button
+          type="button"
+          aria-label="Show previous client logo"
+          onClick={() => move(-1)}
+          className="grid size-11 place-items-center rounded-full border border-blue-200/35 bg-navy-900/85 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)] transition hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200"
+        >
+          <ArrowLeft className="size-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          aria-label="Show next client logo"
+          onClick={() => move(1)}
+          className="grid size-11 place-items-center rounded-full border border-blue-200/35 bg-navy-900/85 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)] transition hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200"
+        >
+          <ArrowRight className="size-5" aria-hidden="true" />
+        </button>
+      </div>
     </div>
   );
 }
