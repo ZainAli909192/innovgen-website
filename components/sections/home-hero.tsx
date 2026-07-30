@@ -42,12 +42,17 @@ function useMobileViewport() {
 
 function MobileClientCarousel({ reducedMotion }: { reducedMotion: boolean }) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<number | null>(null);
+  const resumeTimerRef = useRef<number | null>(null);
   const [paused, setPaused] = useState(false);
   const cards = [...mobileClients, ...mobileClients, ...mobileClients];
 
   const move = useCallback((direction: -1 | 1) => {
     const track = trackRef.current;
     if (!track) return;
+
+    setPaused(true);
+    if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
 
     const card = track.firstElementChild as HTMLElement | null;
     const gap = 12;
@@ -57,14 +62,38 @@ function MobileClientCarousel({ reducedMotion }: { reducedMotion: boolean }) {
       left: direction * step,
       behavior: reducedMotion ? "auto" : "smooth",
     });
+
+    resumeTimerRef.current = window.setTimeout(() => setPaused(false), reducedMotion ? 0 : 520);
   }, [reducedMotion]);
 
   useEffect(() => {
     if (reducedMotion || paused) return;
 
-    const interval = window.setInterval(() => move(1), 4000);
-    return () => window.clearInterval(interval);
-  }, [move, paused, reducedMotion]);
+    const track = trackRef.current;
+    if (!track) return;
+
+    const groupWidth = track.scrollWidth / 3;
+    if (track.scrollLeft < groupWidth - 2) track.scrollLeft = groupWidth;
+
+    let previous = performance.now();
+    const advance = (now: number) => {
+      const elapsed = now - previous;
+      previous = now;
+      track.scrollLeft += elapsed * 0.018;
+
+      if (track.scrollLeft >= groupWidth * 2) {
+        track.scrollLeft -= groupWidth;
+      }
+
+      frameRef.current = window.requestAnimationFrame(advance);
+    };
+
+    frameRef.current = window.requestAnimationFrame(advance);
+    return () => {
+      if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
+      if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
+    };
+  }, [paused, reducedMotion]);
 
   return (
     <div
@@ -150,7 +179,7 @@ export function HomeHero({ description, eyebrow }: HomeHeroProps) {
             {description}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/consultation" className="inline-flex min-h-12 items-center gap-3 rounded-full bg-[var(--color-blue-600)] px-5 text-sm font-semibold text-white shadow-[0_14px_32px_rgb(31_111_235_/_28%)] transition hover:-translate-y-0.5 hover:bg-[var(--color-blue-500)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-300">
+            <Link href="/consultation" className="hidden min-h-12 items-center gap-3 rounded-full bg-[var(--color-blue-600)] px-5 text-sm font-semibold text-white shadow-[0_14px_32px_rgb(31_111_235_/_28%)] transition hover:-translate-y-0.5 hover:bg-[var(--color-blue-500)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-300 lg:inline-flex">
               Get Free Consultation <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
             <Link href="/services" className="inline-flex min-h-12 items-center gap-3 rounded-full border border-blue-200/30 bg-white/[0.045] px-5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-blue-200/55 hover:bg-white/[0.09] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-300">
