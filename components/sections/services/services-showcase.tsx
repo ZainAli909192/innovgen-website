@@ -1,14 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import {
   Activity,
   ArrowUpRight,
   Building2,
-  ChevronLeft,
-  ChevronRight,
   CloudCog,
   Database,
   Factory,
@@ -18,17 +15,19 @@ import {
   Network,
   ShieldCheck,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { useMobileLayout } from "@/hooks/use-mobile-layout";
+import { LegacyMobileServices } from "./legacy-mobile-services";
 import {
   serviceCategories,
   serviceImageByIcon,
   type ServiceCategory,
   type ServiceIconKey,
 } from "@/config/service-categories";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 const icons: Record<ServiceIconKey, LucideIcon> = {
   analytics: Activity,
@@ -45,7 +44,17 @@ const icons: Record<ServiceIconKey, LucideIcon> = {
   solutions: Building2,
 };
 
-const cardPlacement = ["", "", "", "", "", "", "", "", "", "", "", ""] as const;
+const collagePlacement = [
+  "col-span-7 row-span-2 min-h-[15.5rem] sm:col-span-6 sm:min-h-[21rem]",
+  "col-span-5 min-h-[7.5rem] sm:col-span-3 sm:min-h-0",
+  "col-span-5 min-h-[7.5rem] sm:col-span-3 sm:min-h-0",
+] as const;
+
+const collageEntrance = [
+  { x: -48, y: 34, rotate: -4 },
+  { x: 44, y: -26, rotate: 4 },
+  { x: 54, y: 28, rotate: 3 },
+] as const;
 
 function ServiceIcon({ icon }: { icon: ServiceIconKey }) {
   if (icon === "microsoft") {
@@ -63,336 +72,163 @@ function ServiceIcon({ icon }: { icon: ServiceIconKey }) {
   return <Icon aria-hidden="true" className="size-5" strokeWidth={1.7} />;
 }
 
-function ServiceCard({
-  index,
-  service,
-}: {
-  index: number;
-  service: ServiceCategory["services"][number];
-}) {
+function EditorialCollage({ category }: { category: ServiceCategory }) {
   const reducedMotion = usePrefersReducedMotion();
-  return (
-    <motion.li
-      initial={
-        reducedMotion
-          ? false
-          : { opacity: 0, y: 28, rotateY: index % 2 ? 5 : -5, scale: 0.94 }
-      }
-      whileInView={{ opacity: 1, y: 0, rotateY: 0, scale: 1 }}
-      viewport={{ once: false, amount: 0.2 }}
-      transition={{
-        duration: reducedMotion ? 0 : 0.46,
-        delay: reducedMotion ? 0 : Math.min(index * 0.035, 0.22),
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      style={{ transformPerspective: 1100 }}
-      className={cardPlacement[index % cardPlacement.length]}
-    >
-      <article
-        className="group relative flex h-full min-h-[27rem] flex-col overflow-hidden rounded-[1.25rem] border border-blue-300/30 bg-surface p-3 shadow-xl transition-[transform,border-color,box-shadow] duration-[var(--duration-standard)] hover:-translate-y-1 hover:border-accent/55 hover:shadow-2xl motion-reduce:transform-none sm:min-h-[29rem] sm:p-7 lg:min-h-[30rem]"
-      >
-        <Image
-          src={serviceImageByIcon[service.icon]}
-          alt=""
-          fill
-          sizes="(max-width: 767px) 50vw, (max-width: 1023px) 48vw, 43vw"
-          className="object-cover object-center opacity-84 transition-opacity duration-500 group-hover:opacity-95"
-        />
-        <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-navy-950)_16%,transparent)_0%,color-mix(in_srgb,var(--color-navy-950)_42%,transparent)_36%,var(--color-navy-950)_100%)]" />
-        <span className="relative grid size-11 place-items-center rounded-2xl border border-accent/40 bg-[color-mix(in_srgb,var(--color-navy-950)_76%,transparent)] text-accent shadow-lg">
-          <ServiceIcon icon={service.icon} />
-        </span>
-        <div className="relative mt-auto rounded-2xl p-3 backdrop-blur-[2px]">
-          <h3 className="text-xl font-semibold leading-[1.1] sm:text-2xl lg:text-[1.7rem]">
-            {service.title}
-          </h3>
-          <p className="mt-3 max-w-[34ch] text-sm font-medium leading-6 text-blue-100 sm:text-base lg:text-[1.0625rem] lg:leading-7">
-            {service.description}
-          </p>
-        </div>
-        <Button
-          href="/consultation"
-          variant="secondary"
-          size="sm"
-          className="group/button mt-5 w-fit border-blue-300/40 bg-[color-mix(in_srgb,var(--color-navy-950)_65%,transparent)] text-blue-100 hover:border-accent/55 hover:bg-accent/15 hover:text-accent"
-        >
-          Let&apos;s discuss
-          <ArrowUpRight
-            aria-hidden="true"
-            className="size-4 transition-transform duration-[var(--duration-fast)] group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5"
-          />
-        </Button>
-      </article>
-    </motion.li>
-  );
-}
-
-function MobileServiceWheel({ category }: { category: ServiceCategory }) {
-  const reducedMotion = usePrefersReducedMotion();
-  const isMobile = useMobileLayout();
-  const wheelRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const serviceCount = category.services.length;
-  const activeService = category.services[activeIndex];
-  const step = 360 / serviceCount;
-
-  useEffect(() => {
-    const element = wheelRef.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.3 },
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (reducedMotion || !isVisible) return;
-
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % serviceCount);
-    }, 2000);
-
-    return () => window.clearInterval(timer);
-  }, [isVisible, reducedMotion, serviceCount]);
-
-  function selectService(index: number) {
-    setActiveIndex((index + serviceCount) % serviceCount);
-  }
+  const visualServices = category.services.slice(0, 3);
 
   return (
-    <motion.div
-      ref={wheelRef}
-      initial={reducedMotion ? false : isMobile ? { opacity: 0, x: 100 } : { opacity: 0, y: 34, rotateX: 12, scale: 0.9 }}
-      whileInView={{ opacity: 1, x: 0, y: 0, rotateX: 0, scale: 1 }}
-      viewport={{ once: false, amount: 0.25 }}
-      transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
-      style={{ transformPerspective: 1000 }}
-      className="relative mx-auto mt-10 max-w-[25rem] md:hidden"
-    >
-      <div className="relative rounded-[2.25rem] border border-blue-200/80 bg-white/55 p-3 shadow-[0_18px_50px_rgb(26_93_175_/_10%),inset_0_1px_0_rgb(255_255_255_/_92%)]">
-        <div className="relative aspect-square overflow-hidden rounded-[1.75rem] bg-[radial-gradient(circle_at_50%_45%,rgb(221_237_255)_0%,rgb(244_249_255)_48%,rgb(232_242_255)_100%)]">
-          <div aria-hidden="true" className="absolute inset-[7%] rounded-full border border-blue-300/60 bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-blue-500)_10%,transparent)_0%,transparent_66%)] shadow-[inset_0_0_30px_rgb(47_130_245_/_9%)]" />
-          <div aria-hidden="true" className="absolute inset-[18%] rounded-full border border-blue-300/50" />
-          <div aria-hidden="true" className="absolute inset-[31%] rounded-full border border-blue-400/70 bg-[radial-gradient(circle_at_35%_27%,rgb(81_156_255),var(--color-navy-900)_66%)] shadow-[0_14px_28px_rgb(13_32_58_/_28%),inset_0_1px_10px_rgb(255_255_255_/_24%)]" />
-
-        <motion.ol
-          aria-label={`${category.label} services`}
-          animate={{ rotate: reducedMotion ? 0 : -activeIndex * step }}
-          transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 m-0 list-none p-0"
-        >
-          {category.services.map((service, index) => {
-            const isActive = index === activeIndex;
-            return (
-              <li
-                key={service.title}
-                className="absolute left-1/2 top-1/2"
-                style={{ transform: `translate(-50%, -50%) rotate(${index * step}deg) translateY(-9rem)` }}
-              >
-                <motion.button
-                  type="button"
-                  aria-label={`Show ${service.title}`}
-                  aria-current={isActive ? "true" : undefined}
-                  onClick={() => selectService(index)}
-                  animate={reducedMotion ? undefined : { rotate: activeIndex * step }}
-                  transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
-                  className={`grid size-12 cursor-pointer place-items-center rounded-2xl border shadow-lg transition-[transform,border-color,background-color,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 ${isActive ? "scale-110 border-blue-300 bg-blue-600 text-white shadow-[0_12px_24px_rgb(21_105_224_/_38%),inset_0_1px_0_rgb(255_255_255_/_28%)]" : "border-blue-200 bg-white text-blue-600 shadow-[0_8px_18px_rgb(35_94_163_/_15%)]"}`}
-                >
-                  <ServiceIcon icon={service.icon} />
-                </motion.button>
-              </li>
-            );
-          })}
-        </motion.ol>
-
-        <div className="absolute inset-[31%] z-10 grid place-items-center rounded-full px-3 text-center pointer-events-none">
-          <div>
-            <p className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-blue-100/75">Active</p>
-            <p aria-live="polite" className="mt-1 text-xs font-semibold leading-snug text-white">{activeService.title}</p>
-          </div>
-        </div>
-        </div>
-      </div>
-
-      <div className="mt-2 flex items-center justify-between gap-3 px-2">
-        <button
-          type="button"
-          onClick={() => selectService(activeIndex - 1)}
-          className="grid size-11 cursor-pointer place-items-center rounded-full border border-blue-200 bg-white text-blue-600 shadow-[0_6px_16px_rgb(35_94_163_/_10%)] transition-colors hover:border-blue-500 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-          aria-label="Previous service"
-        >
-          <ChevronLeft aria-hidden="true" className="size-5" />
-        </button>
-        <p className="max-w-40 text-center text-xs font-semibold leading-4 text-[var(--color-navy-700)]">
-          Rotates every 2 seconds — tap an icon to explore
-        </p>
-        <button
-          type="button"
-          onClick={() => selectService(activeIndex + 1)}
-          className="grid size-11 cursor-pointer place-items-center rounded-full border border-blue-200 bg-white text-blue-600 shadow-[0_6px_16px_rgb(35_94_163_/_10%)] transition-colors hover:border-blue-500 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-          aria-label="Next service"
-        >
-          <ChevronRight aria-hidden="true" className="size-5" />
-        </button>
-      </div>
-
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={activeService.title}
-          initial={reducedMotion ? false : isMobile ? { opacity: 0, x: 100 } : { opacity: 0, y: 12, rotateX: -6, scale: 0.97 }}
-          animate={{ opacity: 1, x: 0, y: 0, rotateX: 0, scale: 1 }}
-          exit={reducedMotion ? { opacity: 0 } : isMobile ? { opacity: 0, x: -40 } : { opacity: 0, y: -8, rotateX: 5, scale: 0.98 }}
-          transition={{ duration: reducedMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformPerspective: 800 }}
-          className="mt-5 overflow-hidden rounded-[1.5rem] border border-blue-200 bg-white p-5 shadow-[0_18px_36px_rgb(35_94_163_/_14%),inset_0_1px_0_rgb(255_255_255_/_90%)]"
-        >
-          <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-blue-600">Selected service</p>
-          <h3 className="mt-2 text-xl font-semibold leading-tight text-[var(--color-navy-900)]">{activeService.title}</h3>
-          <p className="mt-2 text-sm leading-6 text-[var(--color-navy-700)]">{activeService.description}</p>
-          <Button href="/consultation" variant="secondary" size="sm" className="mt-4 border-blue-600 bg-blue-600 text-white shadow-[0_10px_22px_rgb(21_105_224_/_24%)] hover:bg-blue-500">
-            Let&apos;s discuss
-            <ArrowUpRight aria-hidden="true" className="size-4" />
-          </Button>
-        </motion.div>
-      </AnimatePresence>
-    </motion.div>
-  );
-}
-
-function MobileImageServiceCards({ category }: { category: ServiceCategory }) {
-  const reducedMotion = usePrefersReducedMotion();
-
-  return (
-    <ul className="relative mt-10 grid grid-cols-2 gap-3 md:hidden" aria-label={`${category.label} services`}>
-      {category.services.map((service, index) => {
-        const featured = index === 0;
+    <div className="grid grid-cols-12 gap-3 sm:gap-4" aria-label={`${category.label} imagery`}>
+      {visualServices.map((service, index) => {
+        const entrance = collageEntrance[index];
 
         return (
-          <motion.li
+          <motion.figure
             key={service.title}
-            initial={reducedMotion ? false : { opacity: 0, x: index % 2 === 0 ? -28 : 28, y: 18, scale: 0.94 }}
-            whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.15 }}
-            transition={{
-              duration: reducedMotion ? 0 : 0.45,
-              delay: reducedMotion ? 0 : Math.min(index * 0.035, 0.2),
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className={featured ? "col-span-2" : ""}
+            initial={reducedMotion ? false : { opacity: 0, x: entrance.x, y: entrance.y, scale: 0.88, rotate: entrance.rotate, rotateY: index === 0 ? -6 : 6 }}
+            whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0, rotateY: 0 }}
+            whileHover={reducedMotion ? undefined : { y: -7, scale: 1.015, rotateY: index === 0 ? -2 : 2 }}
+            viewport={{ once: false, amount: 0.22 }}
+            transition={{ duration: reducedMotion ? 0 : 0.62, delay: reducedMotion ? 0 : index * 0.08, ease }}
+            style={{ transformPerspective: 1100, transformStyle: "preserve-3d" }}
+            className={`group relative m-0 overflow-hidden rounded-[1.5rem] border border-blue-300/35 bg-[var(--color-navy-800)] shadow-[0_20px_42px_rgb(0_10_26_/_34%)] will-change-transform ${collagePlacement[index]}`}
           >
-            <article className={`group relative isolate flex overflow-hidden rounded-[1.45rem] border border-blue-200 bg-[var(--color-navy-900)] shadow-[0_16px_32px_rgb(28_78_141_/_18%)] ${featured ? "min-h-[17.5rem]" : "min-h-[13.5rem]"}`}>
-              <Image
-                src={serviceImageByIcon[service.icon]}
-                alt=""
-                fill
-                sizes={featured ? "100vw" : "50vw"}
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(4_18_40_/_12%)_0%,rgb(4_18_40_/_28%)_38%,rgb(4_18_40_/_94%)_100%)]" />
-              <div className="relative z-10 mt-auto w-full p-4">
-                <span className="mb-3 grid size-9 place-items-center rounded-xl border border-blue-200/60 bg-white/90 text-blue-600 shadow-[0_6px_18px_rgb(4_18_40_/_20%)]">
-                  <ServiceIcon icon={service.icon} />
-                </span>
-                <h3 className={`font-semibold leading-tight text-white ${featured ? "text-2xl" : "text-base"}`}>{service.title}</h3>
-                <p className={`mt-1.5 max-w-[28ch] leading-5 text-blue-100 ${featured ? "text-sm" : "text-xs"}`}>{service.description}</p>
-                <Button
-                  href="/consultation"
-                  variant="secondary"
-                  size="sm"
-                  className={`mt-3 border-blue-300/50 bg-blue-600 text-white shadow-[0_8px_18px_rgb(21_105_224_/_26%)] hover:bg-blue-500 ${featured ? "" : "px-3 text-xs"}`}
-                >
-                  Let&apos;s discuss
-                  <ArrowUpRight aria-hidden="true" className="size-3.5" />
-                </Button>
-              </div>
-            </article>
-          </motion.li>
+            <Image
+              src={serviceImageByIcon[service.icon]}
+              alt=""
+              fill
+              sizes={index === 0 ? "(max-width: 639px) 58vw, (max-width: 1023px) 48vw, 38vw" : "(max-width: 639px) 40vw, (max-width: 1023px) 26vw, 18vw"}
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+            <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(4_18_40_/_7%),rgb(4_18_40_/_18%)_46%,rgb(4_18_40_/_76%))]" />
+            <figcaption className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3 text-white sm:inset-x-5 sm:bottom-5">
+              <span className="max-w-[16ch] text-sm font-semibold leading-tight sm:text-base">{service.title}</span>
+              <span className="grid size-9 shrink-0 place-items-center rounded-xl border border-blue-200/50 bg-[rgb(4_18_40_/_48%)] text-blue-200 backdrop-blur-sm">
+                <ServiceIcon icon={service.icon} />
+              </span>
+            </figcaption>
+          </motion.figure>
         );
       })}
+    </div>
+  );
+}
+
+function ServiceList({ category }: { category: ServiceCategory }) {
+  const reducedMotion = usePrefersReducedMotion();
+
+  return (
+    <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-4" aria-label={`${category.label} services`}>
+      {category.services.map((service, index) => (
+        <motion.li
+          key={service.title}
+          initial={reducedMotion ? false : { opacity: 0, y: 26, scale: 0.95, rotateX: 6 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+          whileHover={reducedMotion ? undefined : { y: -5, scale: 1.012, rotateX: -1 }}
+          viewport={{ once: false, amount: 0.16 }}
+          transition={{ duration: reducedMotion ? 0 : 0.42, delay: reducedMotion ? 0 : Math.min(index * 0.035, 0.24), ease }}
+          style={{ transformPerspective: 900, transformOrigin: "50% 100%" }}
+          className="will-change-transform"
+        >
+          <article className="group relative flex min-h-40 flex-col rounded-[1.35rem] border border-blue-300/25 bg-[linear-gradient(145deg,rgb(13_32_58_/_94%),rgb(8_20_38_/_98%))] p-5 shadow-[0_14px_26px_rgb(0_8_22_/_20%),inset_0_1px_0_rgb(131_185_255_/_11%)] transition-[border-color,box-shadow] duration-300 group-hover:border-blue-300/60 group-hover:shadow-[0_20px_34px_rgb(0_8_22_/_32%),inset_0_1px_0_rgb(131_185_255_/_17%)]">
+            <span className="grid size-10 place-items-center rounded-xl border border-blue-300/35 bg-blue-500/10 text-blue-300">
+              <ServiceIcon icon={service.icon} />
+            </span>
+            <h3 className="mt-5 text-lg font-semibold leading-tight text-white sm:text-xl">{service.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-blue-100/75">{service.description}</p>
+            <span aria-hidden="true" className="absolute right-5 top-5 text-blue-300/65 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
+              <ArrowUpRight className="size-4" />
+            </span>
+          </article>
+        </motion.li>
+      ))}
     </ul>
   );
 }
 
-function ServiceCategoryCloud({ category }: { category: ServiceCategory }) {
+function EditorialCategory({ category, index }: { category: ServiceCategory; index: number }) {
   const reducedMotion = usePrefersReducedMotion();
-  const isMobile = useMobileLayout();
 
   return (
     <section
       id={category.id}
       aria-labelledby={`${category.id}-heading`}
-      className="relative isolate overflow-hidden border-t border-blue-300/15 py-10 first:border-t-0 first:pt-6 sm:py-24 sm:first:pt-16"
+      className="relative border-t border-blue-300/20 py-12 first:border-t-0 first:pt-4 sm:py-20 sm:first:pt-8 lg:py-28"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-24 top-8 size-72 rounded-full border border-blue-300/15 bg-blue-500/[0.035]"
-      />
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-12 -left-12 size-44 rounded-[42%] border border-accent/20 bg-accent/[0.045]"
-        animate={reducedMotion ? undefined : { x: [0, 14, 0], y: [0, -12, 0], rotate: [0, 9, 0] }}
-        transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
+        animate={reducedMotion ? undefined : { x: [0, index % 2 === 0 ? 16 : -16, 0], y: [0, -10, 0], rotate: [0, index % 2 === 0 ? 9 : -9, 0] }}
+        transition={{ duration: 9 + index, repeat: Infinity, ease: "easeInOut" }}
+        className={`pointer-events-none absolute ${index % 2 === 0 ? "-right-20 top-12" : "-left-20 bottom-10"} size-56 rounded-[40%] border border-blue-400/20 bg-blue-500/[0.045]`}
       />
-      <motion.div
-        initial={reducedMotion ? false : isMobile ? { opacity: 0, x: 100 } : { opacity: 0, y: 28, rotateX: 8, scale: 0.96 }}
-        whileInView={{ opacity: 1, x: 0, y: 0, rotateX: 0, scale: 1 }}
-        viewport={{ once: false, amount: 0.35 }}
-        transition={{ duration: reducedMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
-        style={{ transformPerspective: 900 }}
-        className="relative mx-auto max-w-3xl text-center"
-      >
-        <span className="mx-auto grid size-12 place-items-center rounded-2xl border border-accent/30 bg-accent/10 text-accent">
-          <ServiceIcon icon={category.icon} />
-        </span>
-        <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-accent">
-          {category.label}
-        </p>
-        <h2 id={`${category.id}-heading`} className="mt-4 text-[clamp(2rem,4.6vw,3.75rem)] max-md:text-[var(--color-navy-900)]">
-          {category.title}
-        </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted max-md:text-[var(--color-navy-800)] sm:text-lg">
-          {category.description}
-        </p>
-      </motion.div>
 
-      {category.id === "industry-solutions" || category.id === "managed-services" ? (
-        <MobileImageServiceCards category={category} />
-      ) : (
-        <MobileServiceWheel category={category} />
-      )}
+      <div className="relative grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(27rem,1.08fr)] lg:items-end lg:gap-12">
+        <motion.div
+          initial={reducedMotion ? false : { opacity: 0, x: -42, y: 24, rotateY: -7, scale: 0.96 }}
+          whileInView={{ opacity: 1, x: 0, y: 0, rotateY: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.26 }}
+          transition={{ duration: reducedMotion ? 0 : 0.58, ease }}
+          style={{ transformPerspective: 1000, transformOrigin: "0% 50%" }}
+          className="order-2 max-w-xl lg:order-1"
+        >
+          <div className="flex items-center gap-3">
+            <span className="grid size-11 place-items-center rounded-2xl border border-blue-300/35 bg-blue-500/10 text-blue-300">
+              <ServiceIcon icon={category.icon} />
+            </span>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-300">{category.label}</p>
+          </div>
+          <h2 id={`${category.id}-heading`} className="mt-6 text-[clamp(2.2rem,4.7vw,4.6rem)] font-semibold leading-[0.98] tracking-[-0.05em] text-white">
+            {category.title}
+          </h2>
+          <p className="mt-5 max-w-[58ch] text-base leading-7 text-blue-100/80 sm:text-lg sm:leading-8">{category.description}</p>
+          <Button href="/consultation" variant="secondary" size="lg" className="group mt-7 border-blue-300/45 bg-blue-600 text-white shadow-[0_12px_26px_rgb(23_105_224_/_24%)] hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-500">
+            Let&apos;s discuss
+            <ArrowUpRight aria-hidden="true" className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Button>
+        </motion.div>
 
-      <ul className="relative -mx-2 mt-10 hidden grid-cols-2 items-start gap-x-2 gap-y-10 md:mx-0 md:mt-14 md:grid md:grid-cols-2 md:gap-7 lg:gap-9">
-        {category.services.map((service, index) => (
-          <ServiceCard key={service.title} index={index} service={service} />
-        ))}
-      </ul>
+        <div className="order-1 lg:order-2">
+          <EditorialCollage category={category} />
+        </div>
+      </div>
+      <ServiceList category={category} />
     </section>
   );
 }
 
 export function ServicesShowcase() {
-  return (
-    <section
-      aria-labelledby="services-heading"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] max-md:bg-[linear-gradient(160deg,#f8fbff,#e8f3ff)]"
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_78%_14%,color-mix(in_srgb,var(--color-blue-500)_15%,transparent),transparent_31rem),radial-gradient(circle_at_20%_24%,color-mix(in_srgb,var(--accent)_7%,transparent),transparent_25rem)]"
-      />
-      <Container size="wide" className="relative">
- 
+  const reducedMotion = usePrefersReducedMotion();
 
-        <div>
-          {serviceCategories.map((category) => (
-            <ServiceCategoryCloud key={category.id} category={category} />
-          ))}
-        </div>
-      </Container>
+  return (
+    <section aria-labelledby="services-heading" className="relative isolate overflow-hidden md:bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] md:py-16">
+      <h1 id="services-heading" className="sr-only">InnovGen services</h1>
+      <div className="md:hidden">
+        <LegacyMobileServices />
+      </div>
+      <div className="relative hidden md:block">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_86%_8%,rgb(47_130_245_/_18%),transparent_28rem),radial-gradient(circle_at_12%_36%,rgb(228_196_119_/_7%),transparent_26rem)]" />
+        <Container size="wide" className="relative">
+        <motion.header
+          initial={reducedMotion ? false : { opacity: 0, y: 32, scale: 0.97, rotateX: 7 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: reducedMotion ? 0 : 0.64, ease }}
+          style={{ transformPerspective: 1000 }}
+          className="mx-auto max-w-4xl pb-12 text-center sm:pb-16"
+        >
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">InnovGen services</p>
+          <p className="mt-4 text-[clamp(2.75rem,6vw,5.75rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-white">
+            Technology, brought together with intent.
+          </p>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-blue-100/75 sm:text-lg">
+            Explore the specialist capabilities that help organizations make confident progress.
+          </p>
+        </motion.header>
+
+        {serviceCategories.map((category, index) => (
+          <EditorialCategory key={category.id} category={category} index={index} />
+        ))}
+        </Container>
+      </div>
     </section>
   );
 }

@@ -111,12 +111,20 @@ export function FinalCtaSection({
       <div aria-hidden="true" className="pointer-events-none absolute bottom-[20%] right-[46%] size-2 rounded-full bg-blue-300 shadow-[0_0_22px_rgb(131_185_255_/_90%)]" />
 
       <Container size="wide" className="relative">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(30rem,1.14fr)] lg:gap-8">
+        <motion.div
+          initial={reducedMotion ? false : { opacity: 0, y: 54, scale: 0.965, rotateX: 10 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+          viewport={{ once: true, amount: 0.22 }}
+          transition={{ duration: reducedMotion ? 0 : 0.72, ease }}
+          style={{ transformPerspective: 1300, transformOrigin: "50% 100%" }}
+          className="grid items-center gap-12 will-change-transform lg:grid-cols-[minmax(0,0.86fr)_minmax(30rem,1.14fr)] lg:gap-8"
+        >
           <motion.div
-            initial={reducedMotion ? false : { opacity: 0, y: 26 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={reducedMotion ? false : { opacity: 0, x: -34, y: 28, scale: 0.97, rotateY: -7 }}
+            whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, rotateY: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: reducedMotion ? 0 : 0.62, ease }}
+            transition={{ duration: reducedMotion ? 0 : 0.58, delay: reducedMotion ? 0 : 0.08, ease }}
+            style={{ transformPerspective: 1000, transformOrigin: "0% 50%" }}
             className="relative z-10 max-w-xl"
           >
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-[var(--color-blue-600)]">Ready to go digital?</p>
@@ -135,11 +143,12 @@ export function FinalCtaSection({
           </motion.div>
 
           <motion.div
-            initial={reducedMotion ? false : { opacity: 0, scale: 0.94, rotateX: 5 }}
-            whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+            initial={reducedMotion ? false : { opacity: 0, x: 42, y: 30, scale: 0.88, rotateX: 14, rotateY: 7 }}
+            whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: reducedMotion ? 0 : 0.75, delay: 0.08, ease }}
-            className="relative mx-auto h-[23rem] w-full max-w-[42rem] [perspective:1000px] sm:h-[29rem]"
+            transition={{ duration: reducedMotion ? 0 : 0.7, delay: reducedMotion ? 0 : 0.14, ease }}
+            style={{ transformPerspective: 1100, transformOrigin: "100% 50%" }}
+            className="relative mx-auto h-[23rem] w-full max-w-[42rem] will-change-transform [perspective:1000px] sm:h-[29rem]"
           >
             <div aria-hidden="true" className="absolute inset-[19%_14%_17%] rounded-full bg-[radial-gradient(circle,rgb(47_130_245_/_20%),transparent_67%)] blur-2xl" />
             {capabilities.map((capability, index) => (
@@ -172,7 +181,7 @@ export function FinalCtaSection({
               />
             ))}
           </motion.div>
-        </div>
+        </motion.div>
       </Container>
     </section>
   );
