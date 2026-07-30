@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { motion } from "motion/react";
+import { InfrastructureScrollObject } from "@/components/motion/infrastructure-scroll-object";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
 import { Container } from "@/components/ui/container";
@@ -13,116 +14,7 @@ type HomeHeroProps = {
   title: string;
 };
 
-type Industry = {
-  id: string;
-  image: string;
-};
-
-const industries: readonly Industry[] = [
-  {
-    id: "mcdonalds",
-    image: "/clients%20logos/McDonalds_Logo.png",
-  }, 
-  {  
-    id: "cms",
-    image: "/clients%20logos/cms.png",
-  },
-  {
-    id: "aswaaq",
-    image: "/clients%20logos/rolls_royals.png",
-  },
-  {
-    id: "fantco",
-    image: "/clients%20logos/fantco-logo.png",
-  },
-  { 
-    id: "ajman",
-    image: "/clients%20logos/ajman.png",
-  },
-  {
-    id: "oagis",
-    image: "/clients%20logos/oagis.png",
-  },
-  { 
-    id: "media",
-    image: "/clients%20logos/media.png",
-  },
-  {
-    id: "real",
-    image: "/clients%20logos/real.png",
-  },
-] as const;
-
-
-
 const heroEase = [0.16, 1, 0.3, 1] as const;
-
-function InfrastructureFlow({ reducedMotion }: { reducedMotion: boolean }) {
-  const mobileCards = [...industries.slice(0, 4), ...industries.slice(0, 4)];
-
-  return (
-    <div className="relative mx-auto w-full max-w-[46rem] overflow-hidden lg:h-auto lg:flex-1">
-      <div className="relative h-[12.5rem] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)] sm:h-[14rem] lg:hidden">
-        <motion.div
-          aria-hidden="true"
-          className="absolute left-0 top-1/2 flex w-max -translate-y-1/2 gap-4 pr-4 will-change-transform"
-          animate={reducedMotion ? { x: 0 } : { x: ["-50%", "0%"] }}
-          transition={
-            reducedMotion
-              ? { duration: 0 }
-              : { duration: 22, ease: "linear", repeat: Infinity, repeatType: "loop" }
-          }
-        >
-          {mobileCards.map((industry, index) => (
-            <div
-              key={`${industry.id}-${index}`}
-              className="relative h-[10.5rem] w-[15rem] shrink-0 overflow-hidden rounded-[1.35rem] border border-blue-200/25 bg-[#0a1c30] shadow-[0_18px_38px_rgb(0_0_0_/_30%)] sm:h-[12rem] sm:w-[17.5rem]"
-            >
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${industry.image}')` }} />
-              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgb(4_15_29_/_15%),rgb(4_15_29_/_70%))]" />
-            </div>
-          ))}
-        </motion.div>
-      </div>
-
-      <div className="relative hidden h-full overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_2%,black_90%,transparent)] lg:block">
-      <div aria-hidden="true" className="absolute left-[44%] top-0 h-full w-px bg-[linear-gradient(transparent,rgb(94_174_255_/_30%),transparent)]" />
-      {industries.slice(0, 3).map((industry, index) => (
-        <motion.article
-          key={industry.id}
-          initial={reducedMotion ? false : { opacity: 0, y: -260, x: -32, rotate: -3, scale: 0.82 }}
-          animate={
-            reducedMotion
-              ? { opacity: 1, y: 58 + index * 16, x: index * 28, rotate: index % 2 ? 2 : -2, scale: 1 }
-              : {
-                  opacity: [0, 0, 1, 1, 0],
-                  y: [-330, -150, 105, 455, 650],
-                  x: [-58, -38 + index * 18, index * 14, 66 + index * 34, 230 + index * 42],
-                  rotate: [-5, -3, index % 2 ? 2 : -2, 4, 8],
-                  scale: [0.78, 0.9, 1, 0.94, 0.82],
-                }
-          }
-          transition={
-            reducedMotion
-              ? { duration: 0 }
-              : {
-                  duration: 15,
-                  delay: index * -5,
-                  repeat: Infinity,
-                  ease: "linear",
-                  times: [0, 0.15, 0.48, 0.8, 1],
-                }
-          }
-          className="absolute left-[18%] top-0 h-[13.5rem] w-[19rem] overflow-hidden rounded-[1.5rem] border border-blue-200/25 bg-[#0a1c30] shadow-[0_24px_55px_rgb(0_0_0_/_40%)] will-change-transform sm:left-[20%] sm:h-[15.5rem] sm:w-[24rem] lg:left-[16%] lg:h-[17.5rem] lg:w-[28rem]"
-        >
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${industry.image}')` }} />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgb(4_15_29_/_6%),rgb(4_15_29_/_15%)_40%,rgb(4_15_29_/_92%))]" />
-        </motion.article>
-      ))}
-      </div>
-    </div>
-  );
-}
 
 export function HomeHero({ description, eyebrow }: HomeHeroProps) {
   const reducedMotion = usePrefersReducedMotion();
@@ -150,15 +42,15 @@ export function HomeHero({ description, eyebrow }: HomeHeroProps) {
           transition={{ duration: reducedMotion ? 0 : 0.7, ease: heroEase }}
           className="max-w-xl"
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-300">
+          <p className="hidden text-xs font-semibold uppercase tracking-[0.22em] text-blue-300 lg:block">
             {eyebrow}
           </p>
-          <h1 className="mt-5 max-w-[11ch] text-balance font-[family-name:var(--font-outfit)] text-[clamp(2.35rem,5.2vw,4.9rem)] font-semibold leading-[0.92] tracking-[-0.065em] text-white">
+          <h1 className="max-w-[11ch] text-balance font-[family-name:var(--font-outfit)] text-[clamp(2.35rem,5.2vw,4.9rem)] font-semibold leading-[0.92] tracking-[-0.065em] text-white lg:mt-5">
             <span className="block">Enterprise IT</span>
             <span className="block">infrastructure</span>
             <span className="mt-[0.08em] block text-blue-400">built for modern business.</span>
           </h1>
-          <p className="mt-6 max-w-[36rem] text-base leading-7 text-blue-100/78 sm:text-lg">
+          <p className="mt-6 hidden max-w-[36rem] text-base leading-7 text-blue-100/78 lg:block lg:text-lg">
             {description}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -169,18 +61,16 @@ export function HomeHero({ description, eyebrow }: HomeHeroProps) {
               Our Services <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
           </div>
-          <p className="mt-6 flex items-center gap-2 text-sm text-blue-100/72"><Check className="size-4 text-blue-300" aria-hidden="true" /> Trusted by enterprises across UAE</p>
+          <p className="mt-6 hidden items-center gap-2 text-sm text-blue-100/72 lg:flex"><Check className="size-4 text-blue-300" aria-hidden="true" /> Trusted by enterprises across UAE</p>
         </motion.div>
 
         <motion.div
           initial={reducedMotion ? false : { opacity: 0, y: 28, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: reducedMotion ? 0 : 0.9, delay: 0.12, ease: heroEase }}
-          className="relative min-w-0 lg:absolute lg:inset-y-0 lg:right-0 lg:flex lg:w-[55%] lg:flex-col lg:pb-[10dvh]"
+          className="pointer-events-none relative hidden min-w-0 lg:absolute lg:inset-y-0 lg:right-0 lg:flex lg:w-[55%] lg:items-center lg:justify-center"
         >
-        
-          <InfrastructureFlow reducedMotion={reducedMotion} />
-          <p className="mt-1 text-center text-xs text-blue-100/56">Enterprise solutions in motion</p>
+          <InfrastructureScrollObject className="w-full max-w-[44rem]" />
         </motion.div>
       </Container>
     </SceneSection>

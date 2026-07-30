@@ -7,11 +7,11 @@ import { usePrefersReducedMotion } from "@/components/providers/motion-provider"
 const loaderDuration = 6_000;
 const handoffDuration = 450;
 const loaderEase = [0.22, 1, 0.36, 1] as const;
-const loaderWords = ["MODERN", "ICONIC", "AI", "TECHNOLOGY", "PREMIUM" , "INNOVATIVE"];
+const loaderWords = ["MODERN", "ICONIC", "TECHNOLOGY", "PREMIUM" , "INNOVATIVE"];
  
 export function AppPreloader() {
   return <AppPreloaderScreen />;
-}
+} 
 
 function AppPreloaderScreen() {
   const [isVisible, setIsVisible] = useState(true);
