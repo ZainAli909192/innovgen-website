@@ -19,6 +19,8 @@ import { InfrastructureScrollObject } from "@/components/motion/infrastructure-s
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
 import { Container } from "@/components/ui/container";
+import { HomeLogoMarquee } from "@/components/sections/clients/trusted-clients-directory";
+import type { TrustedClient } from "@/config/trusted-clients";
 
 type HomeHeroProps = {
   description: string;
@@ -28,11 +30,11 @@ type HomeHeroProps = {
 
 const heroEase = [0.16, 1, 0.3, 1] as const;
 
-const mobileClients = [
-  { id: "1", logo: "/clients%20logos/McDonalds_Logo.png" },
-  { id: "2", logo: "/clients%20logos/cms.png" },
-  { id: "3", logo: "/clients%20logos/rolls_royals.png" },
-  { id: "4", logo: "/clients%20logos/fantco-logo.png" },
+const mobileClients: readonly TrustedClient[] = [
+  { name: "McDonald's", logoPath: "/clients%20logos/McDonalds_Logo.png" },
+  { name: "CMS", logoPath: "/clients%20logos/cms.png" },
+  { name: "Rolls Royce", logoPath: "/clients%20logos/rolls_royals.png" },
+  { name: "Fantco", logoPath: "/clients%20logos/fantco-logo.png" },
 ] as const;
 
 function useMobileViewport() {
@@ -63,120 +65,6 @@ function useMobileViewport() {
   }, []);
 
   return isMobile;
-}
-
-function wrappedOffset(index: number, activeIndex: number, count: number) {
-  const raw = index - activeIndex;
-  if (raw > count / 2) return raw - count;
-  if (raw < -count / 2) return raw + count;
-  return raw;
-}
-
-function MobileClientCarousel({
-  reducedMotion,
-}: {
-  reducedMotion: boolean;
-}) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const count = mobileClients.length;
-
-  const move = useCallback(
-    (direction: -1 | 1) => {
-      setActiveIndex((current) => (current + direction + count) % count);
-    },
-    [count],
-  );
-
-  useEffect(() => {
-    if (reducedMotion || paused || count < 2) return;
-    const interval = window.setInterval(() => move(1), 5000);
-    return () => window.clearInterval(interval);
-  }, [count, move, paused, reducedMotion]);
-
-  return (
-    <section
-      aria-label="Selected InnovGen client logos"
-      className="relative mt-8 lg:hidden"
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <div className="relative h-[9rem] w-full [perspective:1200px]">
-        {mobileClients.map((client, index) => {
-          const offset = wrappedOffset(index, activeIndex, count);
-          const active = offset === 0;
-          const visible = Math.abs(offset) <= 1;
-          const x = offset === 0 ? "0%" : `${offset * 110}%`;
-
-          return (
-            <motion.div
-              key={client.id}
-              aria-hidden={!active}
-              inert={!active || undefined}
-              animate={{
-                x,
-                scale: active ? 1 : visible ? 0.85 : 0.7,
-                rotateY: offset * -8,
-                opacity: active ? 1 : visible ? 0.6 : 0,
-              }}
-              transition={
-                reducedMotion
-                  ? { duration: 0 }
-                  : { type: "spring", stiffness: 210, damping: 28, mass: 0.78 }
-              }
-              className={`absolute inset-0 flex items-center justify-center will-change-transform ${
-                active ? "z-20" : visible ? "z-10" : "-z-10 pointer-events-none"
-              }`}
-            >
-              <div className="grid h-[7rem] w-[9.5rem] shrink-0 place-items-center rounded-2xl border border-blue-200/30 bg-[#0a1c30]/80 p-4 shadow-[0_12px_28px_rgb(2_13_35_/_30%)] backdrop-blur-sm">
-                <span className="relative block h-12 w-28">
-                  <Image
-                    src={client.logo}
-                    alt=""
-                    fill
-                    sizes="112px"
-                    className="object-contain"
-                  />
-                </span>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      <div
-        className="mt-6 flex items-center justify-center gap-3"
-        role="group"
-        aria-label="Client logo controls"
-      >
-        <button
-          type="button"
-          aria-label="Show previous client logo"
-          onClick={() => move(-1)}
-          className="grid size-11 place-items-center rounded-full border border-blue-200/35 bg-navy-900/85 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)] transition hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200"
-        >
-          <ArrowLeft
-            className="size-5"
-            aria-hidden="true"
-          />
-        </button>
-
-        <button
-          type="button"
-          aria-label="Show next client logo"
-          onClick={() => move(1)}
-          className="grid size-11 place-items-center rounded-full border border-blue-200/35 bg-navy-900/85 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)] transition hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200"
-        >
-          <ArrowRight
-            className="size-5"
-            aria-hidden="true"
-          />
-        </button>
-      </div>
-    </section>
-  );
 }
 
 export function HomeHero({
@@ -220,22 +108,22 @@ export function HomeHero({
         animate={
           isMobile && !reducedMotion
             ? {
-                scale: [1, 1.025, 1],
-              }
+              scale: [1, 1.025, 1],
+            }
             : {
-                scale: 1,
-              }
+              scale: 1,
+            }
         }
         transition={
           isMobile && !reducedMotion
             ? {
-                duration: 9,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }
+              duration: 9,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }
             : {
-                duration: 0,
-              }
+              duration: 0,
+            }
         }
       />
 
@@ -369,10 +257,10 @@ export function HomeHero({
             reducedMotion
               ? false
               : {
-                  opacity: 0,
-                  x: isMobile ? 0 : -32,
-                  y: isMobile ? 22 : 30,
-                }
+                opacity: 0,
+                x: isMobile ? 0 : -32,
+                y: isMobile ? 22 : 30,
+              }
           }
           animate={{
             opacity: 1,
@@ -392,6 +280,7 @@ export function HomeHero({
               uppercase
               tracking-[0.22em]
               text-blue-300
+              sm:hidden
             "
           >
             {eyebrow}
@@ -412,7 +301,19 @@ export function HomeHero({
             "
           >
             {title ? (
-              title
+              (() => {
+                const parts = title.toLowerCase().split('secure digital');
+                if (parts.length === 1) {
+                  return title;
+                }
+                return (
+                  <>
+                    {parts[0]}
+                    <span className="text-blue-400">secure digital</span>
+                    {parts.slice(1).join('secure digital')}
+                  </>
+                );
+              })()
             ) : (
               <>
                 <span className="block">
@@ -429,21 +330,6 @@ export function HomeHero({
               </>
             )}
           </h1>
-
-          <p
-            className="
-              mt-6
-              max-w-[36rem]
-              text-sm
-              leading-6
-              text-blue-100/80
-              sm:text-base
-              sm:leading-7
-              lg:text-lg
-            "
-          >
-            {description}
-          </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
@@ -529,9 +415,9 @@ export function HomeHero({
             Trusted by enterprises across UAE
           </p>
 
-          <MobileClientCarousel
-            reducedMotion={reducedMotion}
-          />
+          <div className="relative mt-8 lg:hidden overflow-hidden">
+            <HomeLogoMarquee clients={mobileClients} />
+          </div>
         </motion.div>
 
         {/* Desktop right-side 3D object */}
@@ -540,10 +426,10 @@ export function HomeHero({
             reducedMotion
               ? false
               : {
-                  opacity: 0,
-                  y: 28,
-                  scale: 0.96,
-                }
+                opacity: 0,
+                y: 28,
+                scale: 0.96,
+              }
           }
           animate={{
             opacity: 1,

@@ -120,12 +120,16 @@ export function LeadershipSection() {
       className="relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),rgb(10_28_50),var(--color-navy-900))] py-20 md:py-28"
       style={
         reduced
-          ? undefined
+          ? {
+              opacity: 1,
+              scale: 1,
+            }
           : {
               opacity: sectionOpacity,
               scale: sectionScale,
               transformPerspective: 1500,
               transformOrigin: "50% 50%",
+              willChange: "opacity, transform",
             }
       }
     >

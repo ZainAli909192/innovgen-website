@@ -104,6 +104,8 @@ function HomeLogoMarquee({ clients, reverse = false }: { clients: readonly Trust
   );
 }
 
+export { HomeLogoMarquee };
+
 export function TrustedClientsDirectory({ variant }: { variant: "home" | "page" }) {
   const reducedMotion = usePrefersReducedMotion();
 
