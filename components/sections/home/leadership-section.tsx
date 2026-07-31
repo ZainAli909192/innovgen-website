@@ -104,14 +104,14 @@ export function LeadershipSection() {
   };
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion ) return;
     const intervalId = window.setInterval(() => {
       setActiveIndex(
         (current) => (current + 1) % leadershipProfiles.length,
       );
     }, 2000);
     return () => window.clearInterval(intervalId);
-  }, [prefersReducedMotion]);
+  }, [mobile, prefersReducedMotion]);
 
   return (
     <motion.section
