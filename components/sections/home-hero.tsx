@@ -280,7 +280,7 @@ export function HomeHero({
               uppercase
               tracking-[0.22em]
               text-blue-300
-              sm:hidden
+              hidden
             "
           >
             {eyebrow}
