@@ -30,7 +30,7 @@ export default function ConsultationPage() {
         <Container size="wide">
           <div id="consultation-form" className="grid items-stretch gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-10 xl:grid-cols-[0.96fr_1.04fr]">
             <Reveal preset="up" once={false} amount={0.3} className="min-w-0">
-              <div className="flex h-full flex-col justify-between gap-8">
+              <div className="hidden md:block lg:block flex h-full flex-col justify-between gap-8">
                 <div className="max-w-xl">
                   <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Your context</p>
                   <h2 className="mt-4 max-w-[14ch] text-[length:var(--text-h2)]">A few details help us prepare</h2>

@@ -187,7 +187,7 @@ export function CareersExperience() {
 
   return (
     <>
-      <section className="relative isolate min-h-[42rem] overflow-hidden bg-[radial-gradient(circle_at_50%_49%,color-mix(in_srgb,var(--color-blue-500)_24%,transparent),transparent_17rem),linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] py-14 sm:min-h-[46rem] sm:py-20">
+      <section className="hidden md:block relative isolate min-h-[42rem] overflow-hidden bg-[radial-gradient(circle_at_50%_49%,color-mix(in_srgb,var(--color-blue-500)_24%,transparent),transparent_17rem),linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] py-14 sm:min-h-[46rem] sm:py-20">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-80 [background-image:linear-gradient(rgb(131_185_255_/_7%)_1px,transparent_1px),linear-gradient(90deg,rgb(131_185_255_/_7%)_1px,transparent_1px)] [background-size:2.5rem_2.5rem] [mask-image:radial-gradient(circle_at_center,black,transparent_73%)]" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-x-[18%] bottom-20 h-64 rounded-full border border-blue-300/25 [transform:perspective(800px)_rotateX(66deg)] shadow-[0_0_36px_rgb(47_130_245_/_28%),inset_0_0_32px_rgb(47_130_245_/_14%)]" />
         <Container size="wide" className="relative grid min-h-[34rem] place-items-center text-center">
