@@ -1,10 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+} from "lucide-react";
 import { motion } from "motion/react";
+
 import { InfrastructureScrollObject } from "@/components/motion/infrastructure-scroll-object";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
@@ -18,6 +28,14 @@ type HomeHeroProps = {
 
 const heroEase = [0.16, 1, 0.3, 1] as const;
 
+/*
+ * Higher number = faster automatic movement.
+ *
+ * Previous speed: 0.018
+ * New speed: 0.05
+ */
+const MOBILE_CAROUSEL_SPEED = 0.05;
+
 const mobileClients = [
   "/clients%20logos/McDonalds_Logo.png",
   "/clients%20logos/cms.png",
@@ -29,18 +47,26 @@ function useMobileViewport() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const query = window.matchMedia("(max-width: 1023px)");
+    const mediaQuery = window.matchMedia(
+      "(max-width: 1023px)",
+    );
 
-    const update = () => {
-      setIsMobile(query.matches);
+    const updateViewport = () => {
+      setIsMobile(mediaQuery.matches);
     };
 
-    update();
+    updateViewport();
 
-    query.addEventListener("change", update);
+    mediaQuery.addEventListener(
+      "change",
+      updateViewport,
+    );
 
     return () => {
-      query.removeEventListener("change", update);
+      mediaQuery.removeEventListener(
+        "change",
+        updateViewport,
+      );
     };
   }, []);
 
@@ -53,8 +79,13 @@ function MobileClientCarousel({
   reducedMotion: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const frameRef = useRef<number | null>(null);
-  const resumeTimerRef = useRef<number | null>(null);
+  const animationFrameRef = useRef<number | null>(
+    null,
+  );
+  const resumeTimerRef = useRef<number | null>(
+    null,
+  );
+
   const [paused, setPaused] = useState(false);
 
   const cards = [
@@ -63,35 +94,46 @@ function MobileClientCarousel({
     ...mobileClients,
   ];
 
+  const pauseTemporarily = useCallback(() => {
+    setPaused(true);
+
+    if (resumeTimerRef.current !== null) {
+      window.clearTimeout(resumeTimerRef.current);
+    }
+
+    resumeTimerRef.current = window.setTimeout(
+      () => {
+        setPaused(false);
+      },
+      reducedMotion ? 0 : 420,
+    );
+  }, [reducedMotion]);
+
   const move = useCallback(
     (direction: -1 | 1) => {
       const track = trackRef.current;
 
       if (!track) return;
 
-      setPaused(true);
+      pauseTemporarily();
 
-      if (resumeTimerRef.current) {
-        window.clearTimeout(resumeTimerRef.current);
-      }
-
-      const card =
+      const firstCard =
         track.firstElementChild as HTMLElement | null;
 
       const gap = 12;
-      const step = (card?.offsetWidth ?? 152) + gap;
+      const cardWidth =
+        firstCard?.offsetWidth ?? 152;
+
+      const step = cardWidth + gap;
 
       track.scrollBy({
         left: direction * step,
-        behavior: reducedMotion ? "auto" : "smooth",
+        behavior: reducedMotion
+          ? "auto"
+          : "smooth",
       });
-
-      resumeTimerRef.current = window.setTimeout(
-        () => setPaused(false),
-        reducedMotion ? 0 : 520,
-      );
     },
-    [reducedMotion],
+    [pauseTemporarily, reducedMotion],
   );
 
   useEffect(() => {
@@ -103,47 +145,81 @@ function MobileClientCarousel({
 
     const groupWidth = track.scrollWidth / 3;
 
+    /*
+     * Begin from the middle duplicated group so the
+     * carousel can loop in either direction.
+     */
     if (track.scrollLeft < groupWidth - 2) {
       track.scrollLeft = groupWidth;
     }
 
-    let previous = performance.now();
+    let previousTime = performance.now();
 
-    const advance = (now: number) => {
-      const elapsed = now - previous;
-      previous = now;
+    const advance = (currentTime: number) => {
+      const elapsed = Math.min(
+        currentTime - previousTime,
+        50,
+      );
 
-      track.scrollLeft += elapsed * 0.018;
+      previousTime = currentTime;
 
-      if (track.scrollLeft >= groupWidth * 2) {
+      /*
+       * Increased from 0.018 to 0.05.
+       */
+      track.scrollLeft +=
+        elapsed * MOBILE_CAROUSEL_SPEED;
+
+      /*
+       * Seamlessly move back into the middle group.
+       */
+      if (
+        track.scrollLeft >=
+        groupWidth * 2
+      ) {
         track.scrollLeft -= groupWidth;
       }
 
-      frameRef.current =
+      if (track.scrollLeft < groupWidth * 0.5) {
+        track.scrollLeft += groupWidth;
+      }
+
+      animationFrameRef.current =
         window.requestAnimationFrame(advance);
     };
 
-    frameRef.current =
+    animationFrameRef.current =
       window.requestAnimationFrame(advance);
 
     return () => {
-      if (frameRef.current) {
-        window.cancelAnimationFrame(frameRef.current);
-      }
-
-      if (resumeTimerRef.current) {
-        window.clearTimeout(resumeTimerRef.current);
+      if (
+        animationFrameRef.current !== null
+      ) {
+        window.cancelAnimationFrame(
+          animationFrameRef.current,
+        );
       }
     };
   }, [paused, reducedMotion]);
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimerRef.current !== null) {
+        window.clearTimeout(
+          resumeTimerRef.current,
+        );
+      }
+    };
+  }, []);
 
   return (
     <div
       className="relative mt-8 lg:hidden"
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
+      onPointerDown={() => setPaused(true)}
+      onPointerUp={pauseTemporarily}
       onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
+      onBlurCapture={pauseTemporarily}
     >
       <div
         ref={trackRef}
@@ -158,13 +234,14 @@ function MobileClientCarousel({
           px-[calc(50%-4.75rem)]
           pb-3
           pt-2
+          touch-pan-x
           [scrollbar-width:none]
           [&::-webkit-scrollbar]:hidden
         "
       >
-        {cards.map((image, index) => (
+        {cards.map((logo, index) => (
           <div
-            key={`${image}-${index}`}
+            key={`${logo}-${index}`}
             className="
               grid
               h-[7rem]
@@ -177,11 +254,12 @@ function MobileClientCarousel({
               bg-[#0a1c30]/80
               p-4
               shadow-[0_12px_28px_rgb(2_13_35_/_30%)]
+              backdrop-blur-sm
             "
           >
             <span className="relative block h-12 w-28">
               <Image
-                src={image}
+                src={logo}
                 alt=""
                 fill
                 sizes="112px"
@@ -193,7 +271,13 @@ function MobileClientCarousel({
       </div>
 
       <div
-        className="mt-2 flex items-center justify-center gap-3"
+        className="
+          mt-2
+          flex
+          items-center
+          justify-center
+          gap-3
+        "
         role="group"
         aria-label="Client logo controls"
       >
@@ -260,8 +344,11 @@ function MobileClientCarousel({
 export function HomeHero({
   description,
   eyebrow,
+  title,
 }: HomeHeroProps) {
-  const reducedMotion = usePrefersReducedMotion();
+  const reducedMotion =
+    usePrefersReducedMotion();
+
   const isMobile = useMobileViewport();
 
   return (
@@ -276,10 +363,55 @@ export function HomeHero({
         text-white
       "
     >
-      {/* Full hero background video */}
+      {/* Mobile background image */}
+      <motion.div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-0
+          bg-cover
+          bg-center
+          bg-no-repeat
+          lg:hidden
+        "
+        style={{
+          backgroundImage:
+            "url('/home_hero_bg.jpg')",
+        }}
+        animate={
+          isMobile && !reducedMotion
+            ? {
+                scale: [1, 1.025, 1],
+              }
+            : {
+                scale: 1,
+              }
+        }
+        transition={
+          isMobile && !reducedMotion
+            ? {
+                duration: 9,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : {
+                duration: 0,
+              }
+        }
+      />
+
+      {/* Desktop background video */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-0 overflow-hidden"
+        className="
+          absolute
+          inset-0
+          z-0
+          hidden
+          overflow-hidden
+          lg:block
+        "
       >
         <video
           autoPlay
@@ -287,7 +419,7 @@ export function HomeHero({
           loop
           playsInline
           preload="metadata"
-          poster="/home_hero_bg.jpg"
+          poster="/hero_bg_image.png"
           className="
             h-full
             w-full
@@ -302,24 +434,69 @@ export function HomeHero({
         </video>
       </div>
 
-      {/* Overall dark overlay */}
+      {/* Overall navy overlay */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 z-[1] "
+        className="
+          absolute
+          inset-0
+          z-[1]
+          bg-[#071423]/30
+          lg:bg-[#071423]/15
+        "
       />
 
-      {/* Stronger overlay behind left-side text */}
+      {/* Mobile text readability overlay */}
       <div
         aria-hidden="true"
         className="
           absolute
           inset-0
           z-[2]
-          bg-[linear-gradient(90deg,rgb(42, 80, 123)_0%,rgb(7,20,35)_35%,rgba(7,20,35)_65%,rgb(7,20,35,0.25)_100%)]
+          bg-[linear-gradient(180deg,rgba(7,20,35,0.48)_0%,rgba(7,20,35,0.68)_58%,rgba(7,20,35,0.88)_100%)]
+          lg:hidden
         "
       />
 
-      {/* Grid */}
+      {/* Desktop left-side gradient */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[2]
+          hidden
+          bg-[linear-gradient(90deg,rgba(7,20,35,0.88)_0%,rgba(7,20,35,0.64)_34%,rgba(7,20,35,0.22)_66%,rgba(7,20,35,0.06)_100%)]
+          lg:block
+        "
+      />
+
+      {/* Technical grid */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[3]
+          opacity-15
+          [background-image:linear-gradient(rgb(87_154_239_/_8%)_1px,transparent_1px),linear-gradient(90deg,rgb(87_154_239_/_8%)_1px,transparent_1px)]
+          [background-size:54px_54px]
+          lg:opacity-20
+        "
+      />
+
+      {/* Blue atmospheric glow */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[3]
+          bg-[radial-gradient(circle_at_78%_43%,rgb(25_107_210_/_20%),transparent_29rem),radial-gradient(circle_at_14%_90%,rgb(9_66_137_/_16%),transparent_33rem)]
+        "
+      />
+
+      {/* Small particles */}
       <div
         aria-hidden="true"
         className="
@@ -327,32 +504,9 @@ export function HomeHero({
           inset-0
           z-[3]
           opacity-20
-          [background-image:linear-gradient(rgb(87_154_239_/_8%)_1px,transparent_1px),linear-gradient(90deg,rgb(87_154_239_/_8%)_1px,transparent_1px)]
-          [background-size:54px_54px]
-        "
-      />
-
-      {/* Blue glow */}
-      <div
-        aria-hidden="true"
-        className="
-          absolute
-          inset-0
-          z-[3]
-          bg-[radial-gradient(circle_at_78%_43%,rgb(25_107_210_/_22%),transparent_29rem),radial-gradient(circle_at_14%_90%,rgb(9_66_137_/_18%),transparent_33rem)]
-        "
-      />
-
-      {/* Background particles */}
-      <div
-        aria-hidden="true"
-        className="
-          absolute
-          inset-0
-          z-[3]
-          opacity-25
           [background-image:radial-gradient(circle_at_16%_24%,rgb(113_197_255_/_9%)_0_1px,transparent_1.5px),radial-gradient(circle_at_74%_72%,rgb(113_197_255_/_10%)_0_1px,transparent_1.5px)]
           [background-size:88px_88px,116px_116px]
+          lg:opacity-25
         "
       />
 
@@ -365,21 +519,21 @@ export function HomeHero({
           min-h-[calc(100dvh-5rem)]
           items-center
           gap-8
-          py-12
           pb-16
+          pt-12
           lg:grid-cols-[minmax(0,45%)_minmax(0,55%)]
           lg:py-16
         "
       >
-        {/* Left content */}
+        {/* Left hero content */}
         <motion.div
           initial={
             reducedMotion
               ? false
               : {
                   opacity: 0,
-                  x: -32,
-                  y: isMobile ? 0 : 30,
+                  x: isMobile ? 0 : -32,
+                  y: isMobile ? 22 : 30,
                 }
           }
           animate={{
@@ -391,14 +545,23 @@ export function HomeHero({
             duration: reducedMotion ? 0 : 0.7,
             ease: heroEase,
           }}
-          className="max-w-xl lg:hidden"
+          className="max-w-xl"
         >
-          <p className="hidden text-xs font-semibold uppercase tracking-[0.22em] text-blue-300 lg:block">
+          <p
+            className="
+              text-xs
+              font-semibold
+              uppercase
+              tracking-[0.22em]
+              text-blue-300
+            "
+          >
             {eyebrow}
           </p>
 
           <h1
             className="
+              mt-4
               max-w-[11ch]
               text-balance
               font-[family-name:var(--font-outfit)]
@@ -407,23 +570,40 @@ export function HomeHero({
               leading-[0.92]
               tracking-[-0.065em]
               text-white
-              lg:mt-5 
+              lg:mt-5
             "
           >
-            <span className="block">
-              Enterprise IT
-            </span>
+            {title ? (
+              title
+            ) : (
+              <>
+                <span className="block">
+                  Enterprise IT
+                </span>
 
-            <span className="block">
-              infrastructure
-            </span>
+                <span className="block">
+                  infrastructure
+                </span>
 
-            <span className="mt-[0.08em] block text-blue-400">
-              built for modern business.
-            </span>
+                <span className="mt-[0.08em] block text-blue-400">
+                  built for modern business.
+                </span>
+              </>
+            )}
           </h1>
 
-          <p className="mt-6 hidden max-w-[36rem] text-base leading-7 text-blue-100/78 lg:block lg:text-lg">
+          <p
+            className="
+              mt-6
+              max-w-[36rem]
+              text-sm
+              leading-6
+              text-blue-100/80
+              sm:text-base
+              sm:leading-7
+              lg:text-lg
+            "
+          >
             {description}
           </p>
 
@@ -431,7 +611,7 @@ export function HomeHero({
             <Link
               href="/consultation"
               className="
-                hidden
+                inline-flex
                 min-h-12
                 items-center
                 gap-3
@@ -449,7 +629,6 @@ export function HomeHero({
                 focus-visible:outline-2
                 focus-visible:outline-offset-4
                 focus-visible:outline-blue-300
-                lg:inline-flex
               "
             >
               Get Free Consultation
@@ -470,7 +649,7 @@ export function HomeHero({
                 rounded-full
                 border
                 border-blue-200/30
-                bg-white/[0.045]
+                bg-white/[0.06]
                 px-5
                 text-sm
                 font-semibold
@@ -478,7 +657,7 @@ export function HomeHero({
                 backdrop-blur-sm
                 transition
                 hover:border-blue-200/55
-                hover:bg-white/[0.09]
+                hover:bg-white/[0.1]
                 focus-visible:outline
                 focus-visible:outline-2
                 focus-visible:outline-offset-4
@@ -494,7 +673,16 @@ export function HomeHero({
             </Link>
           </div>
 
-          <p className="mt-6 hidden items-center gap-2 text-sm text-blue-100/72 lg:flex">
+          <p
+            className="
+              mt-6
+              flex
+              items-center
+              gap-2
+              text-sm
+              text-blue-100/75
+            "
+          >
             <Check
               className="size-4 text-blue-300"
               aria-hidden="true"
@@ -508,9 +696,9 @@ export function HomeHero({
           />
         </motion.div>
 
-        {/* Right-side 3D infrastructure object */}
+        {/* Desktop right-side 3D object */}
         <motion.div
-           initial={
+          initial={
             reducedMotion
               ? false
               : {
@@ -529,7 +717,7 @@ export function HomeHero({
             delay: 0.12,
             ease: heroEase,
           }}
-          className=" lg:hidden
+          className="
             pointer-events-none
             relative
             hidden
