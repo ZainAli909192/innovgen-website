@@ -12,23 +12,22 @@ import { Container } from "@/components/ui/container";
 import { SuccessPopup } from "@/components/ui/success-popup";
 import { cn } from "@/lib/utils";
 
-const positions = ["Senior Software Engineer", "Product Designer"] as const;
+const number = "" as const;
 
 const applicationSchema = z.object({
   fullName: z.string().trim().min(2, "Enter your full name."),
   email: z.string().trim().email("Enter a valid email address."),
-  position: z.string().min(1, "Choose a position."),
+  number: z.string().trim().regex(/^\+?[0-9\s\-()]{7,20}$/, "Enter a valid phone number."),
   cv: z
     .custom<FileList>((value) => typeof FileList !== "undefined" && value instanceof FileList, "Upload your CV.")
     .refine((files) => files.length === 1, "Upload one CV file.")
     .refine((files) => files[0]?.type === "application/pdf" || files[0]?.name.toLowerCase().endsWith(".pdf"), "Your CV must be a PDF file.")
     .refine((files) => files[0]?.size <= 2 * 1024 * 1024, "Your CV must be 2 MB or smaller."),
-  consent: z.boolean().refine((value) => value, "Please confirm before submitting."),
 });
 
 type ApplicationValues = z.infer<typeof applicationSchema>;
 
-const steps = ["Your details", "Position & CV", "Review"] as const;
+const steps = ["Your details", "Number & CV", "Review"] as const;
 
 function FieldError({ message }: { message?: string }) {
   return message ? <p className="mt-2 text-sm font-medium text-red-700">{message}</p> : null;
@@ -41,12 +40,12 @@ function CareersApplicationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<ApplicationValues>({
     resolver: zodResolver(applicationSchema),
-    defaultValues: { fullName: "", email: "", position: "", consent: false },
+    defaultValues: { fullName: "", email: "", number: "", cv: undefined },
     mode: "onTouched",
   });
 
   async function nextStep() {
-    const fields: (keyof ApplicationValues)[] = step === 0 ? ["fullName", "email"] : ["position", "cv"];
+    const fields: (keyof ApplicationValues)[] = step === 0 ? ["fullName", "email"] : ["number", "cv"];
     if (await form.trigger(fields)) setStep((current) => current + 1);
   }
 
@@ -59,8 +58,8 @@ function CareersApplicationForm() {
       const payload = new FormData();
       payload.set("fullName", values.fullName);
       payload.set("email", values.email);
-      payload.set("position", values.position);
-      payload.set("cv", values.cv[0]);
+      payload.set("number", values.number);
+      payload.set("cv", values.cv[0] as Blob);
 
       const response = await fetch("/api/careers/applications", { method: "POST", body: payload });
       const result = (await response.json()) as { message?: string };
@@ -142,14 +141,11 @@ function CareersApplicationForm() {
 
                 {step === 1 ? (
                   <fieldset className="rounded-[1.5rem] border border-slate-200 bg-slate-50/80 p-5 sm:p-7">
-                    <legend className="px-1 text-xl font-bold">Position &amp; CV</legend>
+                    <legend className="px-1 text-xl font-bold">Phone &amp; CV</legend>
                     <div className="mt-6 grid gap-5">
-                      <label className="text-sm font-semibold">Select position
-                        <select {...form.register("position")} className="mt-2 min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-base shadow-sm transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                          <option value="">Select a position</option>
-                          {positions.map((position) => <option key={position} value={position}>{position}</option>)}
-                        </select>
-                        <FieldError message={form.formState.errors.position?.message} />
+                      <label className="text-sm font-semibold">Phone number
+                        <input {...form.register("number")} type="tel" autoComplete="tel" placeholder="+971 50 123 4567" className="mt-2 min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-base shadow-sm transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" />
+                        <FieldError message={form.formState.errors.number?.message} />
                       </label>
                       <label className="text-sm font-semibold">Upload CV
                         <input {...form.register("cv")} type="file" accept="application/pdf,.pdf" className="mt-2 block min-h-16 w-full rounded-xl border border-dashed border-blue-200 bg-white px-4 py-3 text-sm shadow-sm file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-blue-700 hover:border-blue-400 hover:file:bg-blue-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" />
@@ -166,14 +162,9 @@ function CareersApplicationForm() {
                     <dl className="mt-6 grid gap-4 rounded-2xl border border-slate-100 bg-white p-5 text-sm shadow-sm sm:grid-cols-2">
                       <div><dt className="text-slate-500">Name</dt><dd className="mt-1 font-semibold">{form.getValues("fullName")}</dd></div>
                       <div><dt className="text-slate-500">Email</dt><dd className="mt-1 font-semibold">{form.getValues("email")}</dd></div>
-                      <div><dt className="text-slate-500">Position</dt><dd className="mt-1 font-semibold">{form.getValues("position")}</dd></div>
+                      <div><dt className="text-slate-500">Phone</dt><dd className="mt-1 font-semibold">{form.getValues("number")}</dd></div>
                       <div><dt className="text-slate-500">CV</dt><dd className="mt-1 font-semibold">{form.getValues("cv")?.[0]?.name}</dd></div>
                     </dl>
-                    <label className="mt-6 flex items-start gap-3 rounded-xl border border-blue-100 bg-blue-50/65 p-4 text-sm leading-6 text-slate-600">
-                      <input {...form.register("consent")} type="checkbox" className="mt-1 size-4 accent-blue-600" />
-                      <span>I confirm that InnovGen may use these details to review my application and contact me about relevant opportunities.</span>
-                    </label>
-                    <FieldError message={form.formState.errors.consent?.message} />
                     {submissionError ? <p role="alert" className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{submissionError}</p> : null}
                   </fieldset>
                 ) : null}

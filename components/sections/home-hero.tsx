@@ -134,7 +134,7 @@ export function HomeHero({
           absolute
           inset-0
           z-0
-          hidden
+          
           overflow-hidden
           lg:block
         "
