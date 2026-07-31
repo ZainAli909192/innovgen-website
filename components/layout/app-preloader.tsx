@@ -5,9 +5,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
 const loaderDuration = 5_000;
-const handoffDuration = 450;
+const handoffDuration = 550;
 const loaderEase = [0.22, 1, 0.36, 1] as const;
-const loaderWords = ["We", "Handle", " IT", ". You Build" , " What’s Next"];
+const loaderWords = ["We", "Handle", " IT.", "You Build" , " What’s Next"];
  
 export function AppPreloader() {
   return <AppPreloaderScreen />;
