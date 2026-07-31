@@ -28,19 +28,11 @@ type HomeHeroProps = {
 
 const heroEase = [0.16, 1, 0.3, 1] as const;
 
-/*
- * Higher number = faster automatic movement.
- *
- * Previous speed: 0.018
- * New speed: 0.05
- */
-const MOBILE_CAROUSEL_SPEED = 0.05;
-
 const mobileClients = [
-  "/clients%20logos/McDonalds_Logo.png",
-  "/clients%20logos/cms.png",
-  "/clients%20logos/rolls_royals.png",
-  "/clients%20logos/fantco-logo.png",
+  { id: "1", logo: "/clients%20logos/McDonalds_Logo.png" },
+  { id: "2", logo: "/clients%20logos/cms.png" },
+  { id: "3", logo: "/clients%20logos/rolls_royals.png" },
+  { id: "4", logo: "/clients%20logos/fantco-logo.png" },
 ] as const;
 
 function useMobileViewport() {
@@ -73,211 +65,89 @@ function useMobileViewport() {
   return isMobile;
 }
 
+function wrappedOffset(index: number, activeIndex: number, count: number) {
+  const raw = index - activeIndex;
+  if (raw > count / 2) return raw - count;
+  if (raw < -count / 2) return raw + count;
+  return raw;
+}
+
 function MobileClientCarousel({
   reducedMotion,
 }: {
   reducedMotion: boolean;
 }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number | null>(
-    null,
-  );
-  const resumeTimerRef = useRef<number | null>(
-    null,
-  );
-
+  const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-
-  const cards = [
-    ...mobileClients,
-    ...mobileClients,
-    ...mobileClients,
-  ];
-
-  const pauseTemporarily = useCallback(() => {
-    setPaused(true);
-
-    if (resumeTimerRef.current !== null) {
-      window.clearTimeout(resumeTimerRef.current);
-    }
-
-    resumeTimerRef.current = window.setTimeout(
-      () => {
-        setPaused(false);
-      },
-      reducedMotion ? 0 : 420,
-    );
-  }, [reducedMotion]);
+  const count = mobileClients.length;
 
   const move = useCallback(
     (direction: -1 | 1) => {
-      const track = trackRef.current;
-
-      if (!track) return;
-
-      pauseTemporarily();
-
-      const firstCard =
-        track.firstElementChild as HTMLElement | null;
-
-      const gap = 12;
-      const cardWidth =
-        firstCard?.offsetWidth ?? 152;
-
-      const step = cardWidth + gap;
-
-      track.scrollBy({
-        left: direction * step,
-        behavior: reducedMotion
-          ? "auto"
-          : "smooth",
-      });
+      setActiveIndex((current) => (current + direction + count) % count);
     },
-    [pauseTemporarily, reducedMotion],
+    [count],
   );
 
   useEffect(() => {
-    if (reducedMotion || paused) return;
-
-    const track = trackRef.current;
-
-    if (!track) return;
-
-    const groupWidth = track.scrollWidth / 3;
-
-    /*
-     * Begin from the middle duplicated group so the
-     * carousel can loop in either direction.
-     */
-    if (track.scrollLeft < groupWidth - 2) {
-      track.scrollLeft = groupWidth;
-    }
-
-    let previousTime = performance.now();
-
-    const advance = (currentTime: number) => {
-      const elapsed = Math.min(
-        currentTime - previousTime,
-        50,
-      );
-
-      previousTime = currentTime;
-
-      /*
-       * Increased from 0.018 to 0.05.
-       */
-      track.scrollLeft +=
-        elapsed * MOBILE_CAROUSEL_SPEED;
-
-      /*
-       * Seamlessly move back into the middle group.
-       */
-      if (
-        track.scrollLeft >=
-        groupWidth * 2
-      ) {
-        track.scrollLeft -= groupWidth;
-      }
-
-      if (track.scrollLeft < groupWidth * 0.5) {
-        track.scrollLeft += groupWidth;
-      }
-
-      animationFrameRef.current =
-        window.requestAnimationFrame(advance);
-    };
-
-    animationFrameRef.current =
-      window.requestAnimationFrame(advance);
-
-    return () => {
-      if (
-        animationFrameRef.current !== null
-      ) {
-        window.cancelAnimationFrame(
-          animationFrameRef.current,
-        );
-      }
-    };
-  }, [paused, reducedMotion]);
-
-  useEffect(() => {
-    return () => {
-      if (resumeTimerRef.current !== null) {
-        window.clearTimeout(
-          resumeTimerRef.current,
-        );
-      }
-    };
-  }, []);
+    if (reducedMotion || paused || count < 2) return;
+    const interval = window.setInterval(() => move(1), 5000);
+    return () => window.clearInterval(interval);
+  }, [count, move, paused, reducedMotion]);
 
   return (
-    <div
+    <section
+      aria-label="Selected InnovGen client logos"
       className="relative mt-8 lg:hidden"
-      onPointerEnter={() => setPaused(true)}
-      onPointerLeave={() => setPaused(false)}
-      onPointerDown={() => setPaused(true)}
-      onPointerUp={pauseTemporarily}
       onFocusCapture={() => setPaused(true)}
-      onBlurCapture={pauseTemporarily}
+      onBlurCapture={() => setPaused(false)}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
-      <div
-        ref={trackRef}
-        aria-label="Selected InnovGen client logos"
-        className="
-          flex
-          h-[8.5rem]
-          gap-3
-          overflow-x-auto
-          overscroll-x-contain
-          scroll-smooth
-          px-[calc(50%-4.75rem)]
-          pb-3
-          pt-2
-          touch-pan-x
-          [scrollbar-width:none]
-          [&::-webkit-scrollbar]:hidden
-        "
-      >
-        {cards.map((logo, index) => (
-          <div
-            key={`${logo}-${index}`}
-            className="
-              grid
-              h-[7rem]
-              w-[9.5rem]
-              shrink-0
-              place-items-center
-              rounded-2xl
-              border
-              border-blue-200/30
-              bg-[#0a1c30]/80
-              p-4
-              shadow-[0_12px_28px_rgb(2_13_35_/_30%)]
-              backdrop-blur-sm
-            "
-          >
-            <span className="relative block h-12 w-28">
-              <Image
-                src={logo}
-                alt=""
-                fill
-                sizes="112px"
-                className="object-contain"
-              />
-            </span>
-          </div>
-        ))}
+      <div className="relative h-[9rem] w-full [perspective:1200px]">
+        {mobileClients.map((client, index) => {
+          const offset = wrappedOffset(index, activeIndex, count);
+          const active = offset === 0;
+          const visible = Math.abs(offset) <= 1;
+          const x = offset === 0 ? "0%" : `${offset * 110}%`;
+
+          return (
+            <motion.div
+              key={client.id}
+              aria-hidden={!active}
+              inert={!active || undefined}
+              animate={{
+                x,
+                scale: active ? 1 : visible ? 0.85 : 0.7,
+                rotateY: offset * -8,
+                opacity: active ? 1 : visible ? 0.6 : 0,
+              }}
+              transition={
+                reducedMotion
+                  ? { duration: 0 }
+                  : { type: "spring", stiffness: 210, damping: 28, mass: 0.78 }
+              }
+              className={`absolute inset-0 flex items-center justify-center will-change-transform ${
+                active ? "z-20" : visible ? "z-10" : "-z-10 pointer-events-none"
+              }`}
+            >
+              <div className="grid h-[7rem] w-[9.5rem] shrink-0 place-items-center rounded-2xl border border-blue-200/30 bg-[#0a1c30]/80 p-4 shadow-[0_12px_28px_rgb(2_13_35_/_30%)] backdrop-blur-sm">
+                <span className="relative block h-12 w-28">
+                  <Image
+                    src={client.logo}
+                    alt=""
+                    fill
+                    sizes="112px"
+                    className="object-contain"
+                  />
+                </span>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
       <div
-        className="
-          mt-2
-          flex
-          items-center
-          justify-center
-          gap-3
-        "
+        className="mt-6 flex items-center justify-center gap-3"
         role="group"
         aria-label="Client logo controls"
       >
@@ -285,23 +155,7 @@ function MobileClientCarousel({
           type="button"
           aria-label="Show previous client logo"
           onClick={() => move(-1)}
-          className="
-            grid
-            size-11
-            place-items-center
-            rounded-full
-            border
-            border-blue-200/35
-            bg-navy-900/85
-            text-white
-            shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)]
-            transition
-            hover:bg-navy-800
-            focus-visible:outline
-            focus-visible:outline-2
-            focus-visible:outline-offset-2
-            focus-visible:outline-blue-200
-          "
+          className="grid size-11 place-items-center rounded-full border border-blue-200/35 bg-navy-900/85 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)] transition hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200"
         >
           <ArrowLeft
             className="size-5"
@@ -313,23 +167,7 @@ function MobileClientCarousel({
           type="button"
           aria-label="Show next client logo"
           onClick={() => move(1)}
-          className="
-            grid
-            size-11
-            place-items-center
-            rounded-full
-            border
-            border-blue-200/35
-            bg-navy-900/85
-            text-white
-            shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)]
-            transition
-            hover:bg-navy-800
-            focus-visible:outline
-            focus-visible:outline-2
-            focus-visible:outline-offset-2
-            focus-visible:outline-blue-200
-          "
+          className="grid size-11 place-items-center rounded-full border border-blue-200/35 bg-navy-900/85 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)] transition hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200"
         >
           <ArrowRight
             className="size-5"
@@ -337,7 +175,7 @@ function MobileClientCarousel({
           />
         </button>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -631,7 +469,7 @@ export function HomeHero({
                 focus-visible:outline-blue-300
               "
             >
-              Get Free Consultation
+              Our Services
 
               <ArrowRight
                 className="size-4"
@@ -639,7 +477,7 @@ export function HomeHero({
               />
             </Link>
 
-            <Link
+            {/* <Link
               href="/services"
               className="
                 inline-flex
@@ -670,7 +508,7 @@ export function HomeHero({
                 className="size-4"
                 aria-hidden="true"
               />
-            </Link>
+            </Link> */}
           </div>
 
           <p
