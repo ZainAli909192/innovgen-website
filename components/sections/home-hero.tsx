@@ -302,15 +302,19 @@ export function HomeHero({
           >
             {title ? (
               (() => {
-                const parts = title.toLowerCase().split('secure digital');
-                if (parts.length === 1) {
+                const lowerTitle = title.toLowerCase();
+                const index = lowerTitle.indexOf('secure digital');
+                if (index === -1) {
                   return title;
                 }
+                const before = title.substring(0, index);
+                const match = title.substring(index, index + 14);
+                const after = title.substring(index + 14);
                 return (
                   <>
-                    {parts[0]}
-                    <span className="text-blue-400">secure digital</span>
-                    {parts.slice(1).join('secure digital')}
+                    {before}
+                    <span className="text-blue-400">{match}</span>
+                    {after}
                   </>
                 );
               })()
@@ -325,7 +329,7 @@ export function HomeHero({
                 </span>
 
                 <span className="mt-[0.08em] block text-blue-400">
-                  built for modern business.
+                  Built for modern business.
                 </span>
               </>
             )}
