@@ -88,6 +88,22 @@ export function MobileNavigation() {
 
   return (
     <>
+      <Link
+        href="/"
+        aria-label="InnovGen IT Software Solutions"
+        className="fixed end-3 top-3 z-[75] inline-flex h-20 w-[220px] shrink-0 items-center justify-center overflow-hidden p-5 shadow-[0_7px_14px_rgb(2_12_28_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)] lg:hidden"
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+          className="h-52 w-[20rem] max-w-none object-cover"
+          src="/original_logo.mp4"
+        />
+      </Link>
+
       <motion.nav
         aria-label="Primary mobile navigation"
         initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.96 }}
