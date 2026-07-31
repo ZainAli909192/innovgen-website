@@ -78,8 +78,9 @@ export function Footer() {
             <h2 id="footer-brand-heading" className="sr-only">InnovGen</h2>
             <Logo
               size={128}
-              imageClassName="h-42 w-42"
+              imageClassName="h-22 w-22 scale-130 transition-transform duration-300 group-hover:scale-105"
               className="!rounded-none !bg-transparent"
+              
             />
             <p className="mt-5 max-w-sm text-muted">{siteConfig.description}</p>
             <Button href={consultationNavigation.href} size="sm" className="mt-6">
