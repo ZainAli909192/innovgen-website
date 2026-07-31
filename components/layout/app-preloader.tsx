@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
 const loaderDuration = 5_000;
-const handoffDuration = 550;
+const handoffDuration = 1500;
 const loaderEase = [0.22, 1, 0.36, 1] as const;
 const loaderWords = ["We", "Handle", " IT.", "You Build" , " What’s Next"];
  
@@ -63,7 +63,7 @@ function AppPreloaderScreen() {
 
     const intervalId = window.setInterval(() => {
       setActiveWordIndex((index) => (index + 1) % loaderWords.length);
-    }, 400);
+    }, 700);
 
     return () => window.clearInterval(intervalId);
   }, [reducedMotion]);
@@ -113,7 +113,7 @@ function AppPreloaderScreen() {
                 </AnimatePresence>
               </div>
 
-              <motion.video
+              {/* <motion.video
                 aria-hidden="true"
                 autoPlay
                 className="mt-3 h-auto w-[10.5rem] max-w-full object-contain sm:mt-4 sm:w-48"
@@ -135,7 +135,7 @@ function AppPreloaderScreen() {
                 }
               >
                 <source src="/logo_video.mp4" type="video/mp4" />
-              </motion.video>
+              </motion.video> */}
             </motion.div>
 
           </div>
