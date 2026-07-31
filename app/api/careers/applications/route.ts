@@ -4,7 +4,7 @@ import { z } from "zod";
 export const runtime = "nodejs";
 
 const MAX_CV_SIZE = 2 * 1024 * 1024;
-const recipient = process.env.CAREERS_EMAIL_TO;
+const recipient = process.env.CAREERS_EMAIL_TO ?? "nayef@innovgen.com";
 
 const applicationSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
@@ -53,28 +53,66 @@ export async function POST(request: Request) {
   const application = parsed.data;
   const resumeContent = Buffer.from(await cv.arrayBuffer());
   const resend = new Resend(process.env.RESEND_API_KEY);
-  
+
   // Send email to company
   const { error: companyError } = await resend.emails.send({
     from: process.env.CAREERS_EMAIL_FROM,
     to: [recipient],
     replyTo: application.email,
-    subject: `Careers application: ${application.position} — ${application.fullName}`,
-    text: `New InnovGen careers application\n\nName: ${application.fullName}\nEmail: ${application.email}\nPosition: ${application.position}\nCV: ${cv.name}`,
-    html: `<h1>New InnovGen careers application</h1><p><strong>Name:</strong> ${escapeHtml(application.fullName)}</p><p><strong>Email:</strong> ${escapeHtml(application.email)}</p><p><strong>Position:</strong> ${escapeHtml(application.position)}</p><p><strong>CV:</strong> ${escapeHtml(cv.name)}</p>`,
+    subject: `New Application — ${application.position} | ${application.fullName}`,
+    text: `A new application has been submitted.
+
+Name: ${application.fullName}
+Email: ${application.email}
+Position: ${application.position}
+CV: ${cv.name}
+
+This message was generated automatically by the InnovGen Careers system.`,
+    html: `
+    <div style="font-family: Arial, Helvetica, sans-serif; padding: 20px; background: #f5f7fa;">
+      <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; padding: 30px; border: 1px solid #e6e9ef;">
+        
+        <h2 style="margin-top: 0; font-size: 22px; color: #1a1f36;">
+          New Careers Application
+        </h2>
+
+        <p style="font-size: 15px; color: #333;">
+          <strong>Name:</strong> ${escapeHtml(application.fullName)}
+        </p>
+
+        <p style="font-size: 15px; color: #333;">
+          <strong>Email:</strong> ${escapeHtml(application.email)}
+        </p>
+
+        <p style="font-size: 15px; color: #333;">
+          <strong>Position:</strong> ${escapeHtml(application.position)}
+        </p>
+
+        <p style="font-size: 15px; color: #333;">
+          <strong>CV:</strong> ${escapeHtml(cv.name)}
+        </p>
+
+        <p style="margin-top: 25px; font-size: 13px; color: #777;">
+          This notification was generated automatically by the InnovGen Careers system.
+        </p>
+
+      </div>
+    </div>
+  `,
     attachments: [{ filename: cv.name, content: resumeContent }],
   });
+
 
   if (companyError) {
     return Response.json({ message: "We could not send your application. Please try again." }, { status: 502 });
   }
 
   // Send confirmation email to applicant
- const { error: applicantError } = await resend.emails.send({
-  from: process.env.CAREERS_EMAIL_FROM,
-  to: [application.email],
-  subject: "Your Application Has Been Received — InnovGen",
-  text: `Hi ${application.fullName},
+  const { error: applicantError } = await resend.emails.send({
+    from: process.env.CAREERS_EMAIL_FROM,
+    to: [application.email],
+    subject: "Your Application Has Been Received — InnovGen",
+    text: `Hi ${application.fullName},
 
 Thank you for applying to InnovGen.
 
@@ -84,7 +122,7 @@ We appreciate your interest in joining InnovGen and the time you invested in sub
 
 Warm regards,
 InnovGen Careers Team`,
-  html: `
+    html: `
     <div style="font-family: Arial, Helvetica, sans-serif; padding: 20px; background: #f5f7fa;">
       <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; padding: 30px; border: 1px solid #e6e9ef;">
         
@@ -116,7 +154,7 @@ InnovGen Careers Team`,
       </div>
     </div>
   `,
-});
+  });
 
 
   if (applicantError) {
