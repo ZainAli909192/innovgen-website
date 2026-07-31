@@ -104,7 +104,7 @@ export function LeadershipSection() {
   };
 
   useEffect(() => {
-    if (prefersReducedMotion ) return;
+    if (prefersReducedMotion || mobile) return;
     const intervalId = window.setInterval(() => {
       setActiveIndex(
         (current) => (current + 1) % leadershipProfiles.length,
