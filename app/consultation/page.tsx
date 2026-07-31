@@ -24,7 +24,7 @@ export default function ConsultationPage() {
       <Section
         tone="surface"
         spacing="spacious"
-        className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_10%_35%,rgb(47_130_245_/_10%),transparent_27rem),radial-gradient(circle_at_92%_0%,rgb(104_40_96_/_18%),transparent_32rem),linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))]"
+        className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_10%_35%,rgb(47_130_245_/_10%),transparent_27rem),radial-gradient(circle_at_92%_0%,rgb(104_40_96_/_18%),transparent_32rem),linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] max-md:!pt-8 md:!pt-32"
       >
         <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/45 to-transparent" />
         <Container size="wide">
@@ -42,7 +42,7 @@ export default function ConsultationPage() {
                 <ConsultationVisual className="w-full" />
               </div>
             </Reveal>
-            <Reveal preset="spatial" once={false} amount={0.24} className="min-w-0 [perspective:1200px]">
+            <Reveal preset="spatial" once={false} amount={0.24} className="min-w-0 [perspective:1200px] max-md:!transform-none max-md:!opacity-100">
               <Card className="relative h-full overflow-hidden border-blue-200/20 bg-[linear-gradient(145deg,rgb(15_43_78_/_97%),rgb(4_13_29_/_99%))] p-4 shadow-[inset_0_1px_0_rgb(255_255_255_/_12%),0_30px_80px_rgb(0_0_0_/_32%)] [transform-style:preserve-3d] sm:p-7 lg:p-9">
                 <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full border border-blue-300/20 bg-blue-500/[0.08]" />
                 <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 size-56 rounded-full border border-violet-300/20 bg-violet-500/[0.06]" />
