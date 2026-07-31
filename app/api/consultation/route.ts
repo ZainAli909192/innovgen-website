@@ -21,7 +21,7 @@ function escapeHtml(value: string) {
 }
 
 export async function POST(request: Request) {
-  const sender = process.env.CONSULTATION_EMAIL_FROM ?? process.env.CAREERS_EMAIL_FROM;
+  const sender = process.env.CONSULTATION_EMAIL_FROM ?? "linkplus.ae@gmail.com";
   if (!process.env.RESEND_API_KEY || !sender) {
     return Response.json(
       { message: "Enquiries are temporarily unavailable. Please try again later." },
