@@ -9,7 +9,7 @@ const recipient = process.env.CAREERS_EMAIL_TO ?? "nayef@innovgen.com";
 const applicationSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(254),
-  position: z.enum(["Senior Software Engineer", "Product Designer"]),
+  number: z.string().trim().regex(/^\+?[0-9\s\-()]{7,20}$/, "Enter a valid phone number."),   
 });
 
 function escapeHtml(value: string) {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   const parsed = applicationSchema.safeParse({
     fullName: formData.get("fullName"),
     email: formData.get("email"),
-    position: formData.get("position"),
+    number: formData.get("number"),
   });
   const cv = formData.get("cv");
 
@@ -59,12 +59,12 @@ export async function POST(request: Request) {
     from: process.env.CAREERS_EMAIL_FROM,
     to: [recipient],
     replyTo: application.email,
-    subject: `New Application — ${application.position} | ${application.fullName}`,
+    subject: `New Application — ${application.fullName}`,
     text: `A new application has been submitted.
 
 Name: ${application.fullName}
 Email: ${application.email}
-Position: ${application.position}
+Phone: ${application.number}
 CV: ${cv.name}
 
 This message was generated automatically by the InnovGen Careers system.`,
@@ -85,7 +85,7 @@ This message was generated automatically by the InnovGen Careers system.`,
         </p>
 
         <p style="font-size: 15px; color: #333;">
-          <strong>Position:</strong> ${escapeHtml(application.position)}
+          <strong>Phone:</strong> ${escapeHtml(application.number)}
         </p>
 
         <p style="font-size: 15px; color: #333;">

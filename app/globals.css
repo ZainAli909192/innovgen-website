@@ -10,6 +10,8 @@
   --color-blue-600: #1769e0;
   --color-blue-500: #2f82f5;
   --color-blue-300: #83b9ff;
+  --consultation-violet: #682860;
+  --consultation-violet-soft: #d9a6ff;
   --color-gold-500: #c99a32;
 
   -color-gold-500: #0d203a;
@@ -80,6 +82,8 @@
   --color-primary: var(--primary);
   --color-accent: var(--accent);
   --color-border: var(--border);
+  --color-violet-500: var(--consultation-violet);
+  --color-violet-300: var(--consultation-violet-soft);
   --font-sans: var(--font-geist-sans);
   --font-display: var(--font-outfit);
   --radius-sm: var(--radius-sm);
@@ -349,5 +353,65 @@ a {
   }
   to {
     transform: rotate3d(1, 1, 0, 360deg);
+  }
+}
+
+@keyframes consultation-line-drift {
+  0%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.42;
+  }
+  50% {
+    stroke-dashoffset: -42;
+    opacity: 0.92;
+  }
+}
+
+@keyframes consultation-globe-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+@keyframes consultation-scan {
+  0% {
+    transform: translateY(-13rem);
+    opacity: 0;
+  }
+  18%,
+  78% {
+    opacity: 0.72;
+  }
+  100% {
+    transform: translateY(13rem);
+    opacity: 0;
+  }
+}
+
+.consultation-signal-line {
+  stroke-dasharray: 3 15;
+  animation: consultation-line-drift 7s linear infinite;
+}
+
+.consultation-globe {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: consultation-globe-drift 6s var(--ease-out) infinite;
+}
+
+.consultation-scanline {
+  animation: consultation-scan 7s var(--ease-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .consultation-signal-line,
+  .consultation-globe,
+  .consultation-scanline {
+    animation: none;
   }
 }

@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 
-const loaderDuration = 6_000;
+const loaderDuration = 5_000;
 const handoffDuration = 450;
 const loaderEase = [0.22, 1, 0.36, 1] as const;
-const loaderWords = ["MODERN", "ICONIC", "TECHNOLOGY", "PREMIUM" , "INNOVATIVE"];
+const loaderWords = ["We", "Handle", " IT", ". You Build" , " What’s Next"];
  
 export function AppPreloader() {
   return <AppPreloaderScreen />;

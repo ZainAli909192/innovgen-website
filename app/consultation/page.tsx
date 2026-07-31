@@ -1,4 +1,5 @@
 import { ConsultationForm } from "@/components/forms/consultation-form";
+import { ConsultationVisual } from "@/components/sections/consultation/consultation-visual";
 import { ContentGridSection } from "@/components/sections/content-grid-section";
 import { Reveal } from "@/components/motion/reveal";
 import { Card } from "@/components/ui/card";
@@ -20,33 +21,32 @@ export default function ConsultationPage() {
   return (
     <>
    
-      <Section tone="surface">
-        <Container>
-          <div id="consultation-form" className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-            <Reveal preset="up" once={false} amount={0.3}>
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Your context</p>
-              <h2 className="mt-4 text-[length:var(--text-h2)]">A few details help us prepare</h2>
-              <p className="mt-5 text-muted">
-                Fields are designed to establish need, scope and timing without
-                asking for unnecessary information.
-              </p>
-              <div className="relative mt-8 aspect-[16/10] overflow-hidden rounded-[1.5rem] border border-blue-300/25 bg-[var(--color-navy-950)] shadow-[0_22px_54px_rgb(0_0_0_/_22%)]">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  src="/contact_video.mp4"
-                  className="h-full w-full object-cover opacity-85"
-                />
-                <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgb(5_11_24_/_38%),transparent_64%)]" />
+      <Section
+        tone="surface"
+        spacing="spacious"
+        className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_10%_35%,rgb(47_130_245_/_10%),transparent_27rem),radial-gradient(circle_at_92%_0%,rgb(104_40_96_/_18%),transparent_32rem),linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))]"
+      >
+        <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/45 to-transparent" />
+        <Container size="wide">
+          <div id="consultation-form" className="grid items-stretch gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-10 xl:grid-cols-[0.96fr_1.04fr]">
+            <Reveal preset="up" once={false} amount={0.3} className="min-w-0">
+              <div className="flex h-full flex-col justify-between gap-8">
+                <div className="max-w-xl">
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">Your context</p>
+                  <h2 className="mt-4 max-w-[14ch] text-[length:var(--text-h2)]">A few details help us prepare</h2>
+                  <p className="mt-5 max-w-[45ch] text-muted">
+                    Fields are designed to establish need, scope and timing without
+                    asking for unnecessary information.
+                  </p>
+                </div>
+                <ConsultationVisual className="w-full" />
               </div>
             </Reveal>
-            <Reveal preset="spatial" once={false} amount={0.24} className="[perspective:1200px]">
-              <Card className="relative overflow-hidden border-blue-300/30 bg-[linear-gradient(145deg,rgb(16_48_83_/_96%),rgb(5_15_31_/_99%))] p-4 shadow-[inset_0_1px_0_rgb(255_255_255_/_12%),0_30px_80px_rgb(0_0_0_/_28%)] [transform-style:preserve-3d] sm:p-7">
+            <Reveal preset="spatial" once={false} amount={0.24} className="min-w-0 [perspective:1200px]">
+              <Card className="relative h-full overflow-hidden border-blue-200/20 bg-[linear-gradient(145deg,rgb(15_43_78_/_97%),rgb(4_13_29_/_99%))] p-4 shadow-[inset_0_1px_0_rgb(255_255_255_/_12%),0_30px_80px_rgb(0_0_0_/_32%)] [transform-style:preserve-3d] sm:p-7 lg:p-9">
                 <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full border border-blue-300/20 bg-blue-500/[0.08]" />
-                <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 size-56 rounded-full border border-accent/20 bg-accent/[0.05]" />
+                <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 size-56 rounded-full border border-violet-300/20 bg-violet-500/[0.06]" />
+                <span aria-hidden="true" className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-blue-200/55 to-transparent" />
                 <div className="relative"><ConsultationForm /></div>
               </Card>
             </Reveal>
