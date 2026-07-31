@@ -1,10 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+} from "lucide-react";
 import { motion } from "motion/react";
+
 import { InfrastructureScrollObject } from "@/components/motion/infrastructure-scroll-object";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { SceneSection } from "@/components/three/scene-section";
@@ -18,6 +28,14 @@ type HomeHeroProps = {
 
 const heroEase = [0.16, 1, 0.3, 1] as const;
 
+/*
+ * Higher number = faster automatic movement.
+ *
+ * Previous speed: 0.018
+ * New speed: 0.05
+ */
+const MOBILE_CAROUSEL_SPEED = 0.05;
+
 const mobileClients = [
   "/clients%20logos/McDonalds_Logo.png",
   "/clients%20logos/cms.png",
@@ -29,172 +47,689 @@ function useMobileViewport() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const query = window.matchMedia("(max-width: 1023px)");
-    const update = () => setIsMobile(query.matches);
+    const mediaQuery = window.matchMedia(
+      "(max-width: 1023px)",
+    );
 
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
+    const updateViewport = () => {
+      setIsMobile(mediaQuery.matches);
+    };
+
+    updateViewport();
+
+    mediaQuery.addEventListener(
+      "change",
+      updateViewport,
+    );
+
+    return () => {
+      mediaQuery.removeEventListener(
+        "change",
+        updateViewport,
+      );
+    };
   }, []);
 
   return isMobile;
 }
 
-function MobileClientCarousel({ reducedMotion }: { reducedMotion: boolean }) {
+function MobileClientCarousel({
+  reducedMotion,
+}: {
+  reducedMotion: boolean;
+}) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const frameRef = useRef<number | null>(null);
-  const resumeTimerRef = useRef<number | null>(null);
+  const animationFrameRef = useRef<number | null>(
+    null,
+  );
+  const resumeTimerRef = useRef<number | null>(
+    null,
+  );
+
   const [paused, setPaused] = useState(false);
-  const cards = [...mobileClients, ...mobileClients, ...mobileClients];
 
-  const move = useCallback((direction: -1 | 1) => {
-    const track = trackRef.current;
-    if (!track) return;
+  const cards = [
+    ...mobileClients,
+    ...mobileClients,
+    ...mobileClients,
+  ];
 
+  const pauseTemporarily = useCallback(() => {
     setPaused(true);
-    if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
 
-    const card = track.firstElementChild as HTMLElement | null;
-    const gap = 12;
-    const step = (card?.offsetWidth ?? 152) + gap;
+    if (resumeTimerRef.current !== null) {
+      window.clearTimeout(resumeTimerRef.current);
+    }
 
-    track.scrollBy({
-      left: direction * step,
-      behavior: reducedMotion ? "auto" : "smooth",
-    });
-
-    resumeTimerRef.current = window.setTimeout(() => setPaused(false), reducedMotion ? 0 : 520);
+    resumeTimerRef.current = window.setTimeout(
+      () => {
+        setPaused(false);
+      },
+      reducedMotion ? 0 : 420,
+    );
   }, [reducedMotion]);
+
+  const move = useCallback(
+    (direction: -1 | 1) => {
+      const track = trackRef.current;
+
+      if (!track) return;
+
+      pauseTemporarily();
+
+      const firstCard =
+        track.firstElementChild as HTMLElement | null;
+
+      const gap = 12;
+      const cardWidth =
+        firstCard?.offsetWidth ?? 152;
+
+      const step = cardWidth + gap;
+
+      track.scrollBy({
+        left: direction * step,
+        behavior: reducedMotion
+          ? "auto"
+          : "smooth",
+      });
+    },
+    [pauseTemporarily, reducedMotion],
+  );
 
   useEffect(() => {
     if (reducedMotion || paused) return;
 
     const track = trackRef.current;
+
     if (!track) return;
 
     const groupWidth = track.scrollWidth / 3;
-    if (track.scrollLeft < groupWidth - 2) track.scrollLeft = groupWidth;
 
-    let previous = performance.now();
-    const advance = (now: number) => {
-      const elapsed = now - previous;
-      previous = now;
-      track.scrollLeft += elapsed * 0.018;
+    /*
+     * Begin from the middle duplicated group so the
+     * carousel can loop in either direction.
+     */
+    if (track.scrollLeft < groupWidth - 2) {
+      track.scrollLeft = groupWidth;
+    }
 
-      if (track.scrollLeft >= groupWidth * 2) {
+    let previousTime = performance.now();
+
+    const advance = (currentTime: number) => {
+      const elapsed = Math.min(
+        currentTime - previousTime,
+        50,
+      );
+
+      previousTime = currentTime;
+
+      /*
+       * Increased from 0.018 to 0.05.
+       */
+      track.scrollLeft +=
+        elapsed * MOBILE_CAROUSEL_SPEED;
+
+      /*
+       * Seamlessly move back into the middle group.
+       */
+      if (
+        track.scrollLeft >=
+        groupWidth * 2
+      ) {
         track.scrollLeft -= groupWidth;
       }
 
-      frameRef.current = window.requestAnimationFrame(advance);
+      if (track.scrollLeft < groupWidth * 0.5) {
+        track.scrollLeft += groupWidth;
+      }
+
+      animationFrameRef.current =
+        window.requestAnimationFrame(advance);
     };
 
-    frameRef.current = window.requestAnimationFrame(advance);
+    animationFrameRef.current =
+      window.requestAnimationFrame(advance);
+
     return () => {
-      if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
-      if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
+      if (
+        animationFrameRef.current !== null
+      ) {
+        window.cancelAnimationFrame(
+          animationFrameRef.current,
+        );
+      }
     };
   }, [paused, reducedMotion]);
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimerRef.current !== null) {
+        window.clearTimeout(
+          resumeTimerRef.current,
+        );
+      }
+    };
+  }, []);
 
   return (
     <div
       className="relative mt-8 lg:hidden"
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
+      onPointerDown={() => setPaused(true)}
+      onPointerUp={pauseTemporarily}
       onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
+      onBlurCapture={pauseTemporarily}
     >
       <div
         ref={trackRef}
         aria-label="Selected InnovGen client logos"
-        className="flex h-[8.5rem] gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-[calc(50%-4.75rem)] pb-3 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="
+          flex
+          h-[8.5rem]
+          gap-3
+          overflow-x-auto
+          overscroll-x-contain
+          scroll-smooth
+          px-[calc(50%-4.75rem)]
+          pb-3
+          pt-2
+          touch-pan-x
+          [scrollbar-width:none]
+          [&::-webkit-scrollbar]:hidden
+        "
       >
-        {cards.map((image, index) => (
-          <div key={`${image}-${index}`} className="grid h-[7rem] w-[9.5rem] shrink-0 place-items-center rounded-2xl border border-blue-200/30 bg-[#0a1c30]/80 p-4 shadow-[0_12px_28px_rgb(2_13_35_/_30%)]">
+        {cards.map((logo, index) => (
+          <div
+            key={`${logo}-${index}`}
+            className="
+              grid
+              h-[7rem]
+              w-[9.5rem]
+              shrink-0
+              place-items-center
+              rounded-2xl
+              border
+              border-blue-200/30
+              bg-[#0a1c30]/80
+              p-4
+              shadow-[0_12px_28px_rgb(2_13_35_/_30%)]
+              backdrop-blur-sm
+            "
+          >
             <span className="relative block h-12 w-28">
-              <Image src={image} alt="" fill sizes="112px" className="object-contain" />
+              <Image
+                src={logo}
+                alt=""
+                fill
+                sizes="112px"
+                className="object-contain"
+              />
             </span>
           </div>
         ))}
       </div>
-      <div className="mt-2 flex items-center justify-center gap-3" role="group" aria-label="Client logo controls">
+
+      <div
+        className="
+          mt-2
+          flex
+          items-center
+          justify-center
+          gap-3
+        "
+        role="group"
+        aria-label="Client logo controls"
+      >
         <button
           type="button"
           aria-label="Show previous client logo"
           onClick={() => move(-1)}
-          className="grid size-11 place-items-center rounded-full border border-blue-200/35 bg-navy-900/85 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)] transition hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200"
+          className="
+            grid
+            size-11
+            place-items-center
+            rounded-full
+            border
+            border-blue-200/35
+            bg-navy-900/85
+            text-white
+            shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)]
+            transition
+            hover:bg-navy-800
+            focus-visible:outline
+            focus-visible:outline-2
+            focus-visible:outline-offset-2
+            focus-visible:outline-blue-200
+          "
         >
-          <ArrowLeft className="size-5" aria-hidden="true" />
+          <ArrowLeft
+            className="size-5"
+            aria-hidden="true"
+          />
         </button>
+
         <button
           type="button"
           aria-label="Show next client logo"
           onClick={() => move(1)}
-          className="grid size-11 place-items-center rounded-full border border-blue-200/35 bg-navy-900/85 text-white shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)] transition hover:bg-navy-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-200"
+          className="
+            grid
+            size-11
+            place-items-center
+            rounded-full
+            border
+            border-blue-200/35
+            bg-navy-900/85
+            text-white
+            shadow-[inset_0_1px_0_rgb(255_255_255_/_14%)]
+            transition
+            hover:bg-navy-800
+            focus-visible:outline
+            focus-visible:outline-2
+            focus-visible:outline-offset-2
+            focus-visible:outline-blue-200
+          "
         >
-          <ArrowRight className="size-5" aria-hidden="true" />
+          <ArrowRight
+            className="size-5"
+            aria-hidden="true"
+          />
         </button>
       </div>
     </div>
   );
 }
 
-export function HomeHero({ description, eyebrow }: HomeHeroProps) {
-  const reducedMotion = usePrefersReducedMotion();
+export function HomeHero({
+  description,
+  eyebrow,
+  title,
+}: HomeHeroProps) {
+  const reducedMotion =
+    usePrefersReducedMotion();
+
   const isMobile = useMobileViewport();
 
   return (
     <SceneSection
       sceneId="home-hero"
-      className="relative isolate min-h-[calc(100dvh-5rem)] overflow-hidden bg-[#071423] text-white"
+      className="
+        relative
+        isolate
+        min-h-[calc(100dvh-5rem)]
+        overflow-hidden
+        bg-[#071423]
+        text-white
+      "
     >
-
+      {/* Mobile background image */}
       <motion.div
         aria-hidden="true"
-        className="absolute inset-0 bg-cover bg-center opacity-45"
-        style={{ backgroundImage: "url('/home_hero_bg.jpg')" }}
-        animate={isMobile && !reducedMotion ? { scale: [1, 1.035, 1] } : { scale: 1 }}
-        transition={isMobile && !reducedMotion ? { duration: 7, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+        className="
+          absolute
+          inset-0
+          z-0
+          bg-cover
+          bg-center
+          bg-no-repeat
+          lg:hidden
+        "
+        style={{
+          backgroundImage:
+            "url('/home_hero_bg.jpg')",
+        }}
+        animate={
+          isMobile && !reducedMotion
+            ? {
+                scale: [1, 1.025, 1],
+              }
+            : {
+                scale: 1,
+              }
+        }
+        transition={
+          isMobile && !reducedMotion
+            ? {
+                duration: 9,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : {
+                duration: 0,
+              }
+        }
       />
-      <div aria-hidden="true" className="absolute inset-0 bg-[#071423]/42" />
-      <div aria-hidden="true" className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgb(87_154_239_/_8%)_1px,transparent_1px),linear-gradient(90deg,rgb(87_154_239_/_8%)_1px,transparent_1px)] [background-size:54px_54px]" />
-      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_78%_43%,rgb(25_107_210_/_22%),transparent_29rem),radial-gradient(circle_at_14%_90%,rgb(9_66_137_/_18%),transparent_33rem)]" />
-      <div aria-hidden="true" className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_16%_24%,rgb(113_197_255_/_9%)_0_1px,transparent_1.5px),radial-gradient(circle_at_74%_72%,rgb(113_197_255_/_10%)_0_1px,transparent_1.5px)] [background-size:88px_88px,116px_116px]" />
 
-      <Container size="wide" className="relative z-10 grid min-h-[calc(100dvh-5rem)] items-center gap-8 py-12 pb-16 lg:grid-cols-[minmax(0,45%)_minmax(0,55%)] lg:py-16">
+      {/* Desktop background video */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-0
+          hidden
+          overflow-hidden
+          lg:block
+        "
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/hero_bg_image.png"
+          className="
+            h-full
+            w-full
+            object-cover
+            object-center
+          "
+        >
+          <source
+            src="/hero_bg_video.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
+
+      {/* Overall navy overlay */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[1]
+          bg-[#071423]/30
+          lg:bg-[#071423]/15
+        "
+      />
+
+      {/* Mobile text readability overlay */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[2]
+          bg-[linear-gradient(180deg,rgba(7,20,35,0.48)_0%,rgba(7,20,35,0.68)_58%,rgba(7,20,35,0.88)_100%)]
+          lg:hidden
+        "
+      />
+
+      {/* Desktop left-side gradient */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[2]
+          hidden
+          bg-[linear-gradient(90deg,rgba(7,20,35,0.88)_0%,rgba(7,20,35,0.64)_34%,rgba(7,20,35,0.22)_66%,rgba(7,20,35,0.06)_100%)]
+          lg:block
+        "
+      />
+
+      {/* Technical grid */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[3]
+          opacity-15
+          [background-image:linear-gradient(rgb(87_154_239_/_8%)_1px,transparent_1px),linear-gradient(90deg,rgb(87_154_239_/_8%)_1px,transparent_1px)]
+          [background-size:54px_54px]
+          lg:opacity-20
+        "
+      />
+
+      {/* Blue atmospheric glow */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[3]
+          bg-[radial-gradient(circle_at_78%_43%,rgb(25_107_210_/_20%),transparent_29rem),radial-gradient(circle_at_14%_90%,rgb(9_66_137_/_16%),transparent_33rem)]
+        "
+      />
+
+      {/* Small particles */}
+      <div
+        aria-hidden="true"
+        className="
+          absolute
+          inset-0
+          z-[3]
+          opacity-20
+          [background-image:radial-gradient(circle_at_16%_24%,rgb(113_197_255_/_9%)_0_1px,transparent_1.5px),radial-gradient(circle_at_74%_72%,rgb(113_197_255_/_10%)_0_1px,transparent_1.5px)]
+          [background-size:88px_88px,116px_116px]
+          lg:opacity-25
+        "
+      />
+
+      <Container
+        size="wide"
+        className="
+          relative
+          z-10
+          grid
+          min-h-[calc(100dvh-5rem)]
+          items-center
+          gap-8
+          pb-16
+          pt-12
+          lg:grid-cols-[minmax(0,45%)_minmax(0,55%)]
+          lg:py-16
+        "
+      >
+        {/* Left hero content */}
         <motion.div
-          initial={reducedMotion ? false : { opacity: 0, x: -32, y: isMobile ? 0 : 30 }}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ duration: reducedMotion ? 0 : 0.7, ease: heroEase }}
+          initial={
+            reducedMotion
+              ? false
+              : {
+                  opacity: 0,
+                  x: isMobile ? 0 : -32,
+                  y: isMobile ? 22 : 30,
+                }
+          }
+          animate={{
+            opacity: 1,
+            x: 0,
+            y: 0,
+          }}
+          transition={{
+            duration: reducedMotion ? 0 : 0.7,
+            ease: heroEase,
+          }}
           className="max-w-xl"
         >
-          <p className="hidden text-xs font-semibold uppercase tracking-[0.22em] text-blue-300 lg:block">
+          <p
+            className="
+              text-xs
+              font-semibold
+              uppercase
+              tracking-[0.22em]
+              text-blue-300
+            "
+          >
             {eyebrow}
           </p>
-          <h1 className="max-w-[11ch] text-balance font-[family-name:var(--font-outfit)] text-[clamp(2.35rem,5.2vw,4.9rem)] font-semibold leading-[0.92] tracking-[-0.065em] text-white lg:mt-5">
-            <span className="block">Enterprise IT</span>
-            <span className="block">infrastructure</span>
-            <span className="mt-[0.08em] block text-blue-400">built for modern business.</span>
+
+          <h1
+            className="
+              mt-4
+              max-w-[11ch]
+              text-balance
+              font-[family-name:var(--font-outfit)]
+              text-[clamp(2.35rem,5.2vw,4.9rem)]
+              font-semibold
+              leading-[0.92]
+              tracking-[-0.065em]
+              text-white
+              lg:mt-5
+            "
+          >
+            {title ? (
+              title
+            ) : (
+              <>
+                <span className="block">
+                  Enterprise IT
+                </span>
+
+                <span className="block">
+                  infrastructure
+                </span>
+
+                <span className="mt-[0.08em] block text-blue-400">
+                  built for modern business.
+                </span>
+              </>
+            )}
           </h1>
-          <p className="mt-6 hidden max-w-[36rem] text-base leading-7 text-blue-100/78 lg:block lg:text-lg">
+
+          <p
+            className="
+              mt-6
+              max-w-[36rem]
+              text-sm
+              leading-6
+              text-blue-100/80
+              sm:text-base
+              sm:leading-7
+              lg:text-lg
+            "
+          >
             {description}
           </p>
+
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/consultation" className="hidden min-h-12 items-center gap-3 rounded-full bg-[var(--color-blue-600)] px-5 text-sm font-semibold text-white shadow-[0_14px_32px_rgb(31_111_235_/_28%)] transition hover:-translate-y-0.5 hover:bg-[var(--color-blue-500)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-300 lg:inline-flex">
-              Get Free Consultation <ArrowRight className="size-4" aria-hidden="true" />
+            <Link
+              href="/consultation"
+              className="
+                inline-flex
+                min-h-12
+                items-center
+                gap-3
+                rounded-full
+                bg-[var(--color-blue-600)]
+                px-5
+                text-sm
+                font-semibold
+                text-white
+                shadow-[0_14px_32px_rgb(31_111_235_/_28%)]
+                transition
+                hover:-translate-y-0.5
+                hover:bg-[var(--color-blue-500)]
+                focus-visible:outline
+                focus-visible:outline-2
+                focus-visible:outline-offset-4
+                focus-visible:outline-blue-300
+              "
+            >
+              Get Free Consultation
+
+              <ArrowRight
+                className="size-4"
+                aria-hidden="true"
+              />
             </Link>
-            <Link href="/services" className="inline-flex min-h-12 items-center gap-3 rounded-full border border-blue-200/30 bg-white/[0.045] px-5 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-blue-200/55 hover:bg-white/[0.09] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-300">
-              Our Services <ArrowRight className="size-4" aria-hidden="true" />
+
+            <Link
+              href="/services"
+              className="
+                inline-flex
+                min-h-12
+                items-center
+                gap-3
+                rounded-full
+                border
+                border-blue-200/30
+                bg-white/[0.06]
+                px-5
+                text-sm
+                font-semibold
+                text-white
+                backdrop-blur-sm
+                transition
+                hover:border-blue-200/55
+                hover:bg-white/[0.1]
+                focus-visible:outline
+                focus-visible:outline-2
+                focus-visible:outline-offset-4
+                focus-visible:outline-blue-300
+              "
+            >
+              Our Services
+
+              <ArrowRight
+                className="size-4"
+                aria-hidden="true"
+              />
             </Link>
           </div>
-          <p className="mt-6 hidden items-center gap-2 text-sm text-blue-100/72 lg:flex"><Check className="size-4 text-blue-300" aria-hidden="true" /> Trusted by enterprises across UAE</p>
-          <MobileClientCarousel reducedMotion={reducedMotion} />
+
+          <p
+            className="
+              mt-6
+              flex
+              items-center
+              gap-2
+              text-sm
+              text-blue-100/75
+            "
+          >
+            <Check
+              className="size-4 text-blue-300"
+              aria-hidden="true"
+            />
+
+            Trusted by enterprises across UAE
+          </p>
+
+          <MobileClientCarousel
+            reducedMotion={reducedMotion}
+          />
         </motion.div>
 
+        {/* Desktop right-side 3D object */}
         <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 28, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: reducedMotion ? 0 : 0.9, delay: 0.12, ease: heroEase }}
-          className="pointer-events-none relative hidden min-w-0 lg:absolute lg:inset-y-0 lg:right-0 lg:flex lg:w-[55%] lg:items-center lg:justify-center"
+          initial={
+            reducedMotion
+              ? false
+              : {
+                  opacity: 0,
+                  y: 28,
+                  scale: 0.96,
+                }
+          }
+          animate={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+          }}
+          transition={{
+            duration: reducedMotion ? 0 : 0.9,
+            delay: 0.12,
+            ease: heroEase,
+          }}
+          className="
+            pointer-events-none
+            relative
+            hidden
+            min-w-0
+            lg:absolute
+            lg:inset-y-0
+            lg:right-0
+            lg:flex
+            lg:w-[55%]
+            lg:items-center
+            lg:justify-center
+          "
         >
           <InfrastructureScrollObject className="w-full max-w-[44rem]" />
         </motion.div>
