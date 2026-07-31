@@ -64,7 +64,7 @@ export function Header() {
             muted
             playsInline
             aria-hidden="true"
-            className="h-44 w-[max-width] max-w-none object-cover lg:h-52 lg:w-52"
+            className="h-44 w-[max-content] max-w-none object-cover lg:h-52 lg:w-[20rem]"
             src="/original_logo.mp4"
           />
         </Link>

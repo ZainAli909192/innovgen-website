@@ -76,7 +76,11 @@ export function Footer() {
         <div className="hidden gap-10 sm:grid-cols-2 md:grid lg:grid-cols-3 xl:grid-cols-[1.25fr_1fr_1fr_1fr_1.15fr]">
           <section aria-labelledby="footer-brand-heading" className="sm:col-span-2 lg:col-span-1">
             <h2 id="footer-brand-heading" className="sr-only">InnovGen</h2>
-            <Logo size={88} imageClassName="h-[88px] w-[88px]" />
+            <Logo
+              size={128}
+              imageClassName="h-42 w-42"
+              className="!rounded-none !bg-transparent"
+            />
             <p className="mt-5 max-w-sm text-muted">{siteConfig.description}</p>
             <Button href={consultationNavigation.href} size="sm" className="mt-6">
               {consultationNavigation.label}
