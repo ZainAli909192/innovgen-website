@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const runtime = "nodejs";
 
-const recipient = process.env.CAREERS_EMAIL_TO ?? "nayef@innovgen.com";
+const recipient = process.env.CAREERS_EMAIL_TO ?? "linkplus.ae@gmail.com";
 
 const consultationSchema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -39,7 +39,46 @@ export async function POST(request: Request) {
     replyTo: enquiry.email,
     subject: `Website enquiry: ${enquiry.subject}`,
     text: `New website enquiry\n\nName: ${enquiry.name}\nEmail: ${enquiry.email}\nPhone: ${enquiry.phone}\nSubject: ${enquiry.subject}\n\nMessage:\n${enquiry.message}`,
-    html: `<h1>New website enquiry</h1><p><strong>Name:</strong> ${escapeHtml(enquiry.name)}</p><p><strong>Email:</strong> ${escapeHtml(enquiry.email)}</p><p><strong>Phone:</strong> ${escapeHtml(enquiry.phone)}</p><p><strong>Subject:</strong> ${escapeHtml(enquiry.subject)}</p><p><strong>Message:</strong><br>${escapeHtml(enquiry.message).replace(/\n/g, "<br>")}</p>`,
+    // html: `<h1>New website enquiry</h1><p><strong>Name:</strong> ${escapeHtml(enquiry.name)}</p><p><strong>Email:</strong> ${escapeHtml(enquiry.email)}</p><p><strong>Phone:</strong> ${escapeHtml(enquiry.phone)}</p><p><strong>Subject:</strong> ${escapeHtml(enquiry.subject)}</p><p><strong>Message:</strong><br>${escapeHtml(enquiry.message).replace(/\n/g, "<br>")}</p>`,
+  html:
+   ` <div style="font-family: Arial, Helvetica, sans-serif; padding: 20px; background: #f5f7fa;">
+  <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; padding: 30px; border: 1px solid #e6e9ef;">
+    
+    <h1 style="margin-top: 0; font-size: 24px; color: #1a1f36; border-bottom: 2px solid #4a90e2; padding-bottom: 10px;">
+      New Website Enquiry
+    </h1>
+
+    <p style="font-size: 15px; color: #333;">
+      <strong style="color:#4a90e2;">Name:</strong> ${escapeHtml(enquiry.name)}
+    </p>
+
+    <p style="font-size: 15px; color: #333;">
+      <strong style="color:#4a90e2;">Email:</strong> ${escapeHtml(enquiry.email)}
+    </p>
+
+    <p style="font-size: 15px; color: #333;">
+      <strong style="color:#4a90e2;">Phone:</strong> ${escapeHtml(enquiry.phone)}
+    </p>
+
+    <p style="font-size: 15px; color: #333;">
+      <strong style="color:#4a90e2;">Subject:</strong> ${escapeHtml(enquiry.subject)}
+    </p>
+
+    <div style="margin-top: 20px; padding: 15px; background: #f0f4ff; border-left: 4px solid #4a90e2; border-radius: 6px;">
+      <p style="font-size: 15px; color: #333; margin: 0;">
+        <strong style="color:#4a90e2;">Message:</strong><br>
+        ${escapeHtml(enquiry.message).replace(/\n/g, "<br>")}
+      </p>
+    </div>
+
+    <p style="margin-top: 30px; font-size: 13px; color: #777; text-align: center;">
+      This message was sent from your website enquiry form.
+    </p>
+
+  </div>
+</div>
+`
+  
   });
 
   if (error) {

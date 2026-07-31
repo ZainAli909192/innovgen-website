@@ -53,7 +53,9 @@ export async function POST(request: Request) {
   const application = parsed.data;
   const resumeContent = Buffer.from(await cv.arrayBuffer());
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const { error } = await resend.emails.send({
+  
+  // Send email to company
+  const { error: companyError } = await resend.emails.send({
     from: process.env.CAREERS_EMAIL_FROM,
     to: [recipient],
     replyTo: application.email,
@@ -63,7 +65,61 @@ export async function POST(request: Request) {
     attachments: [{ filename: cv.name, content: resumeContent }],
   });
 
-  if (error) {
+  if (companyError) {
+    return Response.json({ message: "We could not send your application. Please try again." }, { status: 502 });
+  }
+
+  // Send confirmation email to applicant
+ const { error: applicantError } = await resend.emails.send({
+  from: process.env.CAREERS_EMAIL_FROM,
+  to: [application.email],
+  subject: "Your Application Has Been Received — InnovGen",
+  text: `Hi ${application.fullName},
+
+Thank you for applying to InnovGen.
+
+We’re writing to confirm that we’ve successfully received your application. Our team is currently reviewing your details, and if your profile aligns with our requirements, we will reach out to you for the next steps.
+
+We appreciate your interest in joining InnovGen and the time you invested in submitting your application.
+
+Warm regards,
+InnovGen Careers Team`,
+  html: `
+    <div style="font-family: Arial, Helvetica, sans-serif; padding: 20px; background: #f5f7fa;">
+      <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; padding: 30px; border: 1px solid #e6e9ef;">
+        
+        <h2 style="margin-top: 0; font-size: 22px; color: #1a1f36;">
+          Application Received — InnovGen
+        </h2>
+
+        <p style="font-size: 15px; color: #333;">
+          Hi <strong>${escapeHtml(application.fullName)}</strong>,
+        </p>
+
+        <p style="font-size: 15px; color: #333; line-height: 1.6;">
+          Thank you for applying to <strong>InnovGen</strong>. This email is to confirm that we’ve successfully received your application.
+        </p>
+
+        <p style="font-size: 15px; color: #333; line-height: 1.6;">
+          Our recruitment team is currently reviewing your details. If your profile matches our requirements, we will contact you regarding the next steps in the selection process.
+        </p>
+
+        <p style="font-size: 15px; color: #333; line-height: 1.6;">
+          We appreciate your interest in joining InnovGen and the time you invested in submitting your application.
+        </p>
+
+        <p style="font-size: 15px; color: #333; margin-top: 25px;">
+          Warm regards,<br>
+          <strong>InnovGen Careers Team</strong>
+        </p>
+
+      </div>
+    </div>
+  `,
+});
+
+
+  if (applicantError) {
     return Response.json({ message: "We could not send your application. Please try again." }, { status: 502 });
   }
 
