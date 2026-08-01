@@ -184,7 +184,13 @@ function MobileImageServiceCards({ category }: { category: ServiceCategory }) {
             className={featured ? "col-span-2" : ""}
           >
             <article className={`group relative isolate flex overflow-hidden rounded-[1.45rem] border border-blue-200 bg-[var(--color-navy-900)] shadow-[0_16px_32px_rgb(28_78_141_/_18%)] ${featured ? "min-h-[17.5rem]" : "min-h-[13.5rem]"}`}>
-              <Image src={serviceImageByIcon[service.icon]} alt="" fill sizes={featured ? "100vw" : "50vw"} className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Image
+                src={category.id === "managed-services" && service.title === "Managed Services" ? "/managed.webp" : serviceImageByIcon[service.icon]}
+                alt=""
+                fill
+                sizes={featured ? "100vw" : "50vw"}
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
               <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(4_18_40_/_12%)_0%,rgb(4_18_40_/_28%)_38%,rgb(4_18_40_/_94%)_100%)]" />
               <div className="relative z-10 mt-auto w-full p-4">
                 <span className="mb-3 grid size-9 place-items-center rounded-xl border border-blue-200/60 bg-white/90 text-blue-600 shadow-[0_6px_18px_rgb(4_18_40_/_20%)]"><ServiceIcon icon={service.icon} /></span>
