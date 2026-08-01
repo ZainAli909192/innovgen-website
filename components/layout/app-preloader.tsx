@@ -7,7 +7,7 @@ import { usePrefersReducedMotion } from "@/components/providers/motion-provider"
 const loaderDuration = 5_000;
 const handoffDuration = 1500;
 const loaderEase = [0.22, 1, 0.36, 1] as const;
-const loaderWords = ["We ", "Handle IT.", " You build", " What’s next !"];
+const loaderWords = ["We", "Handle IT.", "You build", "What’s next !"];
  
 export function AppPreloader() {
   return <AppPreloaderScreen />;
