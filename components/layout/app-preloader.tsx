@@ -87,9 +87,9 @@ function AppPreloaderScreen() {
           animate={{ opacity: 1, y: isCompleting && !reducedMotion ? "-100%" : 0 }}
           exit={{ opacity: 0, transition: { duration: 0 } }}
           transition={{ duration: reducedMotion ? 0 : handoffDuration / 1000, ease: loaderEase }}
-          className="fixed inset-0 z-[200] bg-[var(--color-blue-600)] p-6 will-change-transform grid place-items-center md:flex md:items-center md:justify-center md:p-0"
+          className="fixed inset-0 z-[200] grid place-items-center bg-[var(--color-blue-600)] p-6 will-change-transform"
         >
-          <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
+          <div className="relative flex w-full max-w-3xl flex-col items-center text-center">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute left-1/2 top-1/2 -z-10 size-72 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgb(111_201_255_/_20%)]"
@@ -102,44 +102,29 @@ function AppPreloaderScreen() {
             <motion.div
               animate={isCompleting ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: reducedMotion ? 0 : handoffDuration / 1000, ease: loaderEase }}
-              className="flex flex-col items-center"
+              className="flex w-full flex-col items-center"
             >
-              <p className="flex h-20 w-full items-center justify-center whitespace-nowrap px-3 text-center font-[family-name:var(--font-outfit)] text-[clamp(1rem,3.5vw,3rem)] font-extrabold leading-none tracking-[0.035em] text-white sm:h-28 sm:tracking-[0.06em]">
-              {loaderWords.slice(0, displayedWordIndex + 1).map((word, index) => (
-  <motion.span
-  key={word}
-  initial={
-    reducedMotion
-      ? false
-      : {
-          opacity: 0,
-          x: 10,
-          y: 6,
-          scale: 0.96,
-          filter: "blur(6px)"
-        }
-  }
-  animate={{
-    opacity: 1,
-    x: 0,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)"
-  }}
-  transition={{
-    duration: 0.6,
-    ease: [0.16, 1, 0.3, 1], // smoother ease
-    delay: index * 0.05 // tiny stagger for smoothness
-  }}
-  className="inline-block"
->
-  {index > 0 && <span className="px-2"></span>}
-  {word}
-</motion.span>
+              <div className="relative h-80 w-full overflow-visible px-4 sm:h-96">
+                {loaderWords.slice(0, displayedWordIndex + 1).map((word, index) => {
+                  const distance = displayedWordIndex - index;
 
-))}
-
-              </p>
+                  return (
+                    <motion.p
+                      key={word}
+                      initial={reducedMotion ? false : { opacity: 0, y: 20, filter: "blur(7px)" }}
+                      animate={{
+                        opacity: Math.max(0.7, 1 - distance * 0.12),
+                        y: -distance * 78,
+                        filter: "blur(0px)",
+                      }}
+                      transition={{ duration: reducedMotion ? 0 : 0.5, ease: loaderEase }}
+                      className="absolute inset-x-0 bottom-7 max-w-full whitespace-nowrap text-center font-[family-name:var(--font-outfit)] text-[clamp(1.7rem,5vw,4.25rem)] font-extrabold leading-none tracking-[0.06em] text-white sm:bottom-9 sm:tracking-[0.1em]"
+                    >
+                      {word}
+                    </motion.p>
+                  );
+                })}
+              </div>
 
               {/* <motion.video
                 aria-hidden="true"

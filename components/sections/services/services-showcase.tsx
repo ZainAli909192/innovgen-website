@@ -92,8 +92,8 @@ function EditorialCollage({ category }: { category: ServiceCategory }) {
             style={{ transformPerspective: 1100, transformStyle: "preserve-3d" }}
             className={`group relative m-0 overflow-hidden rounded-[1.5rem] border border-blue-300/35 bg-[var(--color-navy-800)] shadow-[0_20px_42px_rgb(0_10_26_/_34%)] will-change-transform ${collagePlacement[index]}`}
           >
-            <Image
-              src={serviceImageByIcon[service.icon]}
+              <Image
+                src={category.id === "managed-services" && service.title === "Managed Services" ? "/managed.webp" : serviceImageByIcon[service.icon]}
               alt=""
               fill
               sizes={index === 0 ? "(max-width: 639px) 58vw, (max-width: 1023px) 48vw, 38vw" : "(max-width: 639px) 40vw, (max-width: 1023px) 26vw, 18vw"}
