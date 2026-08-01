@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import {
@@ -76,12 +75,21 @@ export function Footer() {
         <div className="hidden gap-10 sm:grid-cols-2 md:grid lg:grid-cols-3 xl:grid-cols-[1.25fr_1fr_1fr_1fr_1.15fr]">
           <section aria-labelledby="footer-brand-heading" className="sm:col-span-2 lg:col-span-1">
             <h2 id="footer-brand-heading" className="sr-only">InnovGen</h2>
-            <Logo
-              size={128}
-              imageClassName="h-22 w-22 scale-130 transition-transform duration-300 group-hover:scale-105"
-              className="!rounded-none !bg-transparent"
-              
-            />
+            <Link
+              href="/"
+              aria-label="InnovGen IT Software Solutions"
+              className="inline-flex h-24 w-[236px] items-center justify-center overflow-hidden"
+            >
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-hidden="true"
+                className="h-56 w-[21rem] max-w-none object-cover"
+                src="/original_logo.mp4"
+              />
+            </Link>
             <p className="mt-5 max-w-sm text-muted">{siteConfig.description}</p>
             <Button href={consultationNavigation.href} size="sm" className="mt-6">
               {consultationNavigation.label}
