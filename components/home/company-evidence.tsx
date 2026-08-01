@@ -22,28 +22,13 @@ function EvidenceItem({
   const exitStart = 0.78 + index * 0.025;
   const opacity = useTransform(
     progress,
-    [start, settle, exitStart, 1],
-    [0, 1, 1, 0.32],
+    [start, settle],
+    [0, 1],
   );
   const x = useTransform(
     progress,
-    [start, settle, exitStart, 1],
-    [72, 0, 0, -24],
-  );
-  const z = useTransform(
-    progress,
-    [start, settle, exitStart, 1],
-    [-150, 0, 0, -90],
-  );
-  const rotateY = useTransform(
-    progress,
-    [start, settle, exitStart, 1],
-    [13, 0, 0, -7],
-  );
-  const scale = useTransform(
-    progress,
-    [start, settle, exitStart, 1],
-    [0.84, 1, 1, 0.94],
+    [start, settle],
+    [72, 0],
   );
   const mobileOpacity = useTransform(
     progress,
@@ -57,18 +42,18 @@ function EvidenceItem({
 
   return (
     <motion.li
-      className="group/module relative grid gap-3 overflow-hidden rounded-2xl border border-border bg-[linear-gradient(145deg,rgb(19_46_77_/_72%),rgb(8_20_38_/_92%))] px-5 py-6 shadow-[inset_7px_7px_20px_rgb(255_255_255_/_3%),inset_-9px_-9px_24px_rgb(0_0_0_/_20%),0_20px_55px_rgb(0_0_0_/_16%)] focus-visible:outline-offset-4 max-md:grid-cols-[3rem_1fr] max-md:gap-4 max-md:rounded-none max-md:border-x-0 max-md:border-t-0 max-md:border-b-blue-200/15 max-md:bg-transparent max-md:px-1 max-md:py-7 max-md:shadow-none sm:grid-cols-[3rem_1fr] md:px-6 md:py-7 [transform-style:preserve-3d]"
+      className="relative grid gap-3 overflow-hidden rounded-2xl border border-border bg-[linear-gradient(145deg,rgb(19_46_77_/_72%),rgb(8_20_38_/_92%))] px-5 py-6 shadow-[inset_7px_7px_20px_rgb(255_255_255_/_3%),inset_-9px_-9px_24px_rgb(0_0_0_/_20%),0_20px_55px_rgb(0_0_0_/_16%)] focus-visible:outline-offset-4 max-md:grid-cols-[3rem_1fr] max-md:gap-4 max-md:rounded-none max-md:border-x-0 max-md:border-t-0 max-md:border-b-blue-200/15 max-md:bg-transparent max-md:px-1 max-md:py-7 max-md:shadow-none sm:grid-cols-[3rem_1fr] md:px-6 md:py-7 lg:cursor-pointer"
       tabIndex={0}
       style={
         reduced
           ? undefined
           : mobile
             ? { opacity: mobileOpacity, x: mobileX, z: mobileZ, rotateY: mobileRotateY, scale: mobileScale, transformOrigin: "100% 50%" }
-            : { opacity, x, z, rotateY, scale, transformOrigin: "100% 50%" }
+            : { opacity, x, transformOrigin: "100% 50%" }
       }
-      whileHover={reduced || mobile ? undefined : { z: 16, x: -4 }}
-      whileFocus={reduced || mobile ? undefined : { z: 16, x: -4 }}
-      transition={{ type: "spring", stiffness: 170, damping: 22 }}
+      whileHover={reduced || mobile ? undefined : { scale: 1.03 }}
+      whileFocus={reduced || mobile ? undefined : { scale: 1.03 }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
     >
       <span aria-hidden="true" className="absolute inset-y-0 left-0 w-px bg-[linear-gradient(transparent,var(--color-gold-300),transparent)] opacity-70 max-md:hidden" />
       <span className="relative z-10 font-mono text-xs font-semibold tracking-[0.18em] text-accent max-md:grid max-md:size-11 max-md:place-items-center max-md:rounded-2xl max-md:border max-md:border-blue-300/45 max-md:bg-blue-500/15 max-md:text-blue-200 max-md:shadow-[0_10px_24px_rgb(0_0_0_/_16%)]">
