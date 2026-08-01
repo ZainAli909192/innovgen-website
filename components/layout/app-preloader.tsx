@@ -7,7 +7,7 @@ import { usePrefersReducedMotion } from "@/components/providers/motion-provider"
 const loaderDuration = 5_000;
 const handoffDuration = 1500;
 const loaderEase = [0.22, 1, 0.36, 1] as const;
-const loaderWords = ["We", "Handle", " IT.", "You Build" , " What’s Next"];
+const loaderWords = ["We", "Handle IT.", "You build", "What’s next !"];
  
 export function AppPreloader() {
   return <AppPreloaderScreen />;
@@ -61,12 +61,20 @@ function AppPreloaderScreen() {
       return;
     }
 
-    const intervalId = window.setInterval(() => {
-      setActiveWordIndex((index) => (index + 1) % loaderWords.length);
+    if (activeWordIndex >= loaderWords.length - 1) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setActiveWordIndex((index) => index + 1);
     }, 700);
 
-    return () => window.clearInterval(intervalId);
-  }, [reducedMotion]);
+    return () => window.clearTimeout(timeoutId);
+  }, [activeWordIndex, reducedMotion]);
+
+  const displayedWordIndex = reducedMotion
+    ? loaderWords.length - 1
+    : activeWordIndex;
 
   return (
     <AnimatePresence>
@@ -81,7 +89,7 @@ function AppPreloaderScreen() {
           transition={{ duration: reducedMotion ? 0 : handoffDuration / 1000, ease: loaderEase }}
           className="fixed inset-0 z-[200] grid place-items-center bg-[var(--color-blue-600)] p-6 will-change-transform"
         >
-          <div className="relative flex w-full max-w-sm flex-col items-center text-center">
+          <div className="relative flex w-full max-w-3xl flex-col items-center text-center">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute left-1/2 top-1/2 -z-10 size-72 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgb(111_201_255_/_20%)]"
@@ -96,21 +104,26 @@ function AppPreloaderScreen() {
               transition={{ duration: reducedMotion ? 0 : handoffDuration / 1000, ease: loaderEase }}
               className="flex flex-col items-center"
             >
-              <div className="flex h-28 items-center justify-center overflow-hidden px-4">
-                <AnimatePresence initial={!reducedMotion} mode="wait">
-                  <motion.p
-                    key={loaderWords[activeWordIndex]}
-                    initial={reducedMotion ? false : { opacity: 0, y: 14, filter: "blur(7px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={reducedMotion ? undefined : { opacity: 0, y: -14, filter: "blur(6px)" }}
-                    transition={{ duration: reducedMotion ? 0 : 0.22, ease: loaderEase }}
-                    className="max-w-full whitespace-nowrap font-[family-name:var(--font-outfit)] text-[clamp(1.75rem,7vw,5rem)] font-extrabold leading-[1.15] tracking-[0.16em] text-white"
-                  > 
-                    {loaderWords[activeWordIndex]}
-                  </motion.p>
-                
+              <div className="relative h-80 w-full overflow-visible px-4 sm:h-96">
+                {loaderWords.slice(0, displayedWordIndex + 1).map((word, index) => {
+                  const distance = displayedWordIndex - index;
 
-                </AnimatePresence>
+                  return (
+                    <motion.p
+                      key={word}
+                      initial={reducedMotion ? false : { opacity: 0, y: 20, filter: "blur(7px)" }}
+                      animate={{
+                        opacity: Math.max(0.7, 1 - distance * 0.12),
+                        y: -distance * 78,
+                        filter: "blur(0px)",
+                      }}
+                      transition={{ duration: reducedMotion ? 0 : 0.5, ease: loaderEase }}
+                      className="absolute inset-x-0 bottom-7 max-w-full whitespace-nowrap text-center font-[family-name:var(--font-outfit)] text-[clamp(1.7rem,5vw,4.25rem)] font-extrabold leading-none tracking-[0.06em] text-white sm:bottom-9 sm:tracking-[0.1em]"
+                    >
+                      {word}
+                    </motion.p>
+                  );
+                })}
               </div>
 
               {/* <motion.video

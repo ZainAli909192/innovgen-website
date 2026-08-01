@@ -121,21 +121,20 @@ function ServiceList({ category }: { category: ServiceCategory }) {
       {category.services.map((service, index) => (
         <motion.li
           key={service.title}
-          initial={reducedMotion ? false : { opacity: 0, y: 26, scale: 0.95, rotateX: 6 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-          whileHover={reducedMotion ? undefined : { y: -5, scale: 1.012, rotateX: -1 }}
+          initial={reducedMotion ? false : { opacity: 0, x: 48, scale: 0.95 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          whileHover={reducedMotion ? undefined : { scale: 1.05 }}
           viewport={{ once: false, amount: 0.16 }}
           transition={{ duration: reducedMotion ? 0 : 0.42, delay: reducedMotion ? 0 : Math.min(index * 0.035, 0.24), ease }}
-          style={{ transformPerspective: 900, transformOrigin: "50% 100%" }}
           className="will-change-transform"
         >
-          <article className="group relative flex min-h-40 flex-col rounded-[1.35rem] border border-blue-300/25 bg-[linear-gradient(145deg,rgb(13_32_58_/_94%),rgb(8_20_38_/_98%))] p-5 shadow-[0_14px_26px_rgb(0_8_22_/_20%),inset_0_1px_0_rgb(131_185_255_/_11%)] transition-[border-color,box-shadow] duration-300 group-hover:border-blue-300/60 group-hover:shadow-[0_20px_34px_rgb(0_8_22_/_32%),inset_0_1px_0_rgb(131_185_255_/_17%)]">
+          <article className="relative flex min-h-40 flex-col rounded-[1.35rem] border border-blue-300/25 bg-[linear-gradient(145deg,rgb(13_32_58_/_94%),rgb(8_20_38_/_98%))] p-5 shadow-[0_14px_26px_rgb(0_8_22_/_20%),inset_0_1px_0_rgb(131_185_255_/_11%)]">
             <span className="grid size-10 place-items-center rounded-xl border border-blue-300/35 bg-blue-500/10 text-blue-300">
               <ServiceIcon icon={service.icon} />
             </span>
             <h3 className="mt-5 text-lg font-semibold leading-tight text-white sm:text-xl">{service.title}</h3>
             <p className="mt-2 text-sm leading-6 text-blue-100/75">{service.description}</p>
-            <span aria-hidden="true" className="absolute right-5 top-5 text-blue-300/65 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
+            <span aria-hidden="true" className="absolute right-5 top-5 text-blue-300/65">
               <ArrowUpRight className="size-4" />
             </span>
           </article>
