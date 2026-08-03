@@ -18,7 +18,6 @@ import {
   ShoppingBag,
   type LucideIcon,
 } from "lucide-react";
-import { motion } from "motion/react";
 import { Background3DShapes } from "@/components/motion/background-3d-shapes";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { Badge } from "@/components/ui/badge";
@@ -28,23 +27,16 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import {
   clientCapabilities,
-  clientFaqItems,
   industryHighlights,
   type ClientIconKey,
   uaeSupportPoints,
 } from "@/config/clients-page";
 import { TrustedClientsDirectory } from "./trusted-clients-directory";
-import ClientsFaqSection, { FaqAccordion, PageReveal } from "./clients-faq";
+import { FaqAccordion, PageReveal } from "./clients-faq";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-
-type PageRevealProps = {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-};
 
 const iconMap: Record<ClientIconKey, LucideIcon> = {
   server: Server,
