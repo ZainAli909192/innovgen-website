@@ -1,16 +1,21 @@
+import type { Viewport } from "next";
 import { pages } from "@/content/site-content";
 import { MarketingPage } from "@/components/templates/marketing-page";
 import { JsonLd } from "@/components/seo/json-ld";
-import { createMetadata, organizationSchema } from "@/lib/seo";
+import { homePageMetadata, homePageSchema } from "@/lib/seo";
 
-export const metadata = createMetadata(pages.home.seo, "/");
+export const metadata = homePageMetadata();
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#071423",
+};
 
 export default function HomePage() {
   return (
     <>
-   
- 
-      <JsonLd data={organizationSchema()} />
+      <JsonLd data={homePageSchema()} />
       <MarketingPage heroSceneId="home-hero" page={pages.home} />
     </>
   );

@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { TrustedClientsDirectory } from "./clients/trusted-clients-directory";
 import {
@@ -17,6 +18,7 @@ import {
   processSteps,
   workingPrinciple,
 } from "@/config/about";
+import { aboutExpertise, aboutFaqs, aboutFoundations } from "@/config/about-seo";
 import { leadershipProfiles } from "@/config/leadership";
 import { motionEase } from "@/config/motion";
 import { useSectionProgress } from "@/hooks/use-section-progress";
@@ -200,12 +202,12 @@ function FounderHero() {
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">
             {founderContent.eyebrow}
           </p>
-          <h1
+          <h2
             id="about-founder-heading"
             className="mt-4 max-w-3xl text-[clamp(2.45rem,11vw,3.4rem)] font-semibold leading-[1.04] tracking-[-0.045em] text-foreground sm:mt-5 sm:text-[clamp(2.65rem,6vw,5.5rem)]"
           >
             Leadership with <span className="text-primary">clarity</span> at its core.
-          </h1>
+          </h2>
           <div className="mt-7 h-1 w-24 rounded-full bg-[linear-gradient(90deg,var(--color-blue-400),var(--color-blue-600))]" />
           <p className="mt-7 text-2xl font-semibold text-foreground md:text-3xl">
             {founderContent.name}
@@ -356,6 +358,115 @@ function LeadershipProfiles() {
         </div>
       </Container>
     </section>
+  );
+}
+
+function CompanyFoundationsSection() {
+  return (
+    <SpatialSection
+      aria-labelledby="company-foundations-heading"
+      spacing="spacious"
+      className="about-mobile-light-surface relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),rgb(9_27_50),var(--color-navy-900))]"
+    >
+      <Background3DShapes variant="services-blue" intensity="strong" className="opacity-35 max-md:opacity-12" />
+      <Container size="wide" className="relative">
+        <DirectionalReveal direction="left" className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">Company foundations</p>
+          <h2 id="company-foundations-heading" className="mt-4 text-[var(--text-h1)] text-[var(--color-navy-900)] md:text-foreground">
+            Technology decisions should create confidence, not complexity.
+          </h2>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#53647d] md:text-muted">
+            InnovGen Technology Solutions LLC works as a customer-first technology transformation partner, aligning enterprise infrastructure with the operating realities of each organization.
+          </p>
+        </DirectionalReveal>
+
+        <div className="mt-10 grid gap-4 md:mt-14 md:grid-cols-3 md:gap-6">
+          {aboutFoundations.map((foundation, index) => (
+            <DirectionalReveal key={foundation.title} direction={index % 2 === 0 ? "left" : "right"}>
+              <article className="h-full rounded-2xl border border-blue-200 bg-white p-6 shadow-[0_18px_44px_rgb(23_105_224_/_10%)] md:rounded-[1.75rem] md:bg-[linear-gradient(145deg,rgb(13_40_73_/_95%),rgb(5_16_33_/_98%))] md:p-8 md:shadow-[0_22px_52px_rgb(0_0_0_/_18%)]">
+                <p className="font-mono text-xs font-semibold tracking-[0.16em] text-[var(--color-blue-600)] md:text-accent">0{index + 1}</p>
+                <h3 className="mt-5 text-2xl text-[var(--color-navy-900)] md:text-foreground">{foundation.title}</h3>
+                <p className="mt-4 leading-relaxed text-[#53647d] md:text-blue-100">{foundation.description}</p>
+              </article>
+            </DirectionalReveal>
+          ))}
+        </div>
+      </Container>
+    </SpatialSection>
+  );
+}
+
+function EnterpriseExpertiseSection() {
+  const links = [
+    { href: "/services", label: "Explore services" },
+    { href: "/partners", label: "Meet our partners" },
+    { href: "/projects", label: "View client work" },
+    { href: "/blogs", label: "Read our insights" },
+    { href: "/careers", label: "Join InnovGen" },
+    { href: "/consultation", label: "Start a consultation" },
+  ];
+
+  return (
+    <SpatialSection
+      aria-labelledby="enterprise-expertise-heading"
+      spacing="spacious"
+      className="about-mobile-light-surface relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-900),rgb(11_31_55),var(--color-navy-950))]"
+    >
+      <Container size="wide" className="relative">
+        <DirectionalReveal direction="right" className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">Enterprise capabilities</p>
+          <h2 id="enterprise-expertise-heading" className="mt-4 text-[var(--text-h1)] text-[var(--color-navy-900)] md:text-foreground">
+            Infrastructure expertise for resilient, scalable business operations.
+          </h2>
+        </DirectionalReveal>
+
+        <div className="mt-10 grid gap-4 md:mt-14 md:grid-cols-2 md:gap-6">
+          {aboutExpertise.map((item, index) => (
+            <DirectionalReveal key={item.title} direction={index % 2 === 0 ? "left" : "right"}>
+              <article className="h-full rounded-2xl border border-blue-200 bg-white p-6 shadow-[0_18px_44px_rgb(23_105_224_/_10%)] md:rounded-[1.75rem] md:border-blue-300/20 md:bg-[linear-gradient(145deg,rgb(13_40_73_/_92%),rgb(5_16_33_/_98%))] md:p-8 md:shadow-[0_22px_52px_rgb(0_0_0_/_18%)]">
+                <h3 className="text-2xl text-[var(--color-navy-900)] md:text-foreground">{item.title}</h3>
+                <p className="mt-4 leading-relaxed text-[#53647d] md:text-blue-100">{item.description}</p>
+              </article>
+            </DirectionalReveal>
+          ))}
+        </div>
+
+        <nav aria-label="Explore InnovGen" className="mt-10 flex flex-wrap gap-x-6 gap-y-4 border-t border-blue-300/20 pt-7 md:mt-14">
+          {links.map((link) => (
+            <Link key={link.href} href={link.href} className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--color-blue-600)] transition-colors hover:text-[var(--color-navy-900)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 md:text-blue-200 md:hover:text-white">
+              {link.label}
+              <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          ))}
+        </nav>
+      </Container>
+    </SpatialSection>
+  );
+}
+
+function AboutFaqSection() {
+  return (
+    <SpatialSection aria-labelledby="about-faq-heading" spacing="spacious" className="about-mobile-light-surface relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),rgb(9_27_50),var(--color-navy-900))]">
+      <Container size="standard" className="relative">
+        <DirectionalReveal direction="left" className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">About InnovGen</p>
+          <h2 id="about-faq-heading" className="mt-4 text-[var(--text-h1)] text-[var(--color-navy-900)] md:text-foreground">Questions enterprise teams ask before they begin.</h2>
+        </DirectionalReveal>
+        <div className="mt-10 divide-y divide-blue-300/20 border-y border-blue-300/20 md:mt-14">
+          {aboutFaqs.map((faq, index) => (
+            <DirectionalReveal key={faq.question} direction={index % 2 === 0 ? "right" : "left"}>
+              <details className="group py-5 md:py-6">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 text-lg font-semibold text-[var(--color-navy-900)] marker:content-none md:text-foreground">
+                  <h3>{faq.question}</h3>
+                  <ArrowDown aria-hidden="true" className="size-5 shrink-0 text-[var(--color-blue-600)] transition-transform group-open:rotate-180 md:text-blue-300" />
+                </summary>
+                <p className="max-w-3xl pb-1 pt-3 leading-relaxed text-[#53647d] md:text-blue-100">{faq.answer}</p>
+              </details>
+            </DirectionalReveal>
+          ))}
+        </div>
+      </Container>
+    </SpatialSection>
   );
 }
 
@@ -623,13 +734,17 @@ function ProofSection() {
 export function AboutPage() {
   return (
     <div className="overflow-x-clip">
+      <h1 className="sr-only">About InnovGen</h1>
       <FounderHero />
       <LeadershipProfiles />
       <CompanyStory />
+      <CompanyFoundationsSection />
+      <EnterpriseExpertiseSection />
       <ProcessSection />
       <ProofSection />
      
       <TrustedClientsDirectory variant="home" />
+      <AboutFaqSection />
       <DirectionalReveal direction="right" mobileOnly>
         <FinalCtaSection />
       </DirectionalReveal>

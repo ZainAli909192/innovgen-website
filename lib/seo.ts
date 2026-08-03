@@ -1,7 +1,76 @@
 import type { Metadata } from "next";
 import type { DetailContent, SeoContent } from "@/content/types";
+import { aboutFaqs } from "@/config/about-seo";
+import { contactItems, siteConfig, socialItems } from "@/config/site";
 
-export const siteUrl = "https://www.innovgen.example";
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.VERCEL_URL;
+
+export const siteUrl = configuredSiteUrl
+  ? configuredSiteUrl.startsWith("http")
+    ? configuredSiteUrl
+    : `https://${configuredSiteUrl}`
+  : "https://innovgen-website.vercel.app";
+
+const primaryContact = {
+  phone: contactItems.find((item) => item.label === "Phone")?.value ?? "",
+  email: contactItems.find((item) => item.label === "Email")?.value ?? "",
+  office: contactItems.find((item) => item.label === "Office")?.value ?? "",
+};
+
+const uaeCoverage = [
+  { "@type": "Country", name: "United Arab Emirates" },
+  { "@type": "City", name: "Dubai" },
+  { "@type": "City", name: "Abu Dhabi" },
+];
+
+export function homePageMetadata(): Metadata {
+  const canonical = new URL("/", siteUrl).toString();
+  const title = "Enterprise IT Infrastructure Company UAE | InnovGen";
+  const description =
+    "InnovGen delivers managed IT services, cloud solutions, cybersecurity, enterprise networking and data center modernization for organizations across the UAE.";
+  const image = new URL("/home_hero_bg.jpg", siteUrl).toString();
+
+  return {
+    title: { absolute: title },
+    description,
+    keywords: [
+      "enterprise IT infrastructure company UAE",
+      "managed IT services UAE",
+      "cloud solutions Dubai",
+      "cybersecurity services UAE",
+      "enterprise networking Dubai",
+      "data center solutions UAE",
+      "IT infrastructure company Dubai",
+      "digital transformation UAE",
+    ],
+    authors: [{ name: siteConfig.legalName, url: siteUrl }],
+    creator: siteConfig.legalName,
+    publisher: siteConfig.legalName,
+    alternates: { canonical },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_AE",
+      url: canonical,
+      siteName: siteConfig.name,
+      title,
+      description,
+      images: [{ url: image, width: 1920, height: 1080, alt: "InnovGen enterprise technology infrastructure" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+    category: "Enterprise technology",
+    other: { "content-language": "en-AE" },
+  };
+}
 
 export function createMetadata(
   seo: SeoContent,
@@ -38,6 +107,279 @@ export function organizationSchema() {
     url: siteUrl,
     description:
       "Enterprise technology partner delivering secure, scalable digital systems.",
+  };
+}
+
+export function homePageSchema() {
+  const organizationId = `${siteUrl}/#organization`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: siteConfig.legalName,
+        alternateName: siteConfig.name,
+        url: siteUrl,
+        logo: new URL("/logo.gif", siteUrl).toString(),
+        description:
+          "Enterprise IT infrastructure, managed IT, cloud, cybersecurity, networking, data center and digital transformation services for organizations in the UAE.",
+        email: primaryContact.email,
+        telephone: primaryContact.phone,
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: primaryContact.phone,
+          contactType: "sales",
+          email: primaryContact.email,
+          areaServed: "AE",
+          availableLanguage: ["en"],
+        },
+        sameAs: socialItems.map((item) => item.href),
+      },
+      {
+        "@type": ["ProfessionalService", "LocalBusiness"],
+        "@id": `${siteUrl}/#professional-service`,
+        name: siteConfig.legalName,
+        url: siteUrl,
+        parentOrganization: { "@id": organizationId },
+        image: new URL("/home_hero_bg.jpg", siteUrl).toString(),
+        telephone: primaryContact.phone,
+        email: primaryContact.email,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "R364-AL Wasl Building, Al Karama",
+          addressLocality: "Dubai",
+          postalCode: "87566",
+          addressCountry: "AE",
+        },
+        areaServed: uaeCoverage,
+        serviceType: [
+          "Enterprise IT infrastructure",
+          "Managed IT services",
+          "Cloud solutions",
+          "Cybersecurity services",
+          "Enterprise networking",
+          "Data center modernization",
+          "Digital transformation",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        name: siteConfig.name,
+        url: siteUrl,
+        inLanguage: "en-AE",
+        publisher: { "@id": organizationId },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${siteUrl}/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: siteUrl,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+export function aboutPageMetadata(): Metadata {
+  const canonical = new URL("/about", siteUrl).toString();
+  const title = "About InnovGen | Enterprise IT Company UAE";
+  const description =
+    "Learn about InnovGen Technology Solutions LLC, an enterprise IT company in the UAE delivering managed IT, cloud, cybersecurity, networking, data center and digital transformation services.";
+  const image = new URL("/home_hero_bg.jpg", siteUrl).toString();
+
+  return {
+    title: { absolute: title },
+    description,
+    keywords: [
+      "About InnovGen",
+      "InnovGen Technology Solutions",
+      "IT infrastructure company UAE",
+      "enterprise IT company Dubai",
+      "managed IT services UAE",
+      "cloud solutions UAE",
+      "cybersecurity company UAE",
+      "AI infrastructure UAE",
+      "digital transformation company UAE",
+    ],
+    alternates: { canonical },
+    robots: { index: true, follow: true },
+    openGraph: {
+      type: "website",
+      locale: "en_AE",
+      url: canonical,
+      siteName: siteConfig.name,
+      title,
+      description,
+      images: [{ url: image, width: 1920, height: 1080, alt: "About InnovGen Technology Solutions LLC" }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
+  };
+}
+
+export function aboutPageSchema() {
+  const organizationId = `${siteUrl}/#organization`;
+  const aboutUrl = new URL("/about", siteUrl).toString();
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: siteConfig.legalName,
+        alternateName: siteConfig.name,
+        url: siteUrl,
+        logo: new URL("/logo.gif", siteUrl).toString(),
+        email: primaryContact.email,
+        telephone: primaryContact.phone,
+        sameAs: socialItems.map((item) => item.href),
+      },
+      {
+        "@type": "AboutPage",
+        "@id": `${aboutUrl}#webpage`,
+        url: aboutUrl,
+        name: "About InnovGen",
+        description:
+          "About InnovGen Technology Solutions LLC, an enterprise IT company serving the UAE, Middle East, and GCC.",
+        about: { "@id": organizationId },
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        inLanguage: "en-AE",
+      },
+      {
+        "@type": ["ProfessionalService", "LocalBusiness"],
+        "@id": `${siteUrl}/#professional-service`,
+        name: siteConfig.legalName,
+        url: siteUrl,
+        parentOrganization: { "@id": organizationId },
+        telephone: primaryContact.phone,
+        email: primaryContact.email,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "R364-AL Wasl Building, Al Karama",
+          addressLocality: "Dubai",
+          postalCode: "87566",
+          addressCountry: "AE",
+        },
+        areaServed: uaeCoverage,
+        serviceType: [
+          "Enterprise IT infrastructure",
+          "Managed IT services",
+          "Cloud computing",
+          "Cybersecurity",
+          "AI infrastructure",
+          "Networking",
+          "Data center solutions",
+          "Digital transformation",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        name: siteConfig.name,
+        url: siteUrl,
+        publisher: { "@id": organizationId },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${aboutUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "About", item: aboutUrl },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${aboutUrl}#faq`,
+        mainEntity: aboutFaqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer,
+          },
+        })),
+      },
+    ],
+  };
+}
+
+export function servicesPageSchema() {
+  const organizationId = `${siteUrl}/#organization`;
+  const servicesUrl = new URL("/services", siteUrl).toString();
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: siteConfig.legalName,
+        alternateName: siteConfig.name,
+        url: siteUrl,
+        logo: new URL("/logo.gif", siteUrl).toString(),
+        description:
+          "Enterprise technology partner delivering secure, scalable digital systems.",
+        email: primaryContact.email,
+        telephone: primaryContact.phone,
+        sameAs: socialItems.map((item) => item.href),
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${servicesUrl}#webpage`,
+        url: servicesUrl,
+        name: "Enterprise IT Services UAE",
+        description:
+          "Enterprise IT infrastructure, managed IT services, cloud computing, cybersecurity and AI infrastructure for UAE organizations in Dubai, Abu Dhabi and the GCC.",
+        inLanguage: "en-AE",
+      },
+      {
+        "@type": "Service",
+        "@id": `${servicesUrl}#service`,
+        name: "Enterprise IT Services",
+        description:
+          "Enterprise IT infrastructure, managed IT services, cloud computing, cybersecurity and AI infrastructure for UAE organizations.",
+        provider: { "@id": organizationId },
+        areaServed: uaeCoverage,
+        serviceType: [
+          "Enterprise IT infrastructure",
+          "Managed IT services",
+          "Cloud computing",
+          "Cybersecurity",
+          "Networking",
+          "AI infrastructure",
+          "Digital transformation",
+          "IT consulting",
+        ],
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": `${servicesUrl}#professional-service`,
+        name: siteConfig.legalName,
+        provider: { "@id": organizationId },
+        areaServed: uaeCoverage,
+        serviceType: [
+          "IT consulting",
+          "Managed IT services",
+          "Digital transformation",
+        ],
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${servicesUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "Services", item: servicesUrl },
+        ],
+      },
+    ],
   };
 }
 

@@ -483,9 +483,9 @@ export const pages: Record<string, PageContent> = {
     description:
       "InnovGen brings strategy, design and engineering together to turn complex technology priorities into scalable outcomes.",
     seo: {
-      title: "Enterprise Technology Solutions",
+      title: "Enterprise IT Infrastructure Company UAE | InnovGen",
       description:
-        "InnovGen delivers secure, scalable software, AI, cloud and digital transformation solutions.",
+        "InnovGen delivers managed IT services, cloud solutions, cybersecurity, enterprise networking and data center modernization for organizations across the UAE.",
     },
     sections: [
       {
@@ -598,8 +598,9 @@ export const pages: Record<string, PageContent> = {
     description:
       "Explore a connected set of technology capabilities designed to improve efficiency, security, scalability and growth.",
     seo: {
-      title: "Technology Services",
-      description: "Explore InnovGen software, AI, cloud and cybersecurity services.",
+      title: "Enterprise IT Services UAE | InnovGen Technology Solutions",
+      description:
+        "InnovGen delivers enterprise IT infrastructure, managed IT services, cloud computing, cybersecurity and AI infrastructure for UAE organizations in Dubai, Abu Dhabi and the GCC.",
     },
     sections: [
       { eyebrow: "Service navigator", title: "Find the capability you need", items: services },
