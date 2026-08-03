@@ -1,14 +1,17 @@
-import { pages } from "@/content/site-content";
 import { PartnerOrbitShowcase } from "@/components/sections/partners/partner-orbit-showcase";
+import { PartnerAuthoritySection } from "@/components/sections/partners/partner-authority-section";
 import { FinalCtaSection } from "@/components/sections/home/final-cta-section";
-import { createMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/json-ld";
+import { partnersPageMetadata, partnersPageSchema } from "@/lib/seo";
 
-export const metadata = createMetadata(pages.partners.seo, "/partners");
+export const metadata = partnersPageMetadata();
 
 export default function PartnersPage() {
   return (
     <>
+      <JsonLd data={partnersPageSchema()} />
       <PartnerOrbitShowcase />
+      <PartnerAuthoritySection />
       <FinalCtaSection />
     </>
   );

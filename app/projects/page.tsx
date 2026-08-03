@@ -1,5 +1,4 @@
 import { ClientsPage } from "@/components/sections/clients/clients-page";
-import { FinalCtaSection } from "@/components/sections/home/final-cta-section";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata(
@@ -11,9 +10,5 @@ export const metadata = createMetadata(
 );
 
 export default function ClientsRoutePage() {
-  return <>
-  <ClientsPage />
-  <FinalCtaSection />
-  </>;
-
+  return <ClientsPage />;
 }
