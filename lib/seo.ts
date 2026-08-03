@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { DetailContent, SeoContent } from "@/content/types";
 import { aboutFaqs } from "@/config/about-seo";
+import { partnerFaqs } from "@/config/partner-seo";
+import { partnerEcosystem } from "@/config/partner-ecosystem";
 import { contactItems, siteConfig, socialItems } from "@/config/site";
 
 const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.VERCEL_URL;
@@ -307,6 +309,146 @@ export function aboutPageSchema() {
           },
         })),
       },
+    ],
+  };
+}
+
+export function partnersPageMetadata(): Metadata {
+  const canonical = new URL("/partners", siteUrl).toString();
+  const title = "Technology Partners UAE | Enterprise IT Ecosystem | InnovGen";
+  const description =
+    "Explore InnovGen's technology partner ecosystem for enterprise IT infrastructure, cloud, networking, cybersecurity, data protection, collaboration and business applications in the UAE.";
+  const image = new URL("/home_hero_bg.jpg", siteUrl).toString();
+
+  return {
+    title: { absolute: title },
+    description,
+    keywords: [
+      "technology partners UAE",
+      "enterprise IT partners Dubai",
+      "cloud technology partners UAE",
+      "cybersecurity technology partners UAE",
+      "networking partners Dubai",
+      "enterprise infrastructure ecosystem UAE",
+      "multi-vendor IT solutions UAE",
+    ],
+    alternates: { canonical },
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+    openGraph: {
+      type: "website",
+      locale: "en_AE",
+      url: canonical,
+      siteName: siteConfig.name,
+      title,
+      description,
+      images: [{ url: image, width: 1920, height: 1080, alt: "InnovGen technology partner ecosystem" }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
+    category: "Enterprise technology partnerships",
+  };
+}
+
+export function partnersPageSchema() {
+  const organizationId = `${siteUrl}/#organization`;
+  const partnersUrl = new URL("/partners", siteUrl).toString();
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: siteConfig.legalName,
+        alternateName: siteConfig.name,
+        url: siteUrl,
+        logo: new URL("/logo.gif", siteUrl).toString(),
+        email: primaryContact.email,
+        telephone: primaryContact.phone,
+        sameAs: socialItems.map((item) => item.href),
+      },
+      {
+        "@type": ["CollectionPage", "WebPage"],
+        "@id": `${partnersUrl}#webpage`,
+        url: partnersUrl,
+        name: "Technology Partners UAE | InnovGen",
+        description:
+          "InnovGen's enterprise technology ecosystem for cloud, infrastructure, networking, cybersecurity, data protection, collaboration and business applications in the UAE.",
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        about: { "@id": organizationId },
+        inLanguage: "en-AE",
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${partnersUrl}#partner-list`,
+        name: "InnovGen technology partners",
+        numberOfItems: partnerEcosystem.length,
+        itemListElement: partnerEcosystem.map((partner, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Organization",
+            name: partner.name,
+            logo: new URL(partner.logoPath, siteUrl).toString(),
+          },
+        })),
+      },
+      {
+        "@type": ["ProfessionalService", "LocalBusiness"],
+        "@id": `${partnersUrl}#professional-service`,
+        name: siteConfig.legalName,
+        url: partnersUrl,
+        parentOrganization: { "@id": organizationId },
+        telephone: primaryContact.phone,
+        email: primaryContact.email,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "R364-AL Wasl Building, Al Karama",
+          addressLocality: "Dubai",
+          postalCode: "87566",
+          addressCountry: "AE",
+        },
+        areaServed: uaeCoverage,
+        serviceType: [
+          "Enterprise IT infrastructure",
+          "Cloud solutions",
+          "Cybersecurity services",
+          "Enterprise networking",
+          "Data protection",
+          "Business applications",
+          "Managed IT services",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        name: siteConfig.name,
+        url: siteUrl,
+        publisher: { "@id": organizationId },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${partnersUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "Partners", item: partnersUrl },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${partnersUrl}#faq`,
+        mainEntity: partnerFaqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      },
+      ...partnerEcosystem.map((partner) => ({
+        "@type": "ImageObject",
+        "@id": `${partnersUrl}#${partner.id}-logo`,
+        name: `${partner.name} logo`,
+        contentUrl: new URL(partner.logoPath, siteUrl).toString(),
+        description: `${partner.name} technology partner logo displayed on InnovGen's technology partners page.`,
+      })),
     ],
   };
 }

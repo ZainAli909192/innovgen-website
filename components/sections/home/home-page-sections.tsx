@@ -1,6 +1,7 @@
 import { CompanyOverviewSection } from "./company-overview-section";
 import { ServicesPreviewSection } from "./services-preview-section";
 import { TrustedClientsDirectory } from "../clients/trusted-clients-directory";
+import ClientsFaqSection from "../clients/clients-faq";
 import { TrustedBySection } from "./trusted-by-section";
 import { LeadershipSection } from "./leadership-section";
 import { FinalCtaSection } from "./final-cta-section";
@@ -13,6 +14,7 @@ export function HomePageSections() {
       <CompanyOverviewSection />
       <ServicesPreviewSection />
       <TrustedClientsDirectory variant="home" />
+      <ClientsFaqSection />
       <FinalCtaSection />
     </>
   );

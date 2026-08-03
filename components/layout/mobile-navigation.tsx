@@ -112,7 +112,7 @@ export function MobileNavigation() {
           duration: reduceMotion ? 0 : 0.28,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[70] overflow-hidden rounded-[1.35rem] border border-white/30 bg-[linear-gradient(135deg,var(--color-blue-600),var(--color-blue-500))] p-1 shadow-[0_16px_32px_rgb(2_20_45_/_38%),0_4px_8px_rgb(2_20_45_/_22%),inset_0_1px_0_rgb(255_255_255_/_28%),inset_0_-6px_14px_rgb(3_31_70_/_26%)] [transform:translateZ(0)] lg:hidden"
+        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-[70] rounded-[1.35rem] border border-blue-300/30 bg-[linear-gradient(135deg,var(--color-navy-900),var(--color-navy-950))] p-1 shadow-[0_16px_32px_rgb(2_20_45_/_38%),0_4px_8px_rgb(2_20_45_/_22%),inset_0_1px_0_rgb(255_255_255_/_12%)] [transform:translateZ(0)] lg:hidden"
       >
         <ul className="mx-auto grid max-w-xl grid-cols-5 px-1">
           {mobilePrimaryNavigation.map((item) => {
@@ -124,8 +124,8 @@ export function MobileNavigation() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.6875rem] font-semibold text-white/78 transition-[color,background-color,box-shadow]",
-                    active && "mobile-nav-active !text-[var(--color-blue-100)] bg-white/18 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)]",
+                    "relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.6875rem] font-semibold text-blue-100/75 transition-[color,background-color,box-shadow,transform] duration-200",
+                    active && "!text-white",
                   )}
                 >
                   {active ? (
@@ -136,14 +136,12 @@ export function MobileNavigation() {
                         duration: reduceMotion ? 0 : 0.18,
                         ease: [0.22, 1, 0.36, 1],
                       }}
-                      className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-[var(--color-blue-100)]"
-                    />
+                      className="absolute -top-3 grid size-12 place-items-center rounded-full border border-blue-100/80 bg-[var(--color-blue-100)] text-[var(--color-navy-900)] shadow-[0_10px_20px_rgb(0_0_0_/_28%),inset_0_1px_0_rgb(255_255_255_/_92%)]"
+                    >
+                      <Icon aria-hidden="true" className="size-5" strokeWidth={1.9} />
+                    </motion.span>
                   ) : null}
-                  <Icon
-                    aria-hidden="true"
-                    className="size-5"
-                    strokeWidth={1.8}
-                  />
+                  {!active ? <Icon aria-hidden="true" className="size-5" strokeWidth={1.8} /> : <span aria-hidden="true" className="h-5" />}
                   <span>{item.label}</span>
                 </Link>
               </li>
@@ -158,17 +156,19 @@ export function MobileNavigation() {
               aria-controls="mobile-more-sheet"
               onClick={() => setIsOpen(true)}
               className={cn(
-                "relative flex min-h-16 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl px-1 text-xs font-semibold text-white/78 transition-[color,background-color,box-shadow]",
-                (moreIsActive || isOpen) && "mobile-nav-active !text-[var(--color-blue-100)] bg-white/18 shadow-[inset_0_1px_0_rgb(255_255_255_/_35%),0_3px_8px_rgb(3_31_70_/_16%)]",
+                "relative flex min-h-16 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl px-1 text-xs font-semibold text-blue-100/75 transition-[color,background-color,box-shadow,transform] duration-200",
+                (moreIsActive || isOpen) && "!text-white",
               )}
             >
               {moreIsActive || isOpen ? (
                 <span
                   aria-hidden="true"
-                  className="absolute inset-x-2 top-1 h-0.5 rounded-full bg-[var(--color-blue-100)]"
-                />
+                  className="absolute -top-3 grid size-12 place-items-center rounded-full border border-blue-100/80 bg-[var(--color-blue-100)] text-[var(--color-navy-900)] shadow-[0_10px_20px_rgb(0_0_0_/_28%),inset_0_1px_0_rgb(255_255_255_/_92%)]"
+                >
+                  <Ellipsis aria-hidden="true" className="size-6" strokeWidth={2} />
+                </span>
               ) : null}
-              <Ellipsis aria-hidden="true" className="size-6" strokeWidth={2} />
+              {moreIsActive || isOpen ? <span aria-hidden="true" className="h-6" /> : <Ellipsis aria-hidden="true" className="size-6" strokeWidth={2} />}
               <span>More</span>
             </button>
           </li>

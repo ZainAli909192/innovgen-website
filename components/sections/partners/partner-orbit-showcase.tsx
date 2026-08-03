@@ -146,7 +146,7 @@ function PartnerLeaf({
       }}
       className={`group relative z-10 flex min-h-[5.75rem] cursor-pointer flex-col items-center justify-center overflow-hidden [clip-path:polygon(50%_0%,70%_7%,87%_24%,98%_45%,94%_65%,82%_84%,65%_96%,50%_100%,35%_96%,18%_84%,6%_65%,2%_45%,13%_24%,30%_7%)] border bg-transparent px-2 py-3 text-center shadow-[0_12px_26px_rgb(0_0_0_/_16%)] transition-[border-color,background-color,box-shadow] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-accent sm:min-h-36 sm:px-4 sm:py-4 ${placement} ${active ? "border-2 border-accent bg-[radial-gradient(circle_at_50%_0%,rgb(40_105_170),rgb(8_28_53)_72%)] shadow-[0_16px_36px_rgb(0_0_0_/_26%),0_0_28px_rgb(228_196_119_/_22%)]" : "border-blue-300/35 bg-[radial-gradient(circle_at_50%_0%,rgb(17_62_108),rgb(5_19_39)_72%)] hover:border-blue-300/80 hover:bg-[radial-gradient(circle_at_50%_0%,rgb(25_81_138),rgb(7_26_51)_72%)]"}`}
     >
-      <PartnerLogo partner={partner} cover className="!absolute !inset-0 !block !p-0" />
+      <PartnerLogo partner={partner} decorative={false} cover className="!absolute !inset-0 !block !p-0" />
       <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[45%] bg-[linear-gradient(to_top,rgb(3_15_31_/_95%),rgb(3_15_31_/_62%),transparent)]" />
       <span className="relative mt-auto inline-flex whitespace-nowrap px-2 pb-0.5 text-[0.65rem] font-semibold text-foreground [text-shadow:0_1px_5px_rgb(0_0_0_/_70%)] sm:px-3 sm:pb-1 sm:text-sm">
         <span>{partner.shortName}</span>
