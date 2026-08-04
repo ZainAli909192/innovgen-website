@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, GraduationCap, HeartHandshake, Send, UsersRound } from "lucide-react";
+import { ArrowRight, Check, GraduationCap, HeartHandshake, Send, UsersRound } from "lucide-react";
 import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,8 +12,6 @@ import { Container } from "@/components/ui/container";
 import { SuccessPopup } from "@/components/ui/success-popup";
 import { FaqAccordion, type FaqItem } from "@/components/sections/clients/clients-faq";
 import { cn } from "@/lib/utils";
-import { careers } from "@/content/site-content";
-import Link from "next/link";
 
 const applicationSchema = z.object({
   fullName: z.string().trim().min(2, "Enter your full name."),
@@ -46,6 +44,7 @@ function CareersApplicationForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
   const form = useForm<ApplicationValues>({
     resolver: zodResolver(applicationSchema),
     defaultValues: { fullName: "", email: "", number: "", cv: undefined },
@@ -86,7 +85,14 @@ function CareersApplicationForm() {
   }
 
   return (
-    <section id="application" className="scroll-mt-24 bg-[linear-gradient(180deg,#f7faff_0%,#ffffff_42%)] py-16 text-slate-950 sm:py-24">
+    <motion.section
+      id="application"
+      initial={reducedMotion ? false : { opacity: 0, x: -72, scale: 0 }}
+      whileInView={{ opacity: 1, x: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.16 }}
+      transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
+      className="scroll-mt-24 bg-[linear-gradient(180deg,#f7faff_0%,#ffffff_42%)] py-16 text-slate-950 sm:py-24"
+    >
       <SuccessPopup
         open={submitted}
         title="Your application has been sent."
@@ -186,19 +192,24 @@ function CareersApplicationForm() {
           </form>
         </div>
       </Container>
-    </section>
+    </motion.section>
   );
 }
 
 export function CareersExperience() {
   const reducedMotion = usePrefersReducedMotion();
 
-  const sectionMotion = {
-    initial: reducedMotion ? false : { opacity: 0, y: 36, scale: 0.985 },
-    whileInView: { opacity: 1, y: 0, scale: 1 },
+  const sectionMotion = (direction: "left" | "right") => ({
+    initial: reducedMotion
+      ? false
+      : { opacity: 0, x: direction === "left" ? -72 : 72, scale: 0 },
+    whileInView: { opacity: 1, x: 0, scale: 1 },
     viewport: { once: true, amount: 0.18 },
-    transition: { duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] as const },
-  };
+    transition: {
+      duration: reducedMotion ? 0 : 0.62,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  });
 
   const technologyLogos = [
     "Microsoft",
@@ -244,7 +255,7 @@ export function CareersExperience() {
         <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f5f9ff_100%)] py-16 sm:py-24 lg:py-28">
           <div aria-hidden="true" className="absolute inset-0 [background-image:radial-gradient(circle_at_20%_20%,rgb(37_99_235_/_8%)_0_1px,transparent_1.5px)] [background-size:34px_34px]" />
           <Container size="wide">
-            <motion.section {...sectionMotion} aria-labelledby="why-innovgen" className="relative grid items-center gap-12 overflow-hidden rounded-[2.25rem] border border-blue-100/80 bg-white p-7 shadow-[0_32px_90px_rgb(30_64_175_/_12%)] sm:p-10 lg:grid-cols-[0.95fr_1.05fr] lg:p-14">
+            <motion.section {...sectionMotion("left")} aria-labelledby="why-innovgen" className="relative grid items-center gap-12 overflow-hidden rounded-[2.25rem] border border-blue-100/80 bg-white p-7 shadow-[0_32px_90px_rgb(30_64_175_/_12%)] sm:p-10 lg:grid-cols-[0.95fr_1.05fr] lg:p-14">
               <div className="relative z-10">
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700 sm:text-sm">Why InnovGen</p>
                 <h2 id="why-innovgen" className="mt-4 max-w-[13ch] text-[clamp(2.25rem,4.8vw,4.4rem)] font-semibold leading-[0.98] tracking-[-0.055em]">Work on technology that keeps organizations moving.</h2>
@@ -290,7 +301,7 @@ export function CareersExperience() {
         <section className="relative overflow-hidden bg-[linear-gradient(145deg,var(--color-navy-950),#0b2241)] py-16 text-white sm:py-24 lg:py-28">
           <div aria-hidden="true" className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgb(96_165_250_/_7%)_1px,transparent_1px),linear-gradient(90deg,rgb(96_165_250_/_7%)_1px,transparent_1px)] [background-size:52px_52px]" />
           <Container size="wide">
-            <motion.section {...sectionMotion} aria-labelledby="life-at-innovgen" className="relative grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+            <motion.section {...sectionMotion("right")} aria-labelledby="life-at-innovgen" className="relative grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent sm:text-sm">Life at InnovGen</p>
                 <h2 id="life-at-innovgen" className="mt-4 max-w-[15ch] text-[clamp(2.25rem,4.6vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.055em]">Grow technical depth with a team that shares what it knows.</h2>
@@ -330,7 +341,7 @@ export function CareersExperience() {
         {/* Benefits — circular timeline */}
         <section className="relative overflow-hidden bg-white py-16 sm:py-24 lg:py-28">
           <Container size="wide">
-            <motion.section {...sectionMotion} aria-labelledby="benefits" className="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+            <motion.section {...sectionMotion("left")} aria-labelledby="benefits" className="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700 sm:text-sm">Benefits</p>
                 <h2 id="benefits" className="mt-4 max-w-[14ch] text-[clamp(2.25rem,4.6vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.055em]">A career designed to deepen your impact.</h2>
@@ -369,7 +380,7 @@ export function CareersExperience() {
         {/* Technology We Use — animated logos */}
         <section className="overflow-hidden bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] py-16 sm:py-24 lg:py-28">
           <Container size="wide">
-            <motion.section {...sectionMotion} aria-labelledby="technology-we-use">
+            <motion.section {...sectionMotion("right")} aria-labelledby="technology-we-use">
               <div className="mx-auto max-w-3xl text-center">
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-700 sm:text-sm">Technology We Use</p>
                 <h2 id="technology-we-use" className="mt-4 text-[clamp(2.25rem,4.6vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.055em]">Enterprise platforms behind modern infrastructure.</h2>
@@ -397,7 +408,7 @@ export function CareersExperience() {
         <section className="relative overflow-hidden bg-[linear-gradient(145deg,var(--color-navy-950),var(--color-navy-900))] py-16 text-white sm:py-24 lg:py-28">
           <div aria-hidden="true" className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgb(96_165_250_/_8%)_1px,transparent_1px),linear-gradient(90deg,rgb(96_165_250_/_8%)_1px,transparent_1px)] [background-size:48px_48px]" />
           <Container size="wide">
-            <motion.section {...sectionMotion} aria-labelledby="hiring-process" className="relative">
+            <motion.section {...sectionMotion("left")} aria-labelledby="hiring-process" className="relative">
               <div className="max-w-3xl">
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent sm:text-sm">Hiring process</p>
                 <h2 id="hiring-process" className="mt-4 max-w-[15ch] text-[clamp(2.25rem,4.6vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.055em]">Straightforward conversations, clear next steps.</h2>
@@ -425,8 +436,15 @@ export function CareersExperience() {
 
         {/* FAQ kept unchanged */}
         <Container size="wide">
-          <motion.section aria-labelledby="faq" className="mt-16 rounded-[2rem] bg-[linear-gradient(145deg,var(--color-navy-950),var(--color-navy-900))] p-6 text-white sm:mt-24 sm:p-10 lg:p-12">
-            <motion.div initial={reducedMotion ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.16 }} transition={{ duration: reducedMotion ? 0 : 0.55, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.section
+            aria-labelledby="faq"
+            initial={reducedMotion ? false : { opacity: 0, x: 72, scale: 0 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.16 }}
+            transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-16 rounded-[2rem] bg-[linear-gradient(145deg,var(--color-navy-950),var(--color-navy-900))] p-6 text-white sm:mt-24 sm:p-10 lg:p-12"
+          >
+            <motion.div initial={reducedMotion ? false : { opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.16 }} transition={{ duration: reducedMotion ? 0 : 0.4, delay: reducedMotion ? 0 : 0.14, ease: [0.22, 1, 0.36, 1] }}>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-accent">Frequently asked questions</p>
               <h2 id="faq" className="mt-4 max-w-[12ch] text-[clamp(2.3rem,4vw,4rem)] font-semibold leading-[0.96] tracking-[-0.055em]">Clear answers for your next move.</h2>
               <FaqAccordion items={careerFaqItems} idPrefix="career-faq" />
@@ -434,7 +452,7 @@ export function CareersExperience() {
           </motion.section>
 
           {/* Final CTA kept unchanged */}
-          <motion.section aria-labelledby="join" initial={reducedMotion ? false : { opacity: 0, y: 28, scale: 0.995 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.16 }} transition={{ duration: reducedMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }} className="py-10 sm:py-14">
+          <motion.section aria-labelledby="join" initial={reducedMotion ? false : { opacity: 0, x: -72, scale: 0 }} whileInView={{ opacity: 1, x: 0, scale: 1 }} viewport={{ once: true, amount: 0.16 }} transition={{ duration: reducedMotion ? 0 : 0.62, ease: [0.22, 1, 0.36, 1] }} className="py-10 sm:py-14">
            
           </motion.section>
         </Container>
