@@ -4,6 +4,7 @@ import { aboutFaqs } from "@/config/about-seo";
 import { partnerFaqs } from "@/config/partner-seo";
 import { partnerEcosystem } from "@/config/partner-ecosystem";
 import { contactItems, siteConfig, socialItems } from "@/config/site";
+import { pages, careers } from "@/content/site-content";
 
 const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.VERCEL_URL;
 
@@ -537,6 +538,88 @@ export function breadcrumbSchema(
       name: item.name,
       item: new URL(item.path, siteUrl).toString(),
     })),
+  };
+}
+
+export function careersPageSchema() {
+  const careersUrl = new URL("/careers", siteUrl).toString();
+  const organizationId = `${siteUrl}/#organization`;
+
+  const faqItems = [
+    {
+      question: "How do I apply for a job at InnovGen?",
+      answer:
+        "Apply through the form on this page or submit your CV for consideration. We review all applications and contact shortlisted candidates.",
+    },
+    {
+      question: "What technologies does InnovGen work with?",
+      answer:
+        "InnovGen works across cloud platforms (Azure, AWS), networking (Cisco, VMware), cybersecurity and enterprise infrastructure to deliver secure, scalable systems.",
+    },
+    { question: "Does InnovGen offer hybrid work?", answer: "Work models vary by role; some positions offer hybrid or flexible arrangements depending on client and project needs." },
+    { question: "What certifications are preferred?", answer: "Relevant certifications such as Azure, AWS, Cisco, VMware and security qualifications are valued but experience and problem solving are most important." },
+    { question: "What is the recruitment process?", answer: "A transparent process including an introductory conversation, technical discussion and team interview, followed by an offer stage." },
+    { question: "Does InnovGen hire fresh graduates?", answer: "We consider early-career candidates for roles that match their skills and potential; internships and graduate paths are evaluated as openings arise." },
+    { question: "Where are InnovGen offices located?", answer: "InnovGen operates in the UAE with offices in Dubai and serving clients across Abu Dhabi and the region." },
+    { question: "What employee benefits does InnovGen provide?", answer: "Benefits include professional development support, flexible working arrangements and wellbeing programs; specific benefits are listed per role." },
+  ];
+
+  const jobPostings = careers.map((job) => {
+    const datePosted = new Date().toISOString().split("T")[0];
+    const validThrough = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+    return {
+      "@type": "JobPosting",
+      title: job.title,
+      description: job.description || job.intro || "",
+      datePosted,
+      validThrough,
+      employmentType: job.type ?? "FULL_TIME",
+      hiringOrganization: { "@type": "Organization", name: siteConfig.legalName, sameAs: siteUrl },
+      jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressCountry: "AE", addressLocality: job.location ?? "UAE" } },
+      identifier: { "@type": "PropertyValue", name: "InnovGen", value: job.slug },
+      url: new URL(job.href ?? `/careers/${job.slug}`, siteUrl).toString(),
+    };
+  });
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: siteConfig.legalName,
+        alternateName: siteConfig.name,
+        url: siteUrl,
+        logo: new URL("/logo.gif", siteUrl).toString(),
+        email: contactItems.find((i) => i.label === "Email")?.value ?? "",
+        telephone: contactItems.find((i) => i.label === "Phone")?.value ?? "",
+        sameAs: socialItems.map((item) => item.href),
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${careersUrl}#webpage`,
+        url: careersUrl,
+        name: "Careers | InnovGen",
+        description: pages.careers.description,
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        about: { "@id": organizationId },
+        inLanguage: "en-AE",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${careersUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "Careers", item: careersUrl },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${careersUrl}#faq`,
+        mainEntity: faqItems.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
+      },
+      ...jobPostings,
+    ],
   };
 }
 

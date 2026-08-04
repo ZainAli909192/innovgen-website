@@ -25,15 +25,26 @@ export function PageReveal({ children, className, delay = 0 }: { children: React
   );
 }
 
-export function FaqAccordion() {
+export type FaqItem = {
+  question: string;
+  answer: string;
+};
+
+export function FaqAccordion({
+  items = clientFaqItems,
+  idPrefix = "client-faq",
+}: {
+  items?: readonly FaqItem[];
+  idPrefix?: string;
+}) {
   const reducedMotion = usePrefersReducedMotion();
   const [openIndex, setOpenIndex] = useState(-1);
 
   return (
     <div className="mt-10 space-y-4">
-      {clientFaqItems.map((item, index) => {
+      {items.map((item, index) => {
         const open = openIndex === index;
-        const answerId = `client-faq-answer-${index}`;
+        const answerId = `${idPrefix}-answer-${index}`;
 
         return (
           <div key={item.question} className="relative max-w-3xl">
