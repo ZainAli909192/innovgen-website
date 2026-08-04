@@ -91,7 +91,7 @@ export function MobileNavigation() {
       <Link
         href="/"
         aria-label="InnovGen IT Software Solutions"
-        className="fixed end-3 top-3 z-[75] inline-flex h-16 w-[204px] shrink-0 items-center justify-center overflow-hidden p-4 shadow-[0_7px_14px_rgb(2_12_28_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)] lg:hidden"
+        className="fixed end-3 top-3 z-[75] inline-flex h-10 w-[180px] shrink-0 items-center justify-center overflow-hidden p-2.5 shadow-[0_7px_14px_rgb(2_12_28_/_28%),inset_0_1px_0_rgb(255_255_255_/_12%)] lg:hidden"
       >
         <video
           autoPlay
@@ -99,7 +99,7 @@ export function MobileNavigation() {
           muted
           playsInline
           aria-hidden="true"
-          className="h-44 w-[17rem] max-w-none object-cover"
+          className="h-[8.5rem] w-[15.5rem] max-w-none object-cover"
           src="/original_logo.mp4"
         />
       </Link>
