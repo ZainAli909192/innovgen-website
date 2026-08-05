@@ -173,7 +173,7 @@ function FounderHero() {
               <span key={index} className="size-1.5 rounded-full bg-blue-400" />
             ))}
           </span>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-blue-400/55 bg-surface-elevated p-2 shadow-[0_28px_72px_rgb(0_0_0_/_38%),0_0_38px_rgb(23_105_224_/_16%)] sm:aspect-[4/5] sm:rounded-[2rem] sm:shadow-[0_38px_110px_rgb(0_0_0_/_38%),0_0_46px_rgb(23_105_224_/_14%)]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-blue-400/55 bg-surface-elevated p-4 sm:p-2 shadow-[0_28px_72px_rgb(0_0_0_/_38%),0_0_38px_rgb(23_105_224_/_16%)] sm:aspect-[4/5] sm:rounded-[2rem] sm:shadow-[0_38px_110px_rgb(0_0_0_/_38%),0_0_46px_rgb(23_105_224_/_14%)]">
             <div className="relative h-full overflow-hidden rounded-[1rem] sm:rounded-[1.5rem]">
               <Image
                 src={founderContent.image}
