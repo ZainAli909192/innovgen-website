@@ -3,7 +3,9 @@
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight, Eye, Target, Diamond, CheckCircle2 } from "lucide-react";
+import { FaqAccordion, PageReveal } from "./clients/clients-faq";
+import { Section } from "@/components/ui/section";
 import { TrustedClientsDirectory } from "./clients/trusted-clients-directory";
 import {
   AnimatePresence,
@@ -446,27 +448,25 @@ function EnterpriseExpertiseSection() {
 
 function AboutFaqSection() {
   return (
-    <SpatialSection aria-labelledby="about-faq-heading" spacing="spacious" className="about-mobile-light-surface relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-950),rgb(9_27_50),var(--color-navy-900))]">
-      <Container size="standard" className="relative">
-        <DirectionalReveal direction="left" className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">About InnovGen</p>
-          <h2 id="about-faq-heading" className="mt-4 text-[var(--text-h1)] text-[var(--color-navy-900)] md:text-foreground">Questions enterprise teams ask before they begin.</h2>
-        </DirectionalReveal>
-        <div className="mt-10 divide-y divide-blue-300/20 border-y border-blue-300/20 md:mt-14">
-          {aboutFaqs.map((faq, index) => (
-            <DirectionalReveal key={faq.question} direction={index % 2 === 0 ? "right" : "left"}>
-              <details className="group py-5 md:py-6">
-                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 text-lg font-semibold text-[var(--color-navy-900)] marker:content-none md:text-foreground">
-                  <h3>{faq.question}</h3>
-                  <ArrowDown aria-hidden="true" className="size-5 shrink-0 text-[var(--color-blue-600)] transition-transform group-open:rotate-180 md:text-blue-300" />
-                </summary>
-                <p className="max-w-3xl pb-1 pt-3 leading-relaxed text-[#53647d] md:text-blue-100">{faq.answer}</p>
-              </details>
-            </DirectionalReveal>
-          ))}
+    <Section spacing="spacious" className="relative isolate overflow-hidden border-t border-border bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))]">
+      <Background3DShapes variant="geometry" intensity="subtle" />
+      <Container size="wide" className="relative">
+        <div className="grid gap-12 lg:grid-cols-[minmax(22rem,0.72fr)_minmax(0,1.28fr)] lg:items-start lg:gap-24 xl:gap-32">
+          <PageReveal className="lg:sticky lg:top-28">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent">About InnovGen</p>
+            <h2 id="about-faq-heading" className="mt-4 max-w-[12ch] text-[clamp(2.5rem,5vw,4.8rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-white md:text-foreground">Questions enterprise teams ask before they begin.</h2>
+            <p className="mt-8 max-w-sm text-base leading-7 text-blue-100/70">Clear answers for common enterprise concerns.</p>
+          </PageReveal>
+          <PageReveal delay={0.1}>
+            <FaqAccordion items={aboutFaqs} idPrefix="about-faq" />
+            <div className="mt-8 flex items-start gap-3 text-sm leading-6 text-blue-100/65">
+              <CheckCircle2 aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-accent" />
+              <p>Have a specific infrastructure or managed operations question? Our team can help frame the next practical step.</p>
+            </div>
+          </PageReveal>
         </div>
       </Container>
-    </SpatialSection>
+    </Section>
   );
 }
 
@@ -735,19 +735,96 @@ export function AboutPage() {
   return (
     <div className="overflow-x-clip">
       <h1 className="sr-only">About InnovGen</h1>
-      <FounderHero />
+     <FounderHero />
       <LeadershipProfiles />
       <CompanyStory />
-      <CompanyFoundationsSection />
+                  <MissionVisionSection />
+
       <EnterpriseExpertiseSection />
+
       <ProcessSection />
       <ProofSection />
      
-      <TrustedClientsDirectory variant="home" />
       <AboutFaqSection />
+      <TrustedClientsDirectory variant="home" />
       <DirectionalReveal direction="right" mobileOnly>
         <FinalCtaSection />
       </DirectionalReveal>
     </div>
+  );
+}
+
+function MissionVisionSection() {
+  const cards = [
+    {
+      title: "Vision",
+      short: "Socio-economic impact on the B2B ecosystem.",
+      long: "We aim to make a socio-economic impact on the B2B ecosystem in the country and the region.",
+      Icon: Eye,
+    },
+    {
+      title: "Mission",
+      short: "Create value-added business solutions.",
+      long: "Focus on creating value-added business solutions and services using People, Process & Technology to help B2B customers grow profitably.",
+      Icon: Target,
+    },
+    {
+      title: "Values",
+      short: "RACE — Resilient, Agile, Collaborative, Excellence.",
+      long: "Resilient, Agile, Collaborative, Excellence — RACE to the Future.",
+      Icon: Diamond,
+    },
+  ];
+
+  return (
+    <section className="relative isolate overflow-hidden border-y border-blue-300/15 bg-[linear-gradient(180deg,var(--color-navy-950),rgb(7_20_39),rgb(9_27_50))] py-14 sm:py-16 md:py-24">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-60 [background-image:linear-gradient(rgb(131_185_255_/_4%)_1px,transparent_1px),linear-gradient(90deg,rgb(131_185_255_/_4%)_1px,transparent_1px)] [background-size:4rem_4rem] [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_82%,transparent)]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-32 top-20 size-80 rounded-full bg-blue-500/10 blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-40 bottom-0 size-[28rem] rounded-full bg-accent/8 blur-3xl"
+      />
+
+      <Container size="standard" className="relative z-10">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto flex w-fit items-center gap-3">
+            <span aria-hidden="true" className="h-px w-8 bg-accent/70 sm:w-12" />
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent sm:text-sm">About InnovGen</p>
+            <span aria-hidden="true" className="h-px w-8 bg-accent/70 sm:w-12" />
+          </div>
+          <h2 className="mt-5 text-[clamp(2rem,5vw,3.25rem)] font-semibold tracking-[-0.04em] text-foreground">Vision, Mission & Values</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-blue-100/65 sm:text-base sm:leading-7">
+            A clear point of view keeps every technology decision focused, useful and built to last.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-4 sm:gap-5 md:mt-14 md:grid-cols-3 md:gap-6">
+          {cards.map((card, index) => {
+            const Icon = card.Icon;
+            return (
+              <DirectionalReveal key={card.title} direction={index % 2 === 0 ? "left" : "right"} className="h-full">
+                <article className="group relative flex h-full min-h-[16rem] flex-col overflow-hidden rounded-[1.5rem] border border-blue-300/35 bg-[linear-gradient(150deg,rgb(248_251_255),rgb(237_245_255))] p-6 text-center shadow-[0_22px_54px_rgb(0_0_0_/_18%)] transition-[transform,box-shadow,border-color] duration-[var(--duration-standard)] hover:-translate-y-1.5 hover:border-blue-500/70 hover:shadow-[0_28px_60px_rgb(23_105_224_/_22%)] sm:min-h-[18rem] sm:p-7 md:p-8">
+                  <span aria-hidden="true" className="absolute right-5 top-4 font-mono text-xs font-semibold tracking-[0.18em] text-blue-500/55">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="mx-auto grid size-[4.5rem] place-items-center rounded-full border border-blue-300/80 bg-[radial-gradient(circle_at_35%_25%,white,rgb(224_239_255))] text-blue-600 shadow-[0_12px_24px_rgb(23_105_224_/_14%),inset_0_1px_0_rgb(255_255_255_/_90%)] transition-transform duration-[var(--duration-standard)] group-hover:rotate-6 group-hover:scale-105">
+                    <Icon className="size-7" strokeWidth={1.8} aria-hidden="true" />
+                  </span>
+                  <p className="mt-5 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-blue-600/70">Core principle</p>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-[var(--color-navy-900)]">{card.title}</h3>
+                  <p className="mt-3 text-[0.95rem] leading-7 text-[#53647d] md:hidden">{card.short}</p>
+                  <p className="mt-3 hidden text-base leading-7 text-[#53647d] md:block">{card.long}</p>
+                  <span aria-hidden="true" className="absolute inset-x-10 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-500/60 to-transparent" />
+                </article>
+              </DirectionalReveal>
+            );
+          })}
+        </div>
+      </Container>
+    </section>
   );
 }
