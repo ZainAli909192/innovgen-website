@@ -22,6 +22,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { useMobileLayout } from "@/hooks/use-mobile-layout";
 import {
   serviceCategories,
   serviceImageByIcon,
