@@ -34,8 +34,8 @@ export const companyStory = {
   eyebrow: "Who we are",
   title: "We make complex technology feel clear, useful, and ready to grow.",
   paragraphs: [
-    "InnovGen is an enterprise technology partner bringing strategy, design, engineering, cloud, data, and security into one practical delivery model.",
-    "We work alongside organizations to understand the business need first, then shape secure digital systems that teams can operate confidently and evolve over time.",
+    "InnovGen Technology Solutions LLC is a UAE-based IT company specializing in disruptive AI-powered solutions. We help B2B businesses automate processes, enhance decision-making, and drive growth with AI-ready IT infrastructure.",
+    "Partnering with leading technology providers, we deliver cloud and on-premise platforms tailored to the UAE and GCC markets. Our scalable, seamless, and personalized solutions empower businesses to excel in the digital age.",
   ],
 } as const;
 

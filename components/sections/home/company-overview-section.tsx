@@ -41,7 +41,7 @@ export function CompanyOverviewSection() {
               id="company-overview-heading"
               eyebrow="Who we are"
               title="Strategy, design, and engineering working as one."
-              description="InnovGen helps organizations plan, design, build, and evolve secure digital platforms. Our teams combine business strategy, product thinking, software engineering, cloud, data, and cybersecurity into one delivery model."
+              description="InnovGen Technology Solutions LLC is a UAE-based IT company specializing in disruptive AI-powered solutions. We help B2B businesses automate processes, enhance decision-making, and drive growth with AI-ready IT infrastructure, while partnering with leading technology providers to deliver cloud and on-premise platforms tailored to the UAE and GCC markets."
               className="max-w-[38rem]"
             />
             <Button

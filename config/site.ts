@@ -32,14 +32,14 @@ export const siteConfig = {
 export const contactItems = [
   {
     label: "Phone",
-    value: "+971 56 333 7727",
-    href: "tel:+971563337727",
+    value: "+971 50 455 4618",
+    href: "tel:++971504554618",
     approval: "approved",
   },
   {
     label: "Email",
-    value: "nayef@innovgen.com",
-    href: "mailto:nayef@innovgen.com",
+    value: "info@innovgen.com",
+    href: "mailto:info@innovgen.com",
     approval: "approved",
   },
   {

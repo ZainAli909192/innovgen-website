@@ -22,7 +22,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/components/providers/motion-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { useMobileLayout } from "@/hooks/use-mobile-layout";
 import {
   serviceCategories,
   serviceImageByIcon,
@@ -228,7 +227,7 @@ function MobileCategory({ category }: { category: ServiceCategory }) {
         <h2 id={`${category.id}-mobile-heading`} className="mt-4 text-[clamp(2rem,4.6vw,3.75rem)] text-[var(--color-navy-900)]">{category.title}</h2>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[var(--color-navy-800)]">{category.description}</p>
       </motion.div>
-      {category.id === "industry-solutions" || category.id === "managed-services" ? <MobileImageServiceCards category={category} /> : <MobileServiceWheel category={category} />}
+      <MobileImageServiceCards category={category} />
     </section>
   );
 }
