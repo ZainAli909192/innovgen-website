@@ -2,7 +2,6 @@
 
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowDown, ArrowRight, Eye, Target, Diamond, CheckCircle2 } from "lucide-react";
 import { FaqAccordion, PageReveal } from "./clients/clients-faq";
 import { Section } from "@/components/ui/section";
@@ -20,7 +19,7 @@ import {
   processSteps,
   workingPrinciple,
 } from "@/config/about";
-import { aboutExpertise, aboutFaqs, aboutFoundations } from "@/config/about-seo";
+import { aboutFaqs, aboutFoundations } from "@/config/about-seo";
 import { leadershipProfiles } from "@/config/leadership";
 import { motionEase } from "@/config/motion";
 import { useSectionProgress } from "@/hooks/use-section-progress";
@@ -32,6 +31,7 @@ import { SplitText } from "@/components/motion/split-text";
 import { Background3DShapes } from "@/components/motion/background-3d-shapes";
 import { SpatialSection } from "@/components/motion/spatial-section";
 import { FinalCtaSection } from "./home/final-cta-section";
+import { EnterpriseCapabilitiesSection } from "./enterprise-capabilities-section";
 
 function DirectionalReveal({
   children,
@@ -398,54 +398,6 @@ function CompanyFoundationsSection() {
   );
 }
 
-function EnterpriseExpertiseSection() {
-  const links = [
-    { href: "/services", label: "Explore services" },
-    { href: "/partners", label: "Meet our partners" },
-    { href: "/projects", label: "View client work" },
-    { href: "/blogs", label: "Read our insights" },
-    { href: "/careers", label: "Join InnovGen" },
-    { href: "/consultation", label: "Start a consultation" },
-  ];
-
-  return (
-    <SpatialSection
-      aria-labelledby="enterprise-expertise-heading"
-      spacing="spacious"
-      className="about-mobile-light-surface relative isolate overflow-hidden bg-[linear-gradient(180deg,var(--color-navy-900),rgb(11_31_55),var(--color-navy-950))]"
-    >
-      <Container size="wide" className="relative">
-        <DirectionalReveal direction="right" className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">Enterprise capabilities</p>
-          <h2 id="enterprise-expertise-heading" className="mt-4 text-[var(--text-h1)] text-[var(--color-navy-900)] md:text-foreground">
-            Infrastructure expertise for resilient, scalable business operations.
-          </h2>
-        </DirectionalReveal>
-
-        <div className="mt-10 grid gap-4 md:mt-14 md:grid-cols-2 md:gap-6">
-          {aboutExpertise.map((item, index) => (
-            <DirectionalReveal key={item.title} direction={index % 2 === 0 ? "left" : "right"}>
-              <article className="h-full rounded-2xl border border-blue-200 bg-white p-6 shadow-[0_18px_44px_rgb(23_105_224_/_10%)] md:rounded-[1.75rem] md:border-blue-300/20 md:bg-[linear-gradient(145deg,rgb(13_40_73_/_92%),rgb(5_16_33_/_98%))] md:p-8 md:shadow-[0_22px_52px_rgb(0_0_0_/_18%)]">
-                <h3 className="text-2xl text-[var(--color-navy-900)] md:text-foreground">{item.title}</h3>
-                <p className="mt-4 leading-relaxed text-[#53647d] md:text-blue-100">{item.description}</p>
-              </article>
-            </DirectionalReveal>
-          ))}
-        </div>
-
-        <nav aria-label="Explore InnovGen" className="mt-10 flex flex-wrap gap-x-6 gap-y-4 border-t border-blue-300/20 pt-7 md:mt-14">
-          {links.map((link) => (
-            <Link key={link.href} href={link.href} className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--color-blue-600)] transition-colors hover:text-[var(--color-navy-900)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 md:text-blue-200 md:hover:text-white">
-              {link.label}
-              <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          ))}
-        </nav>
-      </Container>
-    </SpatialSection>
-  );
-}
-
 function AboutFaqSection() {
   return (
     <Section spacing="spacious" className="relative isolate overflow-hidden border-t border-border bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))]">
@@ -740,7 +692,7 @@ export function AboutPage() {
       <CompanyStory />
                   <MissionVisionSection />
 
-      <EnterpriseExpertiseSection />
+      <EnterpriseCapabilitiesSection />
 
       <ProcessSection />
       <ProofSection />
@@ -750,6 +702,41 @@ export function AboutPage() {
       <DirectionalReveal direction="right" mobileOnly>
         <FinalCtaSection />
       </DirectionalReveal>
+    </div>
+  );
+}
+
+const raceValues = [
+  { letter: "R", label: "Resilient" },
+  { letter: "A", label: "Agile" },
+  { letter: "C", label: "Collaborative" },
+  { letter: "E", label: "Excellence" },
+] as const;
+
+function ValuesList() {
+  return (
+    <div className="mx-auto mt-5 w-full max-w-[18rem] text-left">
+      <div className="flex items-center justify-center gap-3">
+        <span className="h-px flex-1 bg-blue-300/60" />
+        <span className="text-lg font-bold tracking-[0.24em] text-blue-600">RACE</span>
+        <span className="h-px flex-1 bg-blue-300/60" />
+      </div>
+      <ul className="mt-4 grid gap-2" aria-label="InnovGen RACE values">
+        {raceValues.map((value) => (
+          <li
+            key={value.letter}
+            className="flex items-center gap-3 rounded-xl border border-blue-300/35 bg-white/65 px-3 py-2.5 shadow-[0_6px_16px_rgb(23_105_224_/_7%)]"
+          >
+            <span className="grid size-7 shrink-0 place-items-center rounded-full bg-blue-600 text-xs font-bold text-white shadow-[0_4px_10px_rgb(23_105_224_/_22%)]">
+              {value.letter}
+            </span>
+            <span className="text-sm font-semibold tracking-wide text-[var(--color-navy-900)]">{value.label}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-4 border-t border-blue-300/35 pt-3 text-center text-xs font-semibold uppercase tracking-[0.16em] text-blue-600">
+        RACE to the Future
+      </p>
     </div>
   );
 }
@@ -816,8 +803,14 @@ function MissionVisionSection() {
                   </span>
                   <p className="mt-5 text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-blue-600/70">Core principle</p>
                   <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-[var(--color-navy-900)]">{card.title}</h3>
-                  <p className="mt-3 text-[0.95rem] leading-7 text-[#53647d] md:hidden">{card.short}</p>
-                  <p className="mt-3 hidden text-base leading-7 text-[#53647d] md:block">{card.long}</p>
+                  {card.title === "Values" ? (
+                    <ValuesList />
+                  ) : (
+                    <>
+                      <p className="mt-3 text-[0.95rem] leading-7 text-[#53647d] md:hidden">{card.short}</p>
+                      <p className="mt-3 hidden text-base leading-7 text-[#53647d] md:block">{card.long}</p>
+                    </>
+                  )}
                   <span aria-hidden="true" className="absolute inset-x-10 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-500/60 to-transparent" />
                 </article>
               </DirectionalReveal>

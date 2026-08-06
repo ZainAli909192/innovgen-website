@@ -80,7 +80,7 @@ export function Header() {
                   className={cn(
                     "inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-muted transition-colors hover:bg-white/5 hover:text-foreground",
                     isActiveRoute(pathname, item.href) &&
-                      "bg-blue-500/15 text-blue-300 shadow-[inset_0_0_0_1px_rgb(131_185_255_/_30%),0_5px_18px_rgb(23_105_224_/_12%)]",
+                      "bg-blue-500/15 text-blue-300 border-bottom rounded shadow-[inset_0_0_0_1px_rgb(131_185_255_/_30%),0_5px_18px_rgb(23_105_224_/_12%)]",
                   )}
                 >
                   {item.label}

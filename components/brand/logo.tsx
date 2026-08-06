@@ -20,9 +20,10 @@ export function Logo({
       href="/"
       aria-label="InnovGen IT Software Solutions"
       className={cn(
-        "inline-flex min-h-11 shrink-0 items-center rounded-full bg-white",
+        "inline-flex min-h-11 shrink-0 items-center pl-4  rounded-full bg-white",
         className,
       )}
+      style={{padding: "0.5rem" }}
     >
       <video
         width={size}

@@ -61,8 +61,8 @@ export default function ConsultationPage() {
           </Reveal>
           <div className="mt-10 divide-y divide-blue-300/20 border-y border-blue-300/20 md:grid md:grid-cols-3 md:divide-x md:divide-y-0">
             {[
-              { title: "Email", value: "nayef@innovgen.com", href: "mailto:nayef@innovgen.com", icon: Mail },
-              { title: "Phone", value: "+971 56 333 7727", href: "tel:+971563337727", icon: Phone },
+              { title: "Email", value: "info@innovgen.com", href: "mailto:info@innovgen.com", icon: Mail },
+              { title: "Phone", value: "+971 50 455 4618", href: "tel:+971504554618", icon: Phone },
               { title: "Office", value: "R364-AL Wasl Building, Al Karama, Dubai, PO Box 87566.", icon: MapPin },
             ].map((contact, index) => {
               const Icon = contact.icon;

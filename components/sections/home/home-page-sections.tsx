@@ -5,6 +5,7 @@ import ClientsFaqSection from "../clients/clients-faq";
 import { TrustedBySection } from "./trusted-by-section";
 import { LeadershipSection } from "./leadership-section";
 import { FinalCtaSection } from "./final-cta-section";
+import { EnterpriseCapabilitiesSection } from "../enterprise-capabilities-section";
 
 export function HomePageSections() {
   return (
@@ -12,6 +13,7 @@ export function HomePageSections() {
       <LeadershipSection />
       <TrustedBySection />
       <CompanyOverviewSection />
+      <EnterpriseCapabilitiesSection />
       <ServicesPreviewSection />
       <TrustedClientsDirectory variant="home" />
       <ClientsFaqSection />

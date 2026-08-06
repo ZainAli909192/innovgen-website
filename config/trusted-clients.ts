@@ -143,3 +143,25 @@ export const trustedClientGroupsWithLogos: readonly TrustedClientGroup[] = trust
 export const trustedClientsWithLogos: readonly TrustedClient[] = trustedClientGroups
   .flatMap((group) => group.clients as readonly TrustedClient[])
   .filter((client) => client.logoPath);
+
+export const homeFeaturedTrustedClients: readonly TrustedClient[] = [
+  { name: "Hilton Hotels", logoPath: "/clients%20logos/hilton.png" },
+  { name: "Radisson Hotels", logoPath: "/clients%20logos/radisson.png" },
+  { name: "One&Only Royal Mirage Dubai", logoPath: "/clients%20logos/one.png" },
+  { name: "S-Hotel Group", logoPath: "/clients%20logos/shotel.png" },
+  { name: "Miramar Al Aqah Beach Resort", logoPath: "/clients%20logos/jaz-miramar-al-aqah-brown.svg" },
+  { name: "Golden Tulip Hotels & Resorts", logoPath: "/clients%20logos/MIRAMER.png" },
+  { name: "Fujairah Free Zone Authority", logoPath: "/clients%20logos/fujraish.png" },
+  { name: "Creative City Media Free Zone", logoPath: "/clients%20logos/creativecity.png" },
+  { name: "Dubai Media Incorporated", logoPath: "/clients%20logos/digital-dubai-gov-logo.png" },
+  { name: "Al Bayan Newspaper", logoPath: "/clients%20logos/albayan.svg" },
+  { name: "ATS Logistics", logoPath: "/clients%20logos/ats_logo.png" },
+  { name: "Menasco", logoPath: "/clients%20logos/menasco.png" },
+  { name: "Parkonic", logoPath: "/clients%20logos/parkonic-logo.svg" },
+  { name: "McDonald's", logoPath: "/clients%20logos/McDonalds_Logo.png" },
+  { name: "Rolls-Royce", logoPath: "/clients%20logos/rolls_royals.png" },
+  { name: "Abu Dhabi Indian School", logoPath: "/clients%20logos/adis-new-logo-3.webp" },
+  { name: "BITS Pilani Dubai Campus", logoPath: "/clients%20logos/bits-dubai-campus-color-1.png.webp" },
+  { name: "University of Kalba", logoPath: "/clients%20logos/kalaba.png" },
+  { name: "American Hospital", logoPath: "/clients%20logos/american_hospital.png" },
+] as const;

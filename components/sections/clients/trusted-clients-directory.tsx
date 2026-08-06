@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import {
-  featuredTrustedClients,
+  homeFeaturedTrustedClients,
   trustedClientsWithLogos,
   type TrustedClient,
 } from "@/config/trusted-clients";
@@ -110,8 +110,8 @@ export function TrustedClientsDirectory({ variant }: { variant: "home" | "page" 
   const reducedMotion = usePrefersReducedMotion();
 
   if (variant === "home") {
-    const firstRow = featuredTrustedClients.slice(0, Math.ceil(featuredTrustedClients.length / 2));
-    const secondRow = featuredTrustedClients.slice(Math.ceil(featuredTrustedClients.length / 2));
+    const firstRow = homeFeaturedTrustedClients.slice(0, Math.ceil(homeFeaturedTrustedClients.length / 2));
+    const secondRow = homeFeaturedTrustedClients.slice(Math.ceil(homeFeaturedTrustedClients.length / 2));
 
     return (
       <Section aria-labelledby="trusted-clients-heading" className="relative isolate overflow-hidden bg-white py-16 md:py-24">
