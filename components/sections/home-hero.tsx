@@ -192,11 +192,11 @@ export function HomeHero({
           inset-0
           z-[2]
           hidden
-          bg-[linear-gradient(90deg,rgba(7,20,35,0.88)_0%,rgba(7,20,35,0.64)_34%,rgba(7,20,35,0.22)_66%,rgba(7,20,35,0.06)_100%)]
+          bg-[linear-gradient(90deg,rgba(7,20,35,0.5)_20%,rgba(7,20,35,0.64)_34%,rgba(7,20,35,0.22)_66%,rgba(7,20,35,0.06)_100%)]
           lg:block
         "
       />
-
+ 
       {/* Technical grid */}
       <div
         aria-hidden="true"

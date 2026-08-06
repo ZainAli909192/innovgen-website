@@ -86,7 +86,7 @@ export function Footer() {
                 muted
                 playsInline
                 aria-hidden="true"
-                className="h-56 w-[21rem] max-w-none object-cover"
+                className="h-56 pl-5 w-[21rem] max-w-none object-cover"
                 src="/original_logo.mp4"
               />
             </Link>
