@@ -78,7 +78,7 @@ export function Footer() {
             <Link
               href="/"
               aria-label="InnovGen IT Software Solutions"
-              className="inline-flex h-24 w-[236px] items-center justify-center overflow-hidden"
+              className="inline-flex h-24 w-[246px] items-center justify-center overflow-hidden "
             >
               <video
                 autoPlay
@@ -86,7 +86,7 @@ export function Footer() {
                 muted
                 playsInline
                 aria-hidden="true"
-                className="h-56 pl-5 w-[21rem] max-w-none object-cover"
+                className="h-56 w-[24rem] max-w-none object-cover pl-3"
                 src="/original_logo.mp4"
               />
             </Link>
