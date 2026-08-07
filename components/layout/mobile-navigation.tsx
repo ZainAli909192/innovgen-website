@@ -204,7 +204,6 @@ export function MobileNavigation() {
               <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-white/20" />
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <Logo size={48} imageClassName="h-12 w-12" />
                   <h2 id="mobile-more-title" className="text-2xl">
                     More
                   </h2>
