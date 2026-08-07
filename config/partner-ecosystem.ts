@@ -11,6 +11,16 @@ export type PartnerEcosystemItem = {
 
 export const partnerEcosystem: readonly PartnerEcosystemItem[] = [
   {
+    id: "linkplus",
+    name: "LinkPlus",
+    shortName: "LinkPlus",
+    logoPath: "/partners/linkplus.svg",
+    focus: "Digital transformation and enterprise technology enablement",
+    description:
+      "Connected technology solutions and delivery support that help organizations modernize operations with confidence.",
+    areas: ["Digital services", "Enterprise connectivity", "Transformation", "Innovation"],
+  },
+  {
     id: "microsoft",
     name: "Microsoft",
     shortName: "Microsoft",
