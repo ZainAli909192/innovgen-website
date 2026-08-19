@@ -184,7 +184,7 @@ export function HomeHero({
         "
       />
 
-      {/* Desktop left-side gradient */}
+      {/* Desktop centered contrast field */}
       <div
         aria-hidden="true"
         className="
@@ -192,7 +192,7 @@ export function HomeHero({
           inset-0
           z-[2]
           hidden
-          bg-[linear-gradient(90deg,rgba(7,20,35,0.5)_20%,rgba(7,20,35,0.64)_34%,rgba(7,20,35,0.22)_66%,rgba(7,20,35,0.06)_100%)]
+          bg-[radial-gradient(ellipse_at_center,rgba(7,20,35,0.78)_0%,rgba(7,20,35,0.58)_36%,rgba(7,20,35,0.18)_72%,rgba(7,20,35,0.05)_100%)]
           lg:block
         "
       />
@@ -241,46 +241,54 @@ export function HomeHero({
         className="
           relative
           z-10
-          grid
+          flex
           min-h-[calc(100dvh-5rem)]
           items-center
-          gap-8
+          justify-center
           pb-16
           pt-12
-          lg:grid-cols-[minmax(0,45%)_minmax(0,55%)]
           lg:py-16
         "
       >
-        {/* Left hero content */}
+        {/* Centered hero content */}
         <motion.div
           initial={
             reducedMotion
               ? false
               : {
                 opacity: 0,
-                x: isMobile ? 0 : -32,
-                y: isMobile ? 22 : 30,
+                y: 26,
+                scale: 0.97,
               }
           }
           animate={{
             opacity: 1,
-            x: 0,
             y: 0,
+            scale: 1,
           }}
           transition={{
             duration: reducedMotion ? 0 : 0.7,
             ease: heroEase,
           }}
-          className="max-w-xl"
+          className="relative z-20 mx-auto flex w-full max-w-6xl flex-col items-center text-center"
         >
           <p
             className="
-              text-xs
+              inline-flex
+              min-h-9
+              items-center
+              rounded-full
+              border
+              border-blue-200/30
+              bg-[rgb(7_20_35_/_42%)]
+              px-4
+              text-[0.68rem]
               font-semibold
               uppercase
               tracking-[0.22em]
               text-blue-300
-              hidden
+              shadow-[inset_0_1px_0_rgb(255_255_255_/_10%)]
+              backdrop-blur-sm
             "
           >
             {eyebrow}
@@ -289,12 +297,11 @@ export function HomeHero({
           <h1
             className="
               mt-4
-              max-w-[11ch]
-              text-balance
+              w-full
               font-[family-name:var(--font-outfit)]
-              text-[clamp(2.35rem,5.2vw,4.9rem)]
+              text-[clamp(2.5rem,5.3vw,5.9rem)]
               font-semibold
-              leading-[0.92]
+              leading-[0.9]
               tracking-[-0.065em]
               text-white
               lg:mt-5
@@ -318,9 +325,13 @@ export function HomeHero({
                 );
                 return (
                   <>
-                    {before}
-                    <span className="text-blue-400">{match}</span>
-                    {after}
+                    <span className="block text-white">{before.trim()}</span>
+                    <span className="my-[0.08em] block bg-[linear-gradient(90deg,var(--color-blue-300),var(--color-blue-500),var(--color-blue-300))] bg-clip-text text-transparent [filter:drop-shadow(0_8px_24px_rgb(23_105_224_/_22%))]">
+                      {match}
+                    </span>
+                    <span className="mx-auto block max-w-[17ch] text-white">
+                      {after.trim()}
+                    </span>
                   </>
                 );
               })()
@@ -341,7 +352,7 @@ export function HomeHero({
             )}
           </h1>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
             <Link
               href="/consultation"
               className="
@@ -412,6 +423,7 @@ export function HomeHero({
               mt-6
               flex
               items-center
+              justify-center
               gap-2
               text-sm
               text-blue-100/75
@@ -425,7 +437,7 @@ export function HomeHero({
             Trusted by enterprises across UAE
           </p>
 
-          <div className="relative mt-8 lg:hidden overflow-hidden">
+          <div className="relative mt-8 w-full max-w-xl overflow-hidden lg:hidden">
             <HomeLogoMarquee clients={mobileClients} />
           </div>
         </motion.div>

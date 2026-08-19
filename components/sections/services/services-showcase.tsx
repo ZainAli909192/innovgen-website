@@ -200,12 +200,8 @@ function ServicesFounderHero() {
   return (
     <section
       aria-labelledby="services-heading"
-      className="relative isolate overflow-hidden bg-[linear-gradient(145deg,#f5fbff_0%,#dcefff_48%,#b9e2f7_100%)] py-14 text-[var(--color-navy-900)] sm:py-20 lg:min-h-[calc(60dvh-5rem)] lg:py-5"
+      className="relative isolate overflow-hidden bg-white py-14 text-[var(--color-navy-900)] sm:py-20 lg:min-h-[calc(60dvh-5rem)] lg:py-5"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_18%,rgb(255_255_255_/_88%),transparent_28rem),radial-gradient(circle_at_84%_16%,rgb(47_130_245_/_14%),transparent_30rem)]"
-      />
       <Container size="wide" className="relative">
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(18rem,0.72fr)_minmax(0,1.48fr)] lg:gap-16 xl:gap-24">
           <motion.figure
