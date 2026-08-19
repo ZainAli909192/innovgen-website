@@ -194,40 +194,104 @@ function EditorialCategory({ category, index }: { category: ServiceCategory; ind
   );
 }
 
-export function ServicesShowcase() {
+function ServicesFounderHero() {
   const reducedMotion = usePrefersReducedMotion();
 
   return (
-    <section aria-labelledby="services-heading" className="relative isolate overflow-hidden md:bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] md:py-16">
-      <h1 id="services-heading" className="sr-only">InnovGen services</h1>
+    <section
+      aria-labelledby="services-heading"
+      className="relative isolate overflow-hidden bg-white py-14 text-[var(--color-navy-900)] sm:py-20 lg:min-h-[calc(60dvh-5rem)] lg:py-5"
+    >
+      <Container size="wide" className="relative">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(18rem,0.72fr)_minmax(0,1.48fr)] lg:gap-16 xl:gap-24">
+          <motion.figure
+            initial={reducedMotion ? false : { opacity: 0, x: -42, scale: 0.96 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: reducedMotion ? 0 : 0.7, ease }}
+            className="mx-auto w-full max-w-[27rem]"
+          >
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/75 shadow-[0_30px_80px_rgb(8_32_70_/_18%)] ring-1 ring-white/80">
+              <Image
+                src="/heads/AS_Pillai_Founder_CEO.png"
+                alt="AS Pillai, CEO of InnovGen Technology Solutions LLC"
+                fill
+                priority
+                sizes="(max-width: 1023px) 90vw, 34vw"
+                className="object-cover object-top"
+              />
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#c7e8f8] to-transparent"
+              />
+            </div>
+            <figcaption className="mt-6 text-center">
+              <p className="font-display text-2xl font-semibold tracking-[-0.02em]">AS Pillai</p>
+              <p className="mt-1 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--color-navy-800)]/70 sm:text-base">
+                CEO, InnovGen Technology Solutions LLC
+              </p>
+            </figcaption>
+          </motion.figure>
+
+          <motion.div
+            initial={reducedMotion ? false : { opacity: 0, x: 44, y: 18 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ duration: reducedMotion ? 0 : 0.7, delay: reducedMotion ? 0 : 0.1, ease }}
+            className="max-w-5xl"
+          >
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-blue-600)]">
+              People, process and technology
+            </p>
+            <h1
+              id="services-heading"
+              className="mt-4 font-display text-[clamp(3.4rem,8vw,7.5rem)] font-semibold leading-[0.82] tracking-[-0.075em] text-[var(--color-blue-600)]"
+            >
+              Innov<span className="text-[var(--color-navy-800)]">Edge</span>
+            </h1>
+            <div className="mt-8 h-px w-full bg-[linear-gradient(90deg,var(--color-blue-600),rgb(23_105_224_/_12%),transparent)]" />
+            <blockquote className="relative mt-8 pl-7 sm:pl-10">
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-[-0.25em] font-display text-6xl font-semibold leading-none text-[var(--color-blue-600)]/45 sm:text-7xl"
+              >
+                “
+              </span>
+              <p className="text-lg leading-8 text-[var(--color-navy-900)] sm:text-xl sm:leading-9 lg:text-[1.35rem]">
+                <strong>InnovEdge</strong> is a lifecycle of solutions and services we offer that helps our clients from the incpection of the project, designing solutions to successfully implementing the project till managing and optimising their digital infrastructures, both at the foundation level and advanced levels, thereby providing a better ROI for the client organization.
+              </p>
+              <p className="mt-6 text-lg leading-8 text-[var(--color-navy-900)] sm:text-xl sm:leading-9 lg:text-[1.35rem]">
+                Our sales and solution consultants bring in the required technological expertise and industry expertise to solve business problems and deliver practical and scalable IT solutions that help organizations accelerate their digital transformation. Through our unique engagement, we work on areas that will enable the client&apos;s journey to seamlessly adopt disruptive AI-based solutions into their business.
+              </p>
+              <span
+                aria-hidden="true"
+                className="mt-2 block text-right font-display text-6xl font-semibold leading-none text-[var(--color-blue-600)]/45"
+              >
+                ”
+              </span>
+            </blockquote>
+          </motion.div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+export function ServicesShowcase() {
+  return (
+    <>
+      <ServicesFounderHero />
+      <section aria-label="InnovGen service capabilities" className="relative isolate overflow-hidden md:bg-[linear-gradient(180deg,var(--color-navy-950),var(--color-navy-900))] md:py-16">
       <div className="md:hidden">
         <LegacyMobileServices />
       </div>
       <div className="relative hidden md:block">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_86%_8%,rgb(47_130_245_/_18%),transparent_28rem),radial-gradient(circle_at_12%_36%,rgb(228_196_119_/_7%),transparent_26rem)]" />
         <Container size="wide" className="relative">
-        <motion.header
-          initial={reducedMotion ? false : { opacity: 0, y: 32, scale: 0.97, rotateX: 7 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: reducedMotion ? 0 : 0.64, ease }}
-          style={{ transformPerspective: 1000 }}
-          className="mx-auto max-w-4xl pb-12 text-center sm:pb-16"
-        >
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">InnovGen services</p>
-          <p className="mt-4 text-[clamp(2.75rem,6vw,5.75rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-white">
-            Technology, brought together with intent.
-          </p>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-blue-100/75 sm:text-lg">
-            Explore the specialist capabilities that help organizations make confident progress.
-          </p>
-        </motion.header>
-
         {serviceCategories.map((category, index) => (
           <EditorialCategory key={category.id} category={category} index={index} />
         ))}
         </Container>
       </div>
-    </section>
+      </section>
+    </>
   );
 }
