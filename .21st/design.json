@@ -289,8 +289,8 @@
     },
     {
       "scope": "partners-page",
-      "choice": "Use a responsive DOM-based capability orbit with an active details panel and capability metrics strip.",
-      "reason": "Recreates the selected partner-ecosystem composition in InnovGen tokens while retaining keyboard controls, readable HTML content, and a lightweight mobile fallback."
+      "choice": "Use a responsive, selectable partner-logo directory with an active details panel and capability metrics strip.",
+      "reason": "Scales to the complete partner ecosystem while keeping every logo visible, keyboard-accessible, and connected to readable capability details."
     },
     {
       "scope": "careers-page",
@@ -301,6 +301,11 @@
       "scope": "consultation-form",
       "choice": "Use a layered navy form surface with icon-led fields, high-contrast focus states, and restrained transform-only Motion reveals.",
       "reason": "Modernizes the consultation experience with a premium 21st-inspired composition while preserving the existing five fields, validation, and enquiry workflow."
+    },
+    {
+      "scope": "services-page-hero",
+      "choice": "Use a founder-led InnovEdge editorial hero with a portrait, attribution, and long-form service vision statement on a light blue brand surface.",
+      "reason": "Adapts the selected reference into InnovGen's responsive design system while keeping the leadership message, portrait, and service positioning accessible in the DOM."
     }
   ],
   "evidence": [

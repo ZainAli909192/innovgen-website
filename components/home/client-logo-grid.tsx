@@ -51,9 +51,15 @@ function PartnerBrandCard({ partner }: { partner: PartnerBrand }) {
         <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-blue-600)]">Technology partner</p>
         {partner.logoPath ? (
           <span
-            className={`relative mt-5 block h-11 w-40 rounded-xl p-2 ${partner.logoTheme === "dark" ? "bg-navy-950" : "bg-white/80"}`}
+            className={`relative mt-6 block h-24 w-[88%] max-w-[22rem] rounded-2xl p-2 sm:h-28 sm:p-3 ${partner.logoTheme === "dark" ? "bg-navy-950" : "bg-white/80"}`}
           >
-            <Image src={partner.logoPath} alt={partner.name} fill sizes="10rem" className="object-contain" />
+            <Image
+              src={partner.logoPath}
+              alt={`${partner.name} logo`}
+              fill
+              sizes="(max-width: 639px) 16rem, 22rem"
+              className="object-contain p-2 sm:p-3"
+            />
           </span>
         ) : (
           <span
@@ -68,7 +74,7 @@ function PartnerBrandCard({ partner }: { partner: PartnerBrand }) {
             {partner.wordmark}
           </span>
         )}
-        <span className="mt-8 h-px w-10 bg-[var(--color-blue-500)]" />
+        <span className="mt-7 h-px w-12 bg-[var(--color-blue-500)]" />
         <h3 className="mt-4 text-sm font-semibold uppercase tracking-[0.13em] text-[var(--color-navy-900)]">{partner.name}</h3>
       </div>
     </motion.article>

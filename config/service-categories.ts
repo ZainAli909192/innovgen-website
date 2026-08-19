@@ -62,7 +62,8 @@ export const serviceCategories = [
     icon: "analytics",
     services: [
       { title: "Professional Services", description: "Outcome-led technology expertise for evolving organizations.", icon: "solutions" },
-      { title: "Cloud Consulting", description: "Cloud strategy, migration planning and governance.", icon: "cloud" },
+      { title: "Managed IT Services", description: "Proactive IT operations, support and continual service improvement.", icon: "devices" },
+      { title: "Datacentre and Cloud Consulting", description: "Datacentre and cloud strategy, migration planning and governance.", icon: "cloud" },
       { title: "Network Consulting", description: "Resilient network design for modern operations.", icon: "network" },
       { title: "Data Analytics", description: "Data foundations that support better decisions.", icon: "analytics" },
       { title: "Microsoft Consulting", description: "Practical Microsoft platform guidance and enablement.", icon: "microsoft" },

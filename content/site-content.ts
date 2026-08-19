@@ -479,7 +479,8 @@ const commonCta = {
 export const pages: Record<string, PageContent> = {
   home: {
     eyebrow: "Enterprise technology partner",
-    title: "Build secure digital systems that move your business forward.",
+    title:
+      "Build a secure AI led Intelligent IT Infrastructure that transforms your business that lets you focus on your core business.",
     description:
       "InnovGen brings strategy, design and engineering together to turn complex technology priorities into scalable outcomes.",
     seo: {

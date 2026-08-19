@@ -303,13 +303,19 @@ export function HomeHero({
             {title ? (
               (() => {
                 const lowerTitle = title.toLowerCase();
-                const index = lowerTitle.indexOf('secure digital');
+                const emphasizedPhrase = "ai led intelligent it infrastructure";
+                const index = lowerTitle.indexOf(emphasizedPhrase);
                 if (index === -1) {
                   return title;
                 }
                 const before = title.substring(0, index);
-                const match = title.substring(index, index + 14);
-                const after = title.substring(index + 14);
+                const match = title.substring(
+                  index,
+                  index + emphasizedPhrase.length,
+                );
+                const after = title.substring(
+                  index + emphasizedPhrase.length,
+                );
                 return (
                   <>
                     {before}
