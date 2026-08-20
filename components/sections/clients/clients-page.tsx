@@ -288,44 +288,7 @@ export function ClientsPage() {
 
   return (
     <main ref={pageRef} className="overflow-x-clip">
-      <Section
-        spacing="spacious"
-        className="relative isolate overflow-hidden border-b border-border bg-[linear-gradient(145deg,var(--color-navy-950),var(--color-navy-800))]"
-      >
-        <Background3DShapes variant="network" intensity="medium" />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-35 [background-image:linear-gradient(rgb(131_185_255_/_7%)_1px,transparent_1px),linear-gradient(90deg,rgb(131_185_255_/_7%)_1px,transparent_1px)] [background-size:4rem_4rem] [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_78%,transparent)]"
-        />
-        <Container size="wide" className="relative z-10">
-          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.06fr)_minmax(22rem,0.94fr)] lg:gap-16">
-            <PageReveal className="max-w-4xl">
-              <Badge variant="blue" className="border-accent/30 bg-accent/10 text-accent">
-                Enterprise client network
-              </Badge>
-              <h1 className="mt-6 max-w-[18ch] text-balance text-[clamp(2.65rem,5vw,4.8rem)] font-semibold leading-[0.94] tracking-[-0.065em] text-white">
-                Trusted by organizations that depend on enterprise infrastructure and managed operations.
-              </h1>
-              <p className="mt-7 max-w-2xl text-base leading-7 text-blue-100/75 sm:text-lg sm:leading-8">
-                InnovGen supports long-term technology relationships across government, healthcare, education, hospitality, retail, manufacturing and enterprise services. Our client portfolio validates infrastructure delivery, secure cloud operations and professional consulting for UAE organizations.
-              </p>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <Button href="/consultation" size="lg">
-                  Speak with an enterprise IT specialist
-                  <ArrowUpRight aria-hidden="true" className="size-4" />
-                </Button>
-                <Button href="/services" variant="secondary" size="lg">
-                  Explore services
-                </Button>
-              </div>
-            </PageReveal>
-            <PageReveal delay={0.1} className="lg:justify-self-end lg:w-full lg:max-w-[34rem]">
-              <HeroSignalPanel />
-            </PageReveal>
-          </div>
-        </Container>
-      </Section>
-
+     
       <TrustedClientsDirectory variant="page" />
 
       <Section

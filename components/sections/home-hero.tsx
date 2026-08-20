@@ -1,15 +1,8 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  ArrowLeft,
   ArrowRight,
   Check,
 } from "lucide-react";
@@ -68,7 +61,6 @@ function useMobileViewport() {
 }
 
 export function HomeHero({
-  description,
   eyebrow,
   title,
 }: HomeHeroProps) {
@@ -298,7 +290,6 @@ export function HomeHero({
             className="
               mt-4
               w-full
-              font-[family-name:var(--font-outfit)]
               text-[clamp(2.5rem,5.3vw,5.9rem)]
               font-semibold
               leading-[0.9]
@@ -323,14 +314,25 @@ export function HomeHero({
                 const after = title.substring(
                   index + emphasizedPhrase.length,
                 );
+                const closingPhrase = "core business";
+                const closingIndex = after.toLowerCase().lastIndexOf(closingPhrase);
+                const closingLead = closingIndex === -1
+                  ? after
+                  : after.substring(0, closingIndex);
+                const closingMatch = closingIndex === -1
+                  ? ""
+                  : after.substring(closingIndex);
                 return (
                   <>
                     <span className="block text-white">{before.trim()}</span>
                     <span className="my-[0.08em] block bg-[linear-gradient(90deg,var(--color-blue-300),var(--color-blue-500),var(--color-blue-300))] bg-clip-text text-transparent [filter:drop-shadow(0_8px_24px_rgb(23_105_224_/_22%))]">
                       {match}
                     </span>
-                    <span className="mx-auto block max-w-[17ch] text-white">
-                      {after.trim()}
+                    <span className="mx-auto block max-w-[19ch] text-white">
+                      {closingLead.trim()}{closingMatch ? " " : null}
+                      {closingMatch ? (
+                        <span className="text-blue-300">{closingMatch.trim()}</span>
+                      ) : null}
                     </span>
                   </>
                 );

@@ -480,7 +480,7 @@ export const pages: Record<string, PageContent> = {
   home: {
     eyebrow: "Enterprise technology partner",
     title:
-      "Build a secure AI led Intelligent IT Infrastructure that transforms your business that lets you focus on your core business.",
+      "Build a secure AI led Intelligent IT Infrastructure that transforms your business and empowers you to focus on your core business",
     description:
       "InnovGen brings strategy, design and engineering together to turn complex technology priorities into scalable outcomes.",
     seo: {
