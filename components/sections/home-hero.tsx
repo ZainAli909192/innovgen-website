@@ -290,11 +290,13 @@ export function HomeHero({
             className="
               mt-4
               w-full
-              text-[clamp(2.5rem,5.3vw,5.9rem)]
+              font-[family-name:var(--font-outfit)]
+              text-[clamp(1.85rem,8.5vw,2.5rem)]
               font-semibold
               leading-[0.9]
               tracking-[-0.065em]
               text-white
+              sm:text-[clamp(2.5rem,4.3vw,4.9rem)]
               lg:mt-5
             "
           >
