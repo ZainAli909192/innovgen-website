@@ -14,7 +14,7 @@ export const partnerEcosystem: readonly PartnerEcosystemItem[] = [
     id: "link Plus",
     name: "Link Plus",
     shortName: "Link Plus",
-    logoPath: "/partners/linkplus.svg",
+    logoPath: "/partners/linkplus.png",
     focus: "Digital transformation and enterprise technology enablement",
     description:
       "Connected technology solutions and delivery support that help organizations modernize operations with confidence.",
