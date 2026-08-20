@@ -29,7 +29,8 @@ export const trustedClientGroups = [
     title: "Healthcare",
     clients: [
       { name: "Dubai Ambulance", logoPath: "/clients%20logos/dubai%20amdulance.png" },
-      { name: "American Hospital Dubai" },
+            { name: "Dubai Ambulance", logoPath: "/clients%20logos/abdul-aziz-al-majid.png" },
+
     ],
   },
   {
@@ -40,7 +41,7 @@ export const trustedClientGroups = [
       { name: "BITS Pilani Dubai Campus", logoPath: "/clients%20logos/bits-dubai-campus-color-1.png.webp" },
       { name: "University of Khorfakkan", logoPath: "/clients%20logos/university%20of%20khorfakkan.png" },
       { name: "University of Kalba", logoPath: "/clients%20logos/kalaba.png" },
-      { name: "Arab Maritime Academy" },
+      { name: "Aditya Birla star cement", logoPath: "/clients%20logos/aditya-birla-star-cement.png" },
     ],
   },
   {
