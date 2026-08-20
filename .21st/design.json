@@ -309,8 +309,8 @@
     },
     {
       "scope": "home-page-hero-copy",
-      "choice": "Use a left-aligned editorial headline with a small white italic opener, an oversized brand-blue AI infrastructure statement, and a white italic outcome line with a blue closing phrase.",
-      "reason": "Matches the approved reference hierarchy while preserving the Outfit typeface, existing brand colors, actions, and unobstructed background scene."
+      "choice": "Use the exact approved business statement in a centered three-tier heading, with the AI infrastructure phrase as the blue focal point and the global Outfit heading typography.",
+      "reason": "Preserves the established homepage composition while keeping its H1 typography identical to every other site heading and emphasizing only approved brand colors."
     }
   ],
   "evidence": [

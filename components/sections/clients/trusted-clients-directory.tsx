@@ -88,13 +88,14 @@ function ClientLogoMark({
 function HomeLogoMarquee({ clients, reverse = false }: { clients: readonly TrustedClient[]; reverse?: boolean }) {
   const reducedMotion = usePrefersReducedMotion();
   const loopedClients = [...clients, ...clients];
+  const marqueeDuration = Math.max(60, clients.length * 3.6);
 
   return (
     <div className="overflow-hidden py-2" aria-label="Selected InnovGen clients">
       <motion.div
         className="flex w-max gap-4 pr-4 will-change-transform"
         animate={reducedMotion ? { x: 0 } : { x: reverse ? ["-50%", "0%"] : ["0%", "-50%"] }}
-        transition={reducedMotion ? { duration: 0 } : { duration: reverse ? 32 : 28, ease: "linear", repeat: Infinity }}
+        transition={reducedMotion ? { duration: 0 } : { duration: marqueeDuration, ease: "linear", repeat: Infinity }}
       >
         {loopedClients.map((client, index) => (
           <ClientLogoMark key={`${client.name}-${index}`} client={client} marquee />
