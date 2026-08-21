@@ -9,14 +9,14 @@ export type ContactItem = {
 
 export type SocialItem = {
   label: string;
-  network: "whatsapp" | "instagram" | "facebook";
+  network: "whatsapp" | "instagram" | "linkedin";
   href: `https://${string}`;
   approval: ApprovalState;
 };
 
 export type ConnectItem = {
   label: string;
-  kind: "whatsapp" | "instagram" | "call" | "email" | "facebook";
+  kind: "whatsapp" | "instagram" | "call" | "email" | "linkedin";
   href: string;
   external?: boolean;
   approval: ApprovalState;
@@ -64,9 +64,9 @@ export const socialItems = [
     approval: "approved",
   },
   {
-    label: "Facebook",
-    network: "facebook",
-    href: "https://www.facebook.com/innovgen/",
+    label: "LinkedIn",
+    network: "linkedin",
+    href: "https://www.linkedin.com/company/innovgen-technology-solutions-llc/",
     approval: "approved",
   },
 ] as const satisfies readonly SocialItem[];
@@ -98,10 +98,17 @@ export const connectItems: readonly ConnectItem[] = [
     href: "mailto:nayef@innovgen.com",
     approval: "approved",
   },
+  // {
+  //   label: "Facebook",
+  //   kind: "facebook",
+  //   href: "https://www.facebook.com/innovgen/",
+  //   external: true,
+  //   approval: "approved",
+  // },
   {
-    label: "Facebook",
-    kind: "facebook",
-    href: "https://www.facebook.com/innovgen/",
+    label: "LinkedIn",
+    kind: "linkedin",
+    href: "https://www.linkedin.com/company/innovgen-technology-solutions-llc/",
     external: true,
     approval: "approved",
   },
