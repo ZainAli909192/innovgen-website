@@ -70,16 +70,7 @@ export const partnerEcosystem: readonly PartnerEcosystemItem[] = [
       "Security capabilities designed to protect networks, users, applications, and cloud environments together.",
     areas: ["Network security", "Secure access", "Cloud security", "Threat response"],
   },
-  {
-    id: "crowdstrike",
-    name: "CrowdStrike",
-    shortName: "CrowdStrike",
-    logoPath: "/partners/crowd strike.png",
-    focus: "Endpoint protection and threat intelligence",
-    description:
-      "Modern endpoint and workload protection that helps organizations detect, investigate, and respond with confidence.",
-    areas: ["Endpoint security", "Threat intelligence", "Incident response", "Cloud protection"],
-  },
+  
   {
     id: "trend-micro",
     name: "Trend Micro",
