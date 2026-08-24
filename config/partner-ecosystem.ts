@@ -308,7 +308,7 @@ export const partnerEcosystem: readonly PartnerEcosystemItem[] = [
     id: "servicefix",
     name: "Servicefix",
     shortName: "Servicefix",
-    logoPath: "/partners/servicefix.jpg",
+    logoPath: "/partners/servicefix.png",
     focus: "Service management and workflow enablement",
     description: "Service-management capabilities that help teams coordinate support and operational workflows.",
     areas: ["Service management", "Workflow", "Support operations", "Automation"],
