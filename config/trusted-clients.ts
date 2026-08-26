@@ -71,6 +71,7 @@ export const trustedClientGroups = [
       { name: "Scope Investment", logoPath: "/clients%20logos/scope%20investment.png" },
      { name: "Oagis", logoPath: "/clients%20logos/oagis.png" },
            { name: "Radisson Hotels", logoPath: "/clients%20logos/radisson.png" },
+           { name: "Choithrams", logoPath: "/clients%20logos/choithrams.svg" },
 
     ],
   },
