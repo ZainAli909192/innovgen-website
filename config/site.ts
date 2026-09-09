@@ -9,7 +9,7 @@ export type ContactItem = {
 
 export type SocialItem = {
   label: string;
-  network: "whatsapp" | "instagram" | "linkedin ";
+  network: "whatsapp" | "instagram" | "linkedin";
   href: `https://${string}`;
   approval: ApprovalState;
 };
