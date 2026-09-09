@@ -32,8 +32,8 @@ export const siteConfig = {
 export const contactItems = [
   {
     label: "Phone",
-    value: "+971 50 455 4618",
-    href: "tel:++971504554618",
+    value: "+971 5 255 0093",
+    href: "tel:+97152550093",
     approval: "approved",
   },
   {
@@ -89,7 +89,7 @@ export const connectItems: readonly ConnectItem[] = [
   {
     label: "Call InnovGen",
     kind: "call",
-    href: "tel:+971563337727",
+    href: "tel:+97152550093",
     approval: "approved",
   },
   {
@@ -119,3 +119,4 @@ export const trustItems: readonly {
   type: "partner" | "certification" | "client";
   approval: "approved";
 }[] = [];
+     
