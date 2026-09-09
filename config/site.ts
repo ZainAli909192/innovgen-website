@@ -32,8 +32,8 @@ export const siteConfig = {
 export const contactItems = [
   {
     label: "Phone",
-    value: "+971 5 255 0093",
-    href: "tel:+97152550093",
+    value: "+971 4 255 0093",
+    href: "tel:+97142550093",
     approval: "approved",
   },
   {
@@ -89,7 +89,7 @@ export const connectItems: readonly ConnectItem[] = [
   {
     label: "Call InnovGen",
     kind: "call",
-    href: "tel:+97152550093",
+    href: "tel:+97142550093",
     approval: "approved",
   },
   {
